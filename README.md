@@ -1,2 +1,2 @@
-# LHC-Meetup-Angular
-Angular cross-platform client for LHC Meetup app
+# LHC-Meetup-RN
+React Native cross-platform client for LHC Meetup app
