@@ -1,0 +1,3 @@
+rootProject.name = 'LHC_RN'
+
+include ':app'
