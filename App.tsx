@@ -20,7 +20,7 @@ const instructions = Platform.select({
 
 interface Props {}
 export default class App extends Component<Props> {
-  render() {
+  public render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native!</Text>
