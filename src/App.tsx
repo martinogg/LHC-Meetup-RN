@@ -10,6 +10,9 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
+import {HomeScreen} from './HomeScreen'
+import {ProfileScreen} from './ProfileScreen'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -19,11 +22,11 @@ const instructions = Platform.select({
 });
 
 interface Props {}
-export default class App extends Component<Props> {
+class App extends Component<Props> {
   public render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <Text style={styles.welcome}>Welcome to React native!</Text>
         <Text style={styles.instructions}>To get started, edit App.tsx</Text>
         <Text style={styles.instructions}>{instructions}</Text>
       </View>
@@ -49,3 +52,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+
+const MainNavigator = createStackNavigator({
+  Home: {screen: HomeScreen},
+  Profile: {screen: ProfileScreen}
+});
+
+const App2 = createAppContainer(MainNavigator);
+
+export default App2;
