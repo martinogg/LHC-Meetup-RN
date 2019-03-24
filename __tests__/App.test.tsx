@@ -25,7 +25,6 @@ describe("add", () => {
 });
 */
 
-
 export const createTestProps = (props: object) => ({
   ...props
 });
