@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
