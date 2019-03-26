@@ -81,7 +81,87 @@ Cmd+D or shake for dev menu
           ]
         }
       >
-        Go to Jane's profile
+        Register
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityStates={Array []}
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "padding": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Home Screen
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityStates={Array []}
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "padding": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        EditDetails Screen
       </Text>
     </View>
   </View>

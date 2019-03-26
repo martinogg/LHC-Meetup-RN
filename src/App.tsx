@@ -8,14 +8,20 @@
  * @format
  */
 
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-import {LoginScreen} from './Screens/Login/LoginScreen'
-import {RegisterScreen} from './Screens/Register/RegisterScreen';
+import { createAppContainer, createStackNavigator } from 'react-navigation'
+
+import { EditScreen } from './Screens/Edit/EditScreen'
+import { HomeScreen } from './Screens/Home/HomeScreen'
+import { LoginScreen } from './Screens/Login/LoginScreen'
+import { RegisterScreen } from './Screens/Register/RegisterScreen'
 
 const MainNavigator = createStackNavigator({
-  Home: {screen: LoginScreen},
-  Register: {screen: RegisterScreen}
-});
+  Login: { screen: LoginScreen },
+  Register: { screen: RegisterScreen },
+  EditDetails: { screen: EditScreen },
+  Home: { screen: HomeScreen }
+},
+  { initialRouteName: 'Login' });
 
 const App = createAppContainer(MainNavigator);
 

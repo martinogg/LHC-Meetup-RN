@@ -18,7 +18,7 @@ export class HomeScreen extends Component<Props> {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to React native!</Text>
+                <Text style={styles.welcome}>Welcome to HOME!</Text>
                 <Text style={styles.instructions}>To get started, edit App.tsx</Text>
                 <Text style={styles.instructions}>{instructions}</Text>
                 <Button

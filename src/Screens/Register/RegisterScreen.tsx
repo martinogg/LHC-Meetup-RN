@@ -1,42 +1,52 @@
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, Button } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
     android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+        'Double tap R on your keyboard to reload,\n' +
+        'Shake or press menu button for dev menu',
 });
 
-interface Props {}
+interface Props { navigation: NavigationScreenProp<any, any> }
 
 export class RegisterScreen extends Component<Props> {
+
+    pushEditScreen() {
+
+        this.props.navigation.navigate('EditDetails')
+    }
+
     public render() {
-    return (
-        <View style={styles.container}>
-        <Text style={styles.welcome}>Register -- Welcome to React native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        </View>
-    );
+        return (
+            <View style={styles.container}>
+                <Text style={styles.welcome}>Register -- Welcome to React native!</Text>
+                <Text style={styles.instructions}>To get started, edit App.tsx</Text>
+                <Text style={styles.instructions}>{instructions}</Text>
+                <Button title="Edit Screen"
+                    onPress={() => this.pushEditScreen()}
+                />
+            </View>
+        );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
     },
     welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
     },
     instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+        textAlign: 'center',
+        color: '#333333',
+        marginBottom: 5,
     },
 });
