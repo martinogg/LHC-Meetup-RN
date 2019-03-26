@@ -14,7 +14,7 @@ export class RegisterScreen extends Component<Props> {
     public render() {
     return (
         <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React native!</Text>
+        <Text style={styles.welcome}>Register -- Welcome to React native!</Text>
         <Text style={styles.instructions}>To get started, edit App.tsx</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         </View>

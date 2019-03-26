@@ -20,7 +20,7 @@ exports[`should display RegisterScreen with no errors 1`] = `
       }
     }
   >
-    Welcome to React native!
+    Register -- Welcome to React native!
   </Text>
   <Text
     style={

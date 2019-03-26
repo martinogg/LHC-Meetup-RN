@@ -6,23 +6,12 @@
 
 import React from 'react';
 import 'react-native';
+import { shallow } from 'enzyme'
 
-import {HomeScreen} from '../src/HomeScreen';
-import {ProfileScreen} from '../src/ProfileScreen';
+import App from '../src/App'
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-
-it('should display HomeScreen with no errors', () => {
-  const navigation = { navigate: jest.fn() };
-
-  expect(renderer.create(<HomeScreen navigation={navigation} />)).toMatchSnapshot();
-});
-
-it('should display ProfileScreen with no errors', () => {
-
-  expect(renderer.create(<ProfileScreen/>)).toMatchSnapshot();
-});
 
 /*
 // Add 'export' to fake this being a module to silence TSLint.
@@ -42,10 +31,12 @@ it("should work", () => {
 
   expect(1).toBe(1)
 })
-/*
+
+/* // TODO : Test App Class (navigation)
+
 describe("App", () => {
   const props = createTestProps({});
-  const wrapper = shallow<App>(<App {...props} />);
+  const wrapper = shallow(<App {...props} />);
                                
   describe("rendering", () => {
     it("should render a <View />", () => {
