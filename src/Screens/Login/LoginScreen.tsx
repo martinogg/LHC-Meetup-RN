@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Button, Platform, StyleSheet, Text, View } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 
+import { StackActions } from 'react-navigation'
+
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
     android:
@@ -25,7 +27,7 @@ export class LoginScreen extends Component<Props, object> {
                     onPress={() => navigate('Register')}
                 />
                 <Button title="Home Screen"
-                    onPress={() => this.pushHomeScreen()} 
+                    onPress={() => this.goToHomeScreen()} 
                 />
                 <Button title="EditDetails Screen"
                     onPress={() => this.pushEditDetailsScreen()} 
@@ -38,8 +40,10 @@ export class LoginScreen extends Component<Props, object> {
         this.props.navigation.navigate('EditDetails')
     }
 
-    private pushHomeScreen() {
-        this.props.navigation.navigate('Home')
+    private goToHomeScreen() {
+        
+        this.props.navigation.replace('Home')
+
     }
 }
 // onPress={() => navigate('Register', { name: 'Jane' })} -- TODO: To Add params between screens
