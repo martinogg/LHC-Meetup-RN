@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, Text, View, Button } from 'react-native'
+import { Button, Platform, StyleSheet, Text, View } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 
 const instructions = Platform.select({
@@ -11,14 +11,6 @@ const instructions = Platform.select({
 
 interface Props { navigation: NavigationScreenProp<any, any> }
 export class LoginScreen extends Component<Props, object> {
-
-    pushEditDetailsScreen() {
-        this.props.navigation.navigate('EditDetails')
-    }
-
-    pushHomeScreen() {
-        this.props.navigation.navigate('Home')
-    }
 
     public render() {
 
@@ -41,8 +33,16 @@ export class LoginScreen extends Component<Props, object> {
             </View>
         );
     }
+
+    private pushEditDetailsScreen() {
+        this.props.navigation.navigate('EditDetails')
+    }
+
+    private pushHomeScreen() {
+        this.props.navigation.navigate('Home')
+    }
 }
-//onPress={() => navigate('Register', { name: 'Jane' })}
+// onPress={() => navigate('Register', { name: 'Jane' })} -- TODO: To Add params between screens
 const styles = StyleSheet.create({
     container: {
         flex: 1,

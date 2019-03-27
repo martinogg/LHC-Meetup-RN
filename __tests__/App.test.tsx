@@ -6,6 +6,7 @@
 
 import React from 'react';
 import 'react-native';
+
 import { shallow } from 'enzyme'
 
 import App from '../src/App'
@@ -27,7 +28,7 @@ export const createTestProps = (props: object) => ({
   ...props
 });
 
-it("should work", () => {
+it('should work', () => {
 
   expect(1).toBe(1)
 })

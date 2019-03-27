@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Button } from 'react-native';
+import { Button, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation'
 
 const instructions = Platform.select({
@@ -13,11 +13,6 @@ interface Props { navigation: NavigationScreenProp<any, any> }
 
 export class RegisterScreen extends Component<Props> {
 
-    pushEditScreen() {
-
-        this.props.navigation.navigate('EditDetails')
-    }
-
     public render() {
         return (
             <View style={styles.container}>
@@ -29,6 +24,11 @@ export class RegisterScreen extends Component<Props> {
                 />
             </View>
         );
+    }
+
+    private pushEditScreen() {
+
+        this.props.navigation.navigate('EditDetails')
     }
 }
 

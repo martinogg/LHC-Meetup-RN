@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button} from 'react-native';
+import {Button, Platform, StyleSheet, Text, View} from 'react-native';
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -14,7 +14,7 @@ export class AboutAppScreen extends Component<Props> {
     public render() {
     return (
         <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React native!</Text>
+        <Text style={styles.welcome}>Welcome to About Screen native!</Text>
         <Text style={styles.instructions}>To get started, edit App.tsx</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         </View>

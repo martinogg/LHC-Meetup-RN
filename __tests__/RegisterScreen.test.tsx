@@ -1,9 +1,10 @@
 import React from 'react';
 import 'react-native';
 
-import { RegisterScreen } from '../src/Screens/Register/RegisterScreen';
 import { shallow } from 'enzyme';
 import { Button } from 'react-native'
+
+import { RegisterScreen } from '../src/Screens/Register/RegisterScreen';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
@@ -20,7 +21,7 @@ test('test pushEditScreen()', () => {
   const navigation = { navigate: navigateFunc };
 
   const wrapper = shallow(<RegisterScreen navigation={navigation} />);
-  const sut: RegisterScreen = wrapper.instance()
+  const sut: any = wrapper.instance()
 
   sut.pushEditScreen = jest.fn()
 
@@ -35,7 +36,7 @@ test('test pushEditScreen function', () => {
   const navigation = { navigate: navigateFunc };
 
   const wrapper = shallow(<RegisterScreen navigation={navigation} />);
-  const sut: RegisterScreen = wrapper.instance()
+  const sut: any = wrapper.instance()
   sut.pushEditScreen()
 
   expect(navigateFunc).toHaveBeenCalledTimes(1)

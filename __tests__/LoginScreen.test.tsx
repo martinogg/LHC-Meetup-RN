@@ -1,11 +1,10 @@
+import { shallow } from 'enzyme';
 import React from 'react';
 import 'react-native';
-
-import { LoginScreen } from '../src/Screens/Login/LoginScreen';
-import { shallow } from 'enzyme';
 import { Button } from 'react-native'
 
-// Note: test renderer must be required after react-native.
+import { LoginScreen } from '../src/Screens/Login/LoginScreen';
+
 import renderer from 'react-test-renderer';
 
 it('should display LoginScreen with no errors', () => {
@@ -33,7 +32,7 @@ test('test pushEditDetails()', () => {
   const navigation = { navigate: navigateFunc };
 
   const wrapper = shallow(<LoginScreen navigation={navigation} />);
-  const sut: LoginScreen = wrapper.instance()
+  const sut: any = wrapper.instance()
 
   sut.pushEditDetailsScreen = jest.fn()
 
@@ -48,7 +47,7 @@ test('test pushHome()', () => {
   const navigation = { navigate: navigateFunc };
 
   const wrapper = shallow(<LoginScreen navigation={navigation} />);
-  const sut: LoginScreen = wrapper.instance()
+  const sut: any = wrapper.instance()
 
   sut.pushHomeScreen = jest.fn()
 
@@ -63,7 +62,7 @@ test('test pushHomeScreen function', () => {
   const navigation = { navigate: navigateFunc };
 
   const wrapper = shallow(<LoginScreen navigation={navigation} />);
-  const sut: LoginScreen = wrapper.instance()
+  const sut: any = wrapper.instance()
   sut.pushHomeScreen()
 
   expect(navigateFunc).toHaveBeenCalledTimes(1)
@@ -76,7 +75,7 @@ test('test pushEditDetailsScreen function', () => {
   const navigation = { navigate: navigateFunc };
 
   const wrapper = shallow(<LoginScreen navigation={navigation} />);
-  const sut: LoginScreen = wrapper.instance()
+  const sut: any = wrapper.instance()
   sut.pushEditDetailsScreen()
 
   expect(navigateFunc).toHaveBeenCalledTimes(1)

@@ -20,7 +20,7 @@ exports[`should display FeedbackScreen with no errors 1`] = `
       }
     }
   >
-    Welcome to React native!
+    Welcome to About Screen native!
   </Text>
   <Text
     style={
