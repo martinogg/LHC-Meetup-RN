@@ -20,7 +20,7 @@ exports[`should display HomeScreen with no errors 1`] = `
       }
     }
   >
-    Welcome to React native!
+    Welcome to HOME!
   </Text>
   <Text
     style={
@@ -45,5 +45,85 @@ exports[`should display HomeScreen with no errors 1`] = `
     Press Cmd+R to reload,
 Cmd+D or shake for dev menu
   </Text>
+  <View
+    accessibilityRole="button"
+    accessibilityStates={Array []}
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "padding": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        About
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityRole="button"
+    accessibilityStates={Array []}
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "padding": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Edit
+      </Text>
+    </View>
+  </View>
 </View>
 `;

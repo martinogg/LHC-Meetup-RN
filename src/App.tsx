@@ -8,17 +8,23 @@
  * @format
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-import {HomeScreen} from './HomeScreen'
-import {ProfileScreen} from './ProfileScreen'
+import { createAppContainer, createStackNavigator } from 'react-navigation'
+
+import { AboutAppScreen } from './Screens/AboutApp/AboutAppScreen'
+import { EditScreen } from './Screens/Edit/EditScreen'
+import { HomeScreen } from './Screens/Home/HomeScreen'
+import { LoginScreen } from './Screens/Login/LoginScreen'
+import { RegisterScreen } from './Screens/Register/RegisterScreen'
 
 const MainNavigator = createStackNavigator({
-  Home: {screen: HomeScreen},
-  Profile: {screen: ProfileScreen}
-});
+  Login: { screen: LoginScreen },
+  Register: { screen: RegisterScreen },
+  EditDetails: { screen: EditScreen },
+  Home: { screen: HomeScreen },
+  AboutApp: { screen: AboutAppScreen }
+},
+  { initialRouteName: 'Login' });
 
-const App2 = createAppContainer(MainNavigator);
+const App = createAppContainer(MainNavigator);
 
-export default App2;
+export default App;
