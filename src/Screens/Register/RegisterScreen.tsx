@@ -1,29 +1,60 @@
 import React, { Component } from 'react';
-import { Button, Platform, StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-    android:
-        'Double tap R on your keyboard to reload,\n' +
-        'Shake or press menu button for dev menu',
-});
+import { Image, KeyboardAvoidingView } from 'react-native';
+import LoginForm from './LoginForm';
 
-interface Props { navigation: NavigationScreenProp<any, any> }
+import FirebaseConnection from '../../Helpers/FirebaseConnection'
+
+
+interface Props {
+    navigation: NavigationScreenProp<any, any>,
+    screenProps: { 
+        firebaseConnection: FirebaseConnection
+    }
+}
 
 export class RegisterScreen extends Component<Props> {
-
     public render() {
+        //<Image resizeMode="contain" style={styles.logo} source={require('../../components/images/logo-dark-bg.png')} />
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Register -- Welcome to React native!</Text>
-                <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-                <Text style={styles.instructions}>{instructions}</Text>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+
+                <View style={styles.loginContainer}>
+
+
+                </View>
+                <View style={styles.formContainer}>
+                    <LoginForm onLoginCallback={(username, password) => this.login(username, password)} actionButtonText='REGISTER' />
+                </View>
                 <Button title="Edit Screen"
                     onPress={() => this.goToEditScreen()}
                 />
-            </View>
+
+
+            </KeyboardAvoidingView>
         );
+    }
+
+    private login(username: string, password: string) {
+        // TODO TEST
+        this.props.screenProps.firebaseConnection.register(username, password).then((success) => {
+
+            this.showAlert('Registration OK!');
+            if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
+
+                this.goToEditScreen()
+            }
+        }, (fail) => {
+
+            this.showAlert('Registration Fail. Reason: ' + fail);
+        })
+    }
+
+    private showAlert(message: string) {
+        // TODO TEST
+        Alert.alert(message);
     }
 
     private goToEditScreen() {
@@ -35,23 +66,30 @@ export class RegisterScreen extends Component<Props> {
             })
         )
     }
+
+
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        backgroundColor: '#2c3e50',
+    },
+    loginContainer: {
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        flexGrow: 1,
+        justifyContent: 'center'
     },
-    welcome: {
-        fontSize: 20,
+    logo: {
+        position: 'absolute',
+        width: 300,
+        height: 100
+    },
+    title: {
+        color: "#FFF",
+        marginTop: 120,
+        width: 180,
         textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});
+        opacity: 0.9
+    }
+})

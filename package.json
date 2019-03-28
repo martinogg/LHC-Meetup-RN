@@ -8,10 +8,17 @@
     "lint": "tslint --project tsconfig.json"
   },
   "dependencies": {
+    "@types/react-redux": "^7.0.5",
+    "@types/redux": "^3.6.0",
+    "@types/redux-logger": "^3.0.7",
+    "firebase": "^5.9.2",
     "react": "16.8.3",
     "react-native": "0.59.1",
     "react-native-gesture-handler": "^1.1.0",
-    "react-navigation": "^3.5.1"
+    "react-navigation": "^3.5.1",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
