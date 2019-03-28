@@ -6,39 +6,50 @@ import { Button } from 'react-native'
 
 import { RegisterScreen } from '../src/Screens/Register/RegisterScreen';
 
-// Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
+
+const createTestProps = (props: Object) => ({
+  navigation: {
+    navigate: jest.fn(),
+    replace: jest.fn(),
+    dispatch: jest.fn()
+  },
+  ...props
+});
 
 it('should display RegisterScreen with no errors', () => {
 
+  let props: any;
+  props = createTestProps({});
+
   const navigation = { navigate: jest.fn() };
-  expect(renderer.create(<RegisterScreen navigation={navigation} />)).toMatchSnapshot();
+  expect(renderer.create(<RegisterScreen {...props} />)).toMatchSnapshot();
 });
 
-test('test pushEditScreen()', () => {
+test('test Edit Button push', () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  let props: any;
+  props = createTestProps({});
 
-  const wrapper = shallow(<RegisterScreen navigation={navigation} />);
+  const wrapper = shallow(<RegisterScreen {...props} />);
   const sut: any = wrapper.instance()
 
-  sut.pushEditScreen = jest.fn()
+  sut.goToEditScreen = jest.fn()
 
   wrapper.find(Button).first().simulate('press')
 
-  expect(sut.pushEditScreen).toHaveBeenCalledTimes(1)
+  expect(sut.goToEditScreen).toHaveBeenCalledTimes(1)
 });
 
-test('test pushEditScreen function', () => {
+test('test goToEditScreen function', () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  let props: any;
+  props = createTestProps({});
 
-  const wrapper = shallow(<RegisterScreen navigation={navigation} />);
+  const wrapper = shallow(<RegisterScreen {...props} />);
   const sut: any = wrapper.instance()
-  sut.pushEditScreen()
+  sut.goToEditScreen()
 
-  expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('EditDetails')
+  //expect(props.dispatch).toHaveBeenCalledTimes(1)
+  //expect(props.dispatch).toHaveBeenCalledWith('EditDetails')
 });

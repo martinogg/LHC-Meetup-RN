@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Platform, StyleSheet, Text, View } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation'
+import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -20,15 +20,20 @@ export class RegisterScreen extends Component<Props> {
                 <Text style={styles.instructions}>To get started, edit App.tsx</Text>
                 <Text style={styles.instructions}>{instructions}</Text>
                 <Button title="Edit Screen"
-                    onPress={() => this.pushEditScreen()}
+                    onPress={() => this.goToEditScreen()}
                 />
             </View>
         );
     }
 
-    private pushEditScreen() {
+    private goToEditScreen() {
 
-        this.props.navigation.navigate('EditDetails')
+        this.props.navigation.dispatch(
+            StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'EditDetails' })]
+            })
+        )
     }
 }
 

@@ -14,7 +14,7 @@ it('should display FeedbackScreen with no errors', () => {
 });
 
 test('test save button push', () => {
-
+        
   const navigateFunc = jest.fn()
   const navigation = { navigate: navigateFunc };
 
