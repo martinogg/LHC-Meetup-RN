@@ -57,9 +57,6 @@ test('test pushHome()', () => {
   let props: any;
   props = createTestProps({});
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
-
   const wrapper = shallow(<LoginScreen {...props} />);
   const sut: any = wrapper.instance()
 
@@ -80,7 +77,7 @@ test('test goToHomeScreen function', () => {
   sut.goToHomeScreen()
 
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  //expect(props.navigation.replace).toHaveBeenCalledWith('Home')
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
 });
 
 
@@ -94,7 +91,7 @@ test("test goToHomeScreen function", () => {
 
   sut.goToHomeScreen()
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  //expect(props.navigation.dispatch).toHaveBeenCalledWith('Home');   // SUCCESS
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"});
 });
 
 test('test goToEditDetailsScreen function', () => {
@@ -107,5 +104,5 @@ test('test goToEditDetailsScreen function', () => {
   sut.goToEditDetailsScreen()
 
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  //expect(props.navigation.navigate).toHaveBeenCalledWith('EditDetails')
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "EditDetails", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
 });

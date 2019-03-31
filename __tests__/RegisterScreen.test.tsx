@@ -50,6 +50,36 @@ test('test goToEditScreen function', () => {
   const sut: any = wrapper.instance()
   sut.goToEditScreen()
 
-  //expect(props.dispatch).toHaveBeenCalledTimes(1)
-  //expect(props.dispatch).toHaveBeenCalledWith('EditDetails')
+  expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "EditDetails", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+});
+
+
+test('test login function', () => {
+
+  // TODO - Fix this test so it works with the Promise
+  /*
+  const registerFunc = jest.fn()
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        register: registerFunc
+      }
+    }
+  });
+
+  const wrapper = shallow(<RegisterScreen {...props} />);
+  const sut: any = wrapper.instance()
+  
+  const username = "a"
+  const password = "b"
+  
+  console.log(sut)
+  sut.login(username, password)
+
+  expect(registerFunc).toHaveBeenCalledTimes(1)
+  expect(registerFunc).toHaveBeenCalledWith(username, password)
+  */
 });

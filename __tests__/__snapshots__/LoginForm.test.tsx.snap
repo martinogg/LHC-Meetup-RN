@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should display LoginForm with no errors 1`] = `
+<View
+  style={
+    Object {
+      "padding": 20,
+    }
+  }
+>
+  <TextInput
+    allowFontScaling={true}
+    autoCapitalize="none"
+    autoCorrect={false}
+    keyboardType="email-address"
+    onChangeText={[Function]}
+    onSubmitEditing={[Function]}
+    placeholder="Email"
+    placeholderTextColor="rgba(225,225,225,0.7)"
+    rejectResponderTermination={true}
+    returnKeyType="next"
+    style={
+      Object {
+        "backgroundColor": "rgba(225,225,225,0.2)",
+        "color": "#fff",
+        "height": 40,
+        "marginBottom": 10,
+        "padding": 10,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    onChangeText={[Function]}
+    onSubmitEditing={[Function]}
+    placeholder="Password"
+    placeholderTextColor="rgba(225,225,225,0.7)"
+    rejectResponderTermination={true}
+    returnKeyType="go"
+    secureTextEntry={true}
+    style={
+      Object {
+        "backgroundColor": "rgba(225,225,225,0.2)",
+        "color": "#fff",
+        "height": 40,
+        "marginBottom": 10,
+        "padding": 10,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#2980b6",
+        "opacity": 1,
+        "paddingVertical": 15,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      a
+    </Text>
+  </View>
+</View>
+`;
