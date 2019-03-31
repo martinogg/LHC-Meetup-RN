@@ -25,7 +25,7 @@ class LoginForm extends Component<IProps, IState> {
     public render() {
         return (
             <View style={styles.container}>
-                <StatusBar barStyle="light-content" />
+                
                 <TextInput style={styles.input}
                     autoCapitalize="none"
                     onSubmitEditing={() => this.passwordInput.focus()}

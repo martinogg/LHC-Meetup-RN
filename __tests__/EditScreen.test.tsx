@@ -8,9 +8,20 @@ import {EditScreen} from '../src/Screens/Edit/EditScreen';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
+const createTestProps = (props: Object) => ({
+  navigation: {
+    navigate: jest.fn(),
+    replace: jest.fn(),
+    dispatch: jest.fn()
+  },
+  ...props
+});
+
 it('should display FeedbackScreen with no errors', () => {
 
-  expect(renderer.create(<EditScreen/>)).toMatchSnapshot();
+  const props: any = createTestProps({})
+
+  expect(renderer.create(<EditScreen {...props}/>)).toMatchSnapshot();
 });
 
 test('test save button push', () => {
@@ -56,4 +67,29 @@ test('test logout button push', () => {
   wrapper.find(Button).at(2).simulate('press')
 
   expect(sut.logoutButtonPressed).toHaveBeenCalledTimes(1)
+});
+
+test('test logout function', async () => {
+
+  const logoutFunc = (): Promise<string> => {
+
+    return new Promise((resolve, reject) => {
+      resolve()
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        logout: logoutFunc
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  await sut.logoutButtonPressed()
+  expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
 });

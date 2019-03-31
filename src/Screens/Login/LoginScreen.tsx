@@ -1,40 +1,66 @@
 import React, { Component } from 'react'
-import { Button, Platform, StyleSheet, Text, View } from 'react-native'
+import { Alert, Button, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native'
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-    android:
-        'Double tap R on your keyboard to reload,\n' +
-        'Shake or press menu button for dev menu',
-});
+import LoginForm from '../Register/LoginForm'
+import FirebaseConnection from '../../Helpers/FirebaseConnection'
 
-interface Props { navigation: NavigationScreenProp<any, any> }
-export class LoginScreen extends Component<Props, object> {
 
+interface IProps {
+    navigation: NavigationScreenProp<any, any>,
+    screenProps: { 
+        firebaseConnection: FirebaseConnection
+    }
+}
+
+export class LoginScreen extends Component<IProps> {
     public render() {
-
-        const { navigate } = this.props.navigation;
-
+        //<Image resizeMode="contain" style={styles.logo} source={require('../../components/images/logo-dark-bg.png')} />
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to Login Screen!</Text>
-                <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-                <Text style={styles.instructions}>{instructions}</Text>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+
+                <View style={styles.loginContainer}>
+
+
+                </View>
+                <View style={styles.formContainer}>
+                    <LoginForm onLoginCallback={(username, password) => this.login(username, password)} actionButtonText='LOGIN' />
+                </View>
                 <Button title="Register"
-                    onPress={() => navigate('Register')}
+                    onPress={() => this.props.navigation.navigate('Register')}
                 />
                 <Button title="Home Screen"
                     onPress={() => this.goToHomeScreen()} 
                 />
                 <Button title="EditDetails Screen"
-                    onPress={() => this.goToEditDetailsScreen()} 
+                    onPress={() => this.goToEditScreen()} 
                 />
-            </View>
+
+
+            </KeyboardAvoidingView>
         );
     }
 
-    private goToEditDetailsScreen() {
+    private login(username: string, password: string) {
+
+        this.props.screenProps.firebaseConnection.login(username, password).then(() => {
+
+            if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
+
+                this.goToHomeScreen()
+            }
+        }, (fail) => {
+
+            this.showAlert('Login Fail. ' + fail);
+        })
+    }
+
+    private showAlert(message: string) {
+
+        Alert.alert(message);
+    }
+
+    private goToEditScreen() {
 
         this.props.navigation.dispatch(
             StackActions.reset({
@@ -53,23 +79,29 @@ export class LoginScreen extends Component<Props, object> {
             })
         )
     }
+
 }
-// onPress={() => navigate('Register', { name: 'Jane' })} -- TODO: To Add params between screens
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        backgroundColor: '#2c3e50',
+    },
+    loginContainer: {
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        flexGrow: 1,
+        justifyContent: 'center'
     },
-    welcome: {
-        fontSize: 20,
+    logo: {
+        position: 'absolute',
+        width: 300,
+        height: 100
+    },
+    title: {
+        color: "#FFF",
+        marginTop: 120,
+        width: 180,
         textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});
+        opacity: 0.9
+    }
+})
