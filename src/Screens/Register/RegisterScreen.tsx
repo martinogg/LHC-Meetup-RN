@@ -10,7 +10,7 @@ import FirebaseConnection from '../../Helpers/FirebaseConnection'
 
 interface Props {
     navigation: NavigationScreenProp<any, any>,
-    screenProps: { 
+    screenProps: {
         firebaseConnection: FirebaseConnection
     }
 }
@@ -20,26 +20,22 @@ export class RegisterScreen extends Component<Props> {
         //<Image resizeMode="contain" style={styles.logo} source={require('../../components/images/logo-dark-bg.png')} />
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-
                 <View style={styles.loginContainer}>
-
 
                 </View>
                 <View style={styles.formContainer}>
-                    <LoginForm onLoginCallback={(username, password) => this.login(username, password)} actionButtonText='REGISTER' />
+                    <LoginForm onLoginCallback={(username, password) => this.register(username, password)} actionButtonText='REGISTER' />
                 </View>
                 <Button title="Edit Screen"
                     onPress={() => this.goToEditScreen()}
                 />
-
-
             </KeyboardAvoidingView>
         );
     }
 
-    private login(username: string, password: string) {
-        // TODO TEST
-        this.props.screenProps.firebaseConnection.register(username, password).then((success) => {
+    private register(username: string, password: string) {
+
+        this.props.screenProps.firebaseConnection.register(username, password).then(() => {
 
             this.showAlert('Registration OK!');
             if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
@@ -53,7 +49,7 @@ export class RegisterScreen extends Component<Props> {
     }
 
     private showAlert(message: string) {
-        // TODO TEST
+        
         Alert.alert(message);
     }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
+import FirebaseConnection from '../../Helpers/FirebaseConnection'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -9,7 +10,11 @@ const instructions = Platform.select({
         'Shake or press menu button for dev menu',
 });
 
-interface Props { navigation: NavigationScreenProp<any, any> }
+interface Props { navigation: NavigationScreenProp<any, any>,
+    screenProps: { 
+        firebaseConnection: FirebaseConnection
+    } }
+
 
 export class EditScreen extends Component<Props> {
 
@@ -34,13 +39,19 @@ export class EditScreen extends Component<Props> {
     }
 
     logoutButtonPressed() { 
-        // TODO logout should go to login screen
-        this.props.navigation.dispatch(
-            StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'Login' })]
-            })
-        )
+        this.props.screenProps.firebaseConnection.logout().then(() => { 
+
+            this.props.navigation.dispatch(
+                StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'Login' })]
+                })
+            )    
+        })
+    }
+
+    private fbTestButtonPressed() {
+        this.props.screenProps.firebaseConnection.fbTest()
     }
 
     public render() {
@@ -57,6 +68,9 @@ export class EditScreen extends Component<Props> {
                 />
                 <Button title="Logout"
                     onPress={() => this.logoutButtonPressed()}
+                />
+                <Button title="Write FB Data Test"
+                    onPress={() => this.fbTestButtonPressed()}
                 />
             </View>
         );

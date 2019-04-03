@@ -6,12 +6,13 @@ import {
   Alert,
 } from 'react-native';
 import * as firebase from 'firebase';
+import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
 var instance: FirebaseConnection | null = null;
 
 class FirebaseConnection {
-  firebaseApp = null;
+  firebaseApp: firebase.app.App | null = null;
 
   static getInstance(): FirebaseConnection {
     if (instance) {
@@ -29,6 +30,7 @@ class FirebaseConnection {
       authDomain: BuildSettings.get("FIREBASEauthDomain"),
       databaseURL: BuildSettings.get("FIREBASEdatabaseURL"),
       storageBucket: BuildSettings.get("FIREBASEstorageBucket"),
+      projectId: BuildSettings.get("FIREBASEprojectId")
     };
 
     if (firebaseConfig.apiKey != "") {
@@ -46,27 +48,93 @@ class FirebaseConnection {
     return keys;
   }
 
+  public logout(): Promise<void> {
+    // TODO TEST
+    return new Promise((resolve, reject) => {
+      firebase.auth().signOut().then(() => {
+
+        resolve()
+      }, (failReason) => {
+
+        Alert.alert('Error: ' + failReason)
+        resolve()
+      })
+    })
+  }
+
+  public fbTest() {
+
+    if (firebase.auth().currentUser != null) {
+      const currentUser = firebase.auth().currentUser as firebase.User
+      firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
+        first: "Ada",
+
+        last: "Lovelace",
+        born: 1815
+      })
+        .then(() => {
+          console.log("Document written");
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+    
+
+        firebase.firestore().collection("LHC-Users").get().then( (snap) => {
+
+          console.log("Document read:"+snap);
+        }, (rejectReason) => {
+
+          console.error("Error reading document: ", rejectReason);
+        })
+    
+    }
+    //this.toggleLikeWithId('3333', null)
+
+    //firebase.firestore().collection("users").add()
+  }
+
+  public login(username: string, password: string): Promise<string> {
+    // TODO TEST
+
+    return new Promise((resolve, reject) => {
+
+      firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
+
+        resolve()
+      }, (reason) => {
+
+        reject(reason)
+      })
+    })
+  }
+
   public register(username: string, password: string): Promise<string> {
     // TODO TEST
+
     return new Promise((resolve, reject) => {
 
       firebase.auth().createUserWithEmailAndPassword(username, password).then(() => {
+
+
+        // TODO - Shift this out in to separate email verification
+        /*
+        if (this.isLoggedIn()) {
+
+          firebase.auth().currentUser.sendEmailVerification()
+        }
+        */
+
         resolve()
       }, (reason) => {
         reject(reason)
       })
-    }
-
-    )
-
-    //firebase.auth().signInWithEmailAndPassword(username, password).then()
-
-    //return Promise.
+    })
   }
 
   public isLoggedIn(): boolean {
     // TODO TEST
-    
+
     return firebase.auth().currentUser != null
   }
 

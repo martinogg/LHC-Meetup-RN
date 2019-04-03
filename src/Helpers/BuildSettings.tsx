@@ -4,6 +4,7 @@ const jsonkey = {
         FIREBASEauthDomain: "FIREBASEKEY",
         FIREBASEdatabaseURL: "FIREBASEKEY",
         FIREBASEstorageBucket: "FIREBASEKEY",
+        FIREBASEprojectId: "FIREBASEKEY"
     }
 };
 

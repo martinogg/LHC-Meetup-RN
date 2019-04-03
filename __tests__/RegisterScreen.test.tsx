@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-native';
 
 import { shallow } from 'enzyme';
-import { Button } from 'react-native'
+import { Button, Alert } from 'react-native'
 
 import { RegisterScreen } from '../src/Screens/Register/RegisterScreen';
 
@@ -51,15 +51,66 @@ test('test goToEditScreen function', () => {
   sut.goToEditScreen()
 
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "EditDetails", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "EditDetails", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" })
 });
 
 
-test('test login function', () => {
+test('test login function on pass', async () => {
 
-  // TODO - Fix this test so it works with the Promise
-  /*
-  const registerFunc = jest.fn()
+  const username = "a"
+  const password = "b"
+
+  const registerFunc = (usernamePassedIn: string, passwordPassedIn: string): Promise<string> => {
+
+    expect(usernamePassedIn).toBe(username)
+    expect(passwordPassedIn).toBe(password)
+
+    return new Promise((resolve, reject) => {
+      resolve()
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        register: registerFunc,
+        isLoggedIn: () => { return true }
+      }
+    }
+  });
+
+  const wrapper = shallow(<RegisterScreen {...props} />);
+  const sut: any = wrapper.instance()
+  let returnedAlertText = ''
+
+  sut.showAlert = (alertText: string) => {
+
+    returnedAlertText = alertText
+  }
+
+  sut.goToEditScreen = jest.fn()
+
+  await sut.register(username, password)
+  expect(returnedAlertText).toBe('Registration OK!')
+
+  expect(sut.goToEditScreen).toHaveBeenCalledTimes(1)
+});
+
+test('test login function on fail', async () => {
+
+  const username = "a"
+  const password = "b"
+
+  const registerFunc = (usernamePassedIn: string, passwordPassedIn: string): Promise<string> => {
+
+    expect(usernamePassedIn).toBe(username)
+    expect(passwordPassedIn).toBe(password)
+
+    return new Promise((resolve, reject) => {
+      reject('A reason')
+    })
+  }
 
   let props: any;
   props = createTestProps({
@@ -72,14 +123,34 @@ test('test login function', () => {
 
   const wrapper = shallow(<RegisterScreen {...props} />);
   const sut: any = wrapper.instance()
-  
-  const username = "a"
-  const password = "b"
-  
-  console.log(sut)
-  sut.login(username, password)
+  let returnedAlertText = ''
 
-  expect(registerFunc).toHaveBeenCalledTimes(1)
-  expect(registerFunc).toHaveBeenCalledWith(username, password)
-  */
+  sut.showAlert = (alertText: string) => {
+
+    returnedAlertText = alertText
+  }
+
+  await sut.register(username, password)
+  expect(returnedAlertText).toBe('Registration Fail. Reason: A reason')
 });
+
+test('test showAlert', () => {
+
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
+
+  let props: any;
+  props = createTestProps({});
+
+  const wrapper = shallow(<RegisterScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const showMessage = 'aMessage'
+  sut.showAlert(showMessage)
+
+  expect(Alert.alert).toBeCalledTimes(1)
+  expect(Alert.alert).toBeCalledWith(showMessage)
+})

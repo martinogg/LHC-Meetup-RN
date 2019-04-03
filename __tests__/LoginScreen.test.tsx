@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 import 'react-native';
-import { Button } from 'react-native'
+import { Alert, Button } from 'react-native'
 
 import { LoginScreen } from '../src/Screens/Login/LoginScreen';
 
@@ -37,7 +37,7 @@ test('test onPress Login functionality', () => {
   expect(props.navigation.navigate).toHaveBeenCalledWith('Register')
 });
 
-test('test goToEditDetailsScreen()', () => {
+test('test goToEditScreen()', () => {
 
   let props: any;
   props = createTestProps({});
@@ -45,11 +45,11 @@ test('test goToEditDetailsScreen()', () => {
   const wrapper = shallow(<LoginScreen {...props} />);
   const sut: any = wrapper.instance()
 
-  sut.goToEditDetailsScreen = jest.fn()
+  sut.goToEditScreen = jest.fn()
 
   wrapper.find(Button).at(2).simulate('press')
 
-  expect(sut.goToEditDetailsScreen).toHaveBeenCalledTimes(1)
+  expect(sut.goToEditScreen).toHaveBeenCalledTimes(1)
 });
 
 test('test pushHome()', () => {
@@ -77,7 +77,7 @@ test('test goToHomeScreen function', () => {
   sut.goToHomeScreen()
 
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "Home", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" })
 });
 
 
@@ -91,18 +91,117 @@ test("test goToHomeScreen function", () => {
 
   sut.goToHomeScreen()
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"});
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "Home", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" });
 });
 
-test('test goToEditDetailsScreen function', () => {
+test('test goToEditScreen function', () => {
 
   let props: any;
   props = createTestProps({});
 
   const wrapper = shallow(<LoginScreen {...props} />);
   const sut: any = wrapper.instance()
-  sut.goToEditDetailsScreen()
+  sut.goToEditScreen()
 
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "EditDetails", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "EditDetails", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" })
 });
+
+test('test login function success', async () => {
+
+  const username = "a"
+  const password = "b"
+
+  const loginFunc = (usernamePassedIn: string, passwordPassedIn: string): Promise<string> => {
+
+    expect(usernamePassedIn).toBe(username)
+    expect(passwordPassedIn).toBe(password)
+
+    return new Promise((resolve, reject) => {
+      resolve()
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        login: loginFunc,
+        isLoggedIn: () => { return true }
+      }
+    }
+  });
+
+  const wrapper = shallow(<LoginScreen {...props} />);
+  const sut: any = wrapper.instance()
+  sut.goToHomeScreen = jest.fn()
+  //let returnedAlertText = ''
+
+  /*sut.showAlert = (alertText: string) => {
+  
+    returnedAlertText = alertText
+  }*/
+
+  await sut.login(username, password)
+  expect(sut.goToHomeScreen).toHaveBeenCalledTimes(1)
+});
+
+test('test login function fail', async () => {
+
+  const username = "a"
+  const password = "b"
+
+  const loginFunc = (usernamePassedIn: string, passwordPassedIn: string): Promise<string> => {
+
+    expect(usernamePassedIn).toBe(username)
+    expect(passwordPassedIn).toBe(password)
+
+    return new Promise((resolve, reject) => {
+      reject('a Reason')
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        login: loginFunc,
+        isLoggedIn: () => { return true }
+      }
+    }
+  });
+
+  const wrapper = shallow(<LoginScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  let returnedAlertText = ''
+
+  sut.showAlert = (alertText: string) => {
+
+    returnedAlertText = alertText
+  }
+
+  await sut.login(username, password)
+  expect(returnedAlertText).toBe('Login Fail. a Reason')
+});
+
+test('test showAlert', () => {
+
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
+
+  let props: any;
+  props = createTestProps({});
+
+  const wrapper = shallow(<LoginScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const showMessage = 'aMessage'
+  sut.showAlert(showMessage)
+
+  expect(Alert.alert).toBeCalledTimes(1)
+  expect(Alert.alert).toBeCalledWith(showMessage)
+})
