@@ -9,6 +9,8 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
+import { IUser, User } from './UserStruct'
+
 var instance: FirebaseConnection | null = null;
 
 class FirebaseConnection {
@@ -62,8 +64,68 @@ class FirebaseConnection {
     })
   }
 
-  public fbTest() {
+  public saveUserDetails(user: IUser): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
 
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
+          name: user.userName,
+          location: user.userLocation,
+          contact: user.userContact,
+          interests: user.userInterests,
+        })
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+  }
+
+  public loadUserDetails(): Promise<IUser> {
+    // TODO TEST
+    return new Promise<IUser>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Users").doc(currentUser.uid).get()
+          .then((snap) => {
+
+            const data = snap.data()
+            if (data != null) {
+              const user = User.create(data.name, data.location, data.contact, data.interests)
+
+              resolve(user)
+            } else {
+              reject('An Error Occurred')
+            }
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+  }
+
+  public fbTest() {
+    // TODO - Get rid of this
     if (firebase.auth().currentUser != null) {
       const currentUser = firebase.auth().currentUser as firebase.User
       firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
@@ -78,16 +140,16 @@ class FirebaseConnection {
         .catch(function (error) {
           console.error("Error adding document: ", error);
         });
-    
 
-        firebase.firestore().collection("LHC-Users").get().then( (snap) => {
 
-          console.log("Document read:"+snap);
-        }, (rejectReason) => {
+      firebase.firestore().collection("LHC-Users").get().then((snap) => {
 
-          console.error("Error reading document: ", rejectReason);
-        })
-    
+        console.log("Document read:" + snap);
+      }, (rejectReason) => {
+
+        console.error("Error reading document: ", rejectReason);
+      })
+
     }
     //this.toggleLikeWithId('3333', null)
 
@@ -120,7 +182,7 @@ class FirebaseConnection {
         // TODO - Shift this out in to separate email verification
         /*
         if (this.isLoggedIn()) {
-
+  
           firebase.auth().currentUser.sendEmailVerification()
         }
         */

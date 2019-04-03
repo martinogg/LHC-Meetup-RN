@@ -1,4 +1,3 @@
-//import liraries
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 
@@ -99,5 +98,4 @@ const styles = StyleSheet.create({
 
 });
 
-//make this component available to the app
 export default LoginForm;

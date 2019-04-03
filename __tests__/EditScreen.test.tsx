@@ -1,9 +1,10 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import 'react-native';
-import { Button } from 'react-native'
+import { Alert, Button } from 'react-native'
+import { User, IUser } from '../src/Helpers/UserStruct'
 
-import {EditScreen} from '../src/Screens/Edit/EditScreen';
+import { EditScreen } from '../src/Screens/Edit/EditScreen';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
@@ -17,19 +18,259 @@ const createTestProps = (props: Object) => ({
   ...props
 });
 
-it('should display FeedbackScreen with no errors', () => {
+test('EditScreen constructor', () => {
 
   const props: any = createTestProps({})
+  const sut: any = new EditScreen(props)
+
+  expect(sut.state.userName).toBe('')
+  expect(sut.state.userLocation).toBe('')
+  expect(sut.state.userContact).toBe('')
+  expect(sut.state.userInterests).toBe('')
+})
+
+test('EditScreen didMount on load Success', async () => {
+
+  const testUser = User.create('name', 'loc', 'con', 'int')
+  const loadUserDetailsFunc = () => {
+
+    return new Promise<IUser>((resolve, reject) => {
+      resolve(testUser)
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: loadUserDetailsFunc,
+        isLoggedIn: () => { return true }
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = await wrapper.instance()
+
+  expect(sut.state.userName).toBe(testUser.userName)
+  expect(sut.state.userLocation).toBe(testUser.userLocation)
+  expect(sut.state.userContact).toBe(testUser.userContact)
+  expect(sut.state.userInterests).toBe(testUser.userInterests)
+
+})
+
+test('EditScreen didMount on load Fail', async () => {
+  
+  jest.resetAllMocks()
+
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
+
+  const errorResp = 'anError1'
+  const loadUserDetailsFunc = () => {
+
+    return new Promise<IUser>((resolve, reject) => {
+      reject(errorResp)
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: loadUserDetailsFunc,
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = await wrapper.instance()
+
+  expect(Alert.alert).toBeCalledTimes(1)
+  expect(Alert.alert).toBeCalledWith('error: ' + errorResp)
+
+})
+
+test('saveButton Func Success', async () => {
+
+  const testUser = User.create('name', 'loc', 'con', 'int')
+  const saveUserDetailsFunc = (user: IUser) => {
+
+    expect(user.userName).toBe(testUser.userName)
+
+    return new Promise((resolve, reject) => {
+      resolve()
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve(testUser)})},
+        saveUserDetails: saveUserDetailsFunc
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = await wrapper.instance()
+
+  await sut.saveButtonPressed()
+
+  expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+
+})
+
+test('saveButton Func FAIL', async () => {
+
+  jest.resetAllMocks()
+
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
+
+  const errorMsg = 'anErrora'
+  const testUser = User.create('name', 'loc', 'con', 'int')
+  const saveUserDetailsFunc = (user: IUser) => {
+
+    expect(user.userName).toBe(testUser.userName)
+
+    return new Promise((resolve, reject) => {
+      reject(errorMsg)
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve(testUser)})},
+        saveUserDetails: saveUserDetailsFunc
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = await wrapper.instance()
+
+  await sut.saveButtonPressed()
+
+  expect(Alert.alert).toBeCalledTimes(1)
+  expect(Alert.alert).toBeCalledWith('Save Error: ' + errorMsg)
+
+})
+
+test('EditScreen handleNameChange function', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const textChange = 'abcd'
+  sut.handleNameChange(textChange)
+
+  expect(sut.state.userName).toBe(textChange)  
+})
+
+test('EditScreen handleLocationChange function', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const textChange = 'abcd'
+  sut.handleLocationChange(textChange)
+
+  expect(sut.state.userLocation).toBe(textChange)  
+})
+
+test('EditScreen handleContactChange function', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const textChange = 'abcd'
+  sut.handleContactChange(textChange)
+
+  expect(sut.state.userContact).toBe(textChange)  
+})
+
+test('EditScreen handleInterestsChange function', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const textChange = 'abcd'
+  sut.handleInterestsChange(textChange)
+
+  expect(sut.state.userInterests).toBe(textChange)  
+})
+
+it('should display EditScreen with no errors', () => {
+
+  const props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
 
   expect(renderer.create(<EditScreen {...props}/>)).toMatchSnapshot();
 });
 
 test('test save button push', () => {
-        
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
 
-  const wrapper = shallow(<EditScreen navigation={navigation} />);
+  const props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
   const sut: any = wrapper.instance()
 
   sut.saveButtonPressed = jest.fn()
@@ -39,13 +280,18 @@ test('test save button push', () => {
   expect(sut.saveButtonPressed).toHaveBeenCalledTimes(1)
 });
 
-test('test cancel push', () => {
+test('test cancel push', async () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  const props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
 
-  const wrapper = shallow(<EditScreen navigation={navigation} />);
-  const sut: any = wrapper.instance()
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = await wrapper.instance()
 
   sut.cancelButtonPressed = jest.fn()
 
@@ -56,10 +302,15 @@ test('test cancel push', () => {
 
 test('test logout button push', () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  const props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+      }
+    }
+  });
 
-  const wrapper = shallow(<EditScreen navigation={navigation} />);
+  const wrapper = shallow(<EditScreen {...props} />);
   const sut: any = wrapper.instance()
 
   sut.logoutButtonPressed = jest.fn()
@@ -82,7 +333,8 @@ test('test logout function', async () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        logout: logoutFunc
+        logout: logoutFunc,
+        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})}
       }
     }
   });

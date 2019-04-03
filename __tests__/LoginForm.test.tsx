@@ -3,7 +3,7 @@ import React from 'react';
 import 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native'
 
-import LoginForm from '../src/Screens/Register/LoginForm';
+import LoginForm from '../src/Components/LoginForm/LoginForm';
 
 import renderer from 'react-test-renderer';
 
