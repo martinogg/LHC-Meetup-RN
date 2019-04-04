@@ -2,14 +2,8 @@ import React, { Component } from 'react';
 import { Alert, FlatList, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
-import { IUserFromFirebase, User } from '../../Helpers/UserStruct'
-
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-    android:
-        'Double tap R on your keyboard to reload,\n' +
-        'Shake or press menu button for dev menu',
-});
+import { IUserFromFirebase, User, IUser } from '../../Helpers/UserStruct'
+import BrowseUserEntry from '../../Components/BrowseUserEntry/BrowseUserEntry'
 
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
@@ -25,7 +19,7 @@ interface IState {
 export class BrowseScreen extends Component<IProps, IState> {
 
     constructor(props: IProps) {
-        // TODO TEST
+
         super(props);
         this.state = {
             users: []
@@ -33,9 +27,9 @@ export class BrowseScreen extends Component<IProps, IState> {
     }
 
     componentDidMount() {
-        // TODO TEST
+
         this.props.screenProps.firebaseConnection.searchOtherUsers().then((otherUsers) => {
-        
+
             this.setState({
                 users: otherUsers
             })
@@ -48,21 +42,25 @@ export class BrowseScreen extends Component<IProps, IState> {
     }
 
     public render() {
+        // TODO TEST
+
+        const loadingScreen = this.state.users.length == 0 ? <Text>Loading</Text> : null
         
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to React native!</Text>
-                <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-                <Text style={styles.instructions}>{instructions}</Text>
-                <View style={styles.container}>
-                    <FlatList
-                        data={this.state.users}
-                        keyExtractor={(item, index) => item.id}
-                        renderItem={({ item }) => <Text style={styles.item}>{item.user.userName}</Text>}
-                    />
-                </View>
+                {loadingScreen}
+                <FlatList
+                    data={this.state.users}
+                    keyExtractor={(item, index) => item.id}
+                    //renderItem={({ item }) => <Text style={styles.item}>{item.user.userName}</Text>}
+                    renderItem={({ item }) => <BrowseUserEntry user={item.user} onSelected={() => { this.onUserSelected(item) }} />}
+                />
             </View>
         );
+    }
+
+    public onUserSelected(user: IUserFromFirebase) {
+        // TODO Selected user.
     }
 }
 

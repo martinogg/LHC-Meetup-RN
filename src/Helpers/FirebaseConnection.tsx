@@ -51,7 +51,7 @@ class FirebaseConnection {
   }
 
   public logout(): Promise<void> {
-    // TODO TEST
+
     return new Promise((resolve, reject) => {
       firebase.auth().signOut().then(() => {
 
@@ -161,38 +161,6 @@ class FirebaseConnection {
         reject('User Not Logged in')
       }
     })
-  }
-
-  public fbTest() {
-    // TODO - Get rid of this
-    if (firebase.auth().currentUser != null) {
-      const currentUser = firebase.auth().currentUser as firebase.User
-      firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
-        first: "Ada",
-
-        last: "Lovelace",
-        born: 1815
-      })
-        .then(() => {
-          console.log("Document written");
-        })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
-        });
-
-
-      firebase.firestore().collection("LHC-Users").get().then((snap) => {
-
-        console.log("Document read:" + snap);
-      }, (rejectReason) => {
-
-        console.error("Error reading document: ", rejectReason);
-      })
-
-    }
-    //this.toggleLikeWithId('3333', null)
-
-    //firebase.firestore().collection("users").add()
   }
 
   public login(username: string, password: string): Promise<string> {

@@ -66,7 +66,7 @@ export class EditScreen extends Component<IProps, IState> {
     }
 
     cancelButtonPressed() {
-        // TODO cancel should go home, only if details were previously added
+
         this.props.navigation.dispatch(
             StackActions.reset({
                 index: 0,
@@ -85,11 +85,6 @@ export class EditScreen extends Component<IProps, IState> {
                 })
             )
         })
-    }
-
-    private fbTestButtonPressed() {
-        // TODO - Get rid of this
-        this.props.screenProps.firebaseConnection.fbTest()
     }
 
     public render() {
@@ -164,10 +159,6 @@ export class EditScreen extends Component<IProps, IState> {
                 <Button title="Logout"
                     onPress={() => this.logoutButtonPressed()}
                 />
-                <Button title="Write FB Data Test"
-                    onPress={() => this.fbTestButtonPressed()}
-                />
-
 
             </KeyboardAvoidingView>
         );

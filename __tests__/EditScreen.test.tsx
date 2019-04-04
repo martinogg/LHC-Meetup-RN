@@ -320,6 +320,17 @@ test('test logout button push', () => {
   expect(sut.logoutButtonPressed).toHaveBeenCalledTimes(1)
 });
 
+test('test cancelButtonPressed function', async () => {
+  let props: any;
+  props = createTestProps({})
+
+  const sut: any = new EditScreen(props)
+  await sut.cancelButtonPressed()
+
+  expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+})
+
 test('test logout function', async () => {
 
   const logoutFunc = (): Promise<string> => {
