@@ -5,6 +5,11 @@ export interface IUser {
     userInterests: string,
 }
 
+export interface IUserFromFirebase {
+    id: string,
+    user: IUser
+}
+
 export class User {
 
     public static create(name: string, location: string, contact: string, interests: string): IUser {

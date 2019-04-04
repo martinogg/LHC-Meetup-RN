@@ -9,7 +9,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
-import { IUser, User } from './UserStruct'
+import { IUser, User, IUserFromFirebase } from './UserStruct'
 
 var instance: FirebaseConnection | null = null;
 
@@ -91,6 +91,45 @@ class FirebaseConnection {
         reject('User Not Logged in')
       }
     })
+  }
+
+  public searchOtherUsers(): Promise<IUserFromFirebase[]> {
+    // TODO TEST
+    return new Promise<IUserFromFirebase[]>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Users").get()
+          .then((snap) => {
+
+            let ret: IUserFromFirebase[] = []
+
+            snap.forEach(userInList => {
+
+              const id = userInList.id
+              const data = userInList.data()
+              if (data != null && id != currentUser.uid) {
+                
+                const user = User.create(data.name, data.location, data.contact, data.interests)
+                ret.push({id: id, user: user})                
+              } 
+
+            });
+
+            resolve(ret)
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+
   }
 
   public loadUserDetails(): Promise<IUser> {

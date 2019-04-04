@@ -27,6 +27,9 @@ export class HomeScreen extends Component<Props> {
                 <Button title='Edit' 
                     onPress={() => navigate('EditDetails')}
                 />
+                <Button title='Browse' 
+                    onPress={() => navigate('Browse')}
+                />
             </View>
         );
     }
