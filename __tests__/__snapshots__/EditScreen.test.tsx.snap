@@ -1,50 +1,129 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should display FeedbackScreen with no errors 1`] = `
+exports[`should display EditScreen with no errors 1`] = `
 <View
+  onLayout={[Function]}
   style={
-    Object {
-      "alignItems": "center",
-      "backgroundColor": "#F5FCFF",
-      "flex": 1,
-      "justifyContent": "center",
-    }
+    Array [
+      Object {
+        "backgroundColor": "#2c3e50",
+        "flex": 1,
+      },
+      Object {
+        "paddingBottom": 0,
+      },
+    ]
   }
 >
-  <Text
+  <View
     style={
       Object {
-        "fontSize": 20,
-        "margin": 10,
-        "textAlign": "center",
+        "alignItems": "center",
+        "flexGrow": 1,
+        "justifyContent": "center",
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "padding": 20,
       }
     }
   >
-    Welcome to EDIT DETIALS!
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      autoCorrect={false}
+      keyboardType="default"
+      onChangeText={[Function]}
+      onSubmitEditing={[Function]}
+      placeholder="Name"
+      placeholderTextColor="rgba(225,225,225,0.7)"
+      rejectResponderTermination={true}
+      returnKeyType="next"
+      style={
+        Object {
+          "backgroundColor": "rgba(225,225,225,0.2)",
+          "color": "#fff",
+          "height": 40,
+          "marginBottom": 10,
+          "padding": 10,
+        }
       }
-    }
-  >
-    To get started, edit App.tsx
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
+      underlineColorAndroid="transparent"
+      value=""
+    />
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      autoCorrect={false}
+      keyboardType="default"
+      onChangeText={[Function]}
+      onSubmitEditing={[Function]}
+      placeholder="Location"
+      placeholderTextColor="rgba(225,225,225,0.7)"
+      rejectResponderTermination={true}
+      returnKeyType="next"
+      style={
+        Object {
+          "backgroundColor": "rgba(225,225,225,0.2)",
+          "color": "#fff",
+          "height": 40,
+          "marginBottom": 10,
+          "padding": 10,
+        }
       }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
-  </Text>
+      underlineColorAndroid="transparent"
+      value=""
+    />
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      autoCorrect={false}
+      keyboardType="default"
+      onChangeText={[Function]}
+      onSubmitEditing={[Function]}
+      placeholder="Contact: Skype or phone number"
+      placeholderTextColor="rgba(225,225,225,0.7)"
+      rejectResponderTermination={true}
+      returnKeyType="next"
+      style={
+        Object {
+          "backgroundColor": "rgba(225,225,225,0.2)",
+          "color": "#fff",
+          "height": 40,
+          "marginBottom": 10,
+          "padding": 10,
+        }
+      }
+      underlineColorAndroid="transparent"
+      value=""
+    />
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      autoCorrect={false}
+      keyboardType="default"
+      onChangeText={[Function]}
+      onSubmitEditing={[Function]}
+      placeholder="Interests"
+      placeholderTextColor="rgba(225,225,225,0.7)"
+      rejectResponderTermination={true}
+      returnKeyType="next"
+      style={
+        Object {
+          "backgroundColor": "rgba(225,225,225,0.2)",
+          "color": "#fff",
+          "height": 40,
+          "marginBottom": 10,
+          "padding": 10,
+        }
+      }
+      underlineColorAndroid="transparent"
+      value=""
+    />
+  </View>
   <View
     accessibilityRole="button"
     accessibilityStates={Array []}
@@ -162,46 +241,6 @@ Cmd+D or shake for dev menu
         }
       >
         Logout
-      </Text>
-    </View>
-  </View>
-  <View
-    accessibilityRole="button"
-    accessibilityStates={Array []}
-    accessible={true}
-    isTVSelectable={true}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Object {
-        "opacity": 1,
-      }
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {},
-        ]
-      }
-    >
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#007AFF",
-              "fontSize": 18,
-              "padding": 8,
-              "textAlign": "center",
-            },
-          ]
-        }
-      >
-        Write FB Data Test
       </Text>
     </View>
   </View>

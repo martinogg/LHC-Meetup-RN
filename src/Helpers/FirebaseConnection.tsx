@@ -9,6 +9,8 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
+import { IUser, User, IUserFromFirebase } from './UserStruct'
+
 var instance: FirebaseConnection | null = null;
 
 class FirebaseConnection {
@@ -49,7 +51,7 @@ class FirebaseConnection {
   }
 
   public logout(): Promise<void> {
-    // TODO TEST
+
     return new Promise((resolve, reject) => {
       firebase.auth().signOut().then(() => {
 
@@ -62,36 +64,103 @@ class FirebaseConnection {
     })
   }
 
-  public fbTest() {
+  public saveUserDetails(user: IUser): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
 
-    if (firebase.auth().currentUser != null) {
-      const currentUser = firebase.auth().currentUser as firebase.User
-      firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
-        first: "Ada",
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
 
-        last: "Lovelace",
-        born: 1815
-      })
-        .then(() => {
-          console.log("Document written");
+        firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
+          name: user.userName,
+          location: user.userLocation,
+          contact: user.userContact,
+          interests: user.userInterests,
         })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
-        });
-    
+          .then(() => {
 
-        firebase.firestore().collection("LHC-Users").get().then( (snap) => {
+            resolve()
+          })
+          .catch(function (error) {
 
-          console.log("Document read:"+snap);
-        }, (rejectReason) => {
+            reject(error)
+          });
 
-          console.error("Error reading document: ", rejectReason);
-        })
-    
-    }
-    //this.toggleLikeWithId('3333', null)
+      } else {
 
-    //firebase.firestore().collection("users").add()
+        reject('User Not Logged in')
+      }
+    })
+  }
+
+  public searchOtherUsers(): Promise<IUserFromFirebase[]> {
+    // TODO TEST
+    return new Promise<IUserFromFirebase[]>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Users").get()
+          .then((snap) => {
+
+            let ret: IUserFromFirebase[] = []
+
+            snap.forEach(userInList => {
+
+              const id = userInList.id
+              const data = userInList.data()
+              if (data != null && id != currentUser.uid) {
+                
+                const user = User.create(data.name, data.location, data.contact, data.interests)
+                ret.push({id: id, user: user})                
+              } 
+
+            });
+
+            resolve(ret)
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+
+  }
+
+  public loadUserDetails(): Promise<IUser> {
+    // TODO TEST
+    return new Promise<IUser>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Users").doc(currentUser.uid).get()
+          .then((snap) => {
+
+            const data = snap.data()
+            if (data != null) {
+              const user = User.create(data.name, data.location, data.contact, data.interests)
+
+              resolve(user)
+            } else {
+              reject('An Error Occurred')
+            }
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
   }
 
   public login(username: string, password: string): Promise<string> {
@@ -120,7 +189,7 @@ class FirebaseConnection {
         // TODO - Shift this out in to separate email verification
         /*
         if (this.isLoggedIn()) {
-
+  
           firebase.auth().currentUser.sendEmailVerification()
         }
         */

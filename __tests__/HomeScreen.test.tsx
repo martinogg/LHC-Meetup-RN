@@ -39,3 +39,16 @@ test('test onPress About functionality', () => {
     expect(navigateFunc).toHaveBeenCalledTimes(1)
     expect(navigateFunc).toHaveBeenCalledWith('EditDetails')
   });
+
+  test('test onPress Browse functionality', () => {
+
+    const navigateFunc = jest.fn()
+    const navigation = { navigate: navigateFunc };
+  
+    const wrapper = shallow(<HomeScreen navigation={navigation} />);
+  
+    wrapper.find(Button).at(2).simulate('press')
+  
+    expect(navigateFunc).toHaveBeenCalledTimes(1)
+    expect(navigateFunc).toHaveBeenCalledWith('Browse')
+  });

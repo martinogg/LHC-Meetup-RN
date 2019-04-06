@@ -11,39 +11,147 @@ exports[`should display BrowseScreen with no errors 1`] = `
     }
   }
 >
-  <Text
-    style={
-      Object {
-        "fontSize": 20,
-        "margin": 10,
-        "textAlign": "center",
-      }
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "id": "1",
+          "user": Object {
+            "userContact": "c",
+            "userInterests": "d",
+            "userLocation": "b",
+            "userName": "a",
+          },
+        },
+        Object {
+          "id": "2",
+          "user": Object {
+            "userContact": "g",
+            "userInterests": "h",
+            "userLocation": "f",
+            "userName": "e",
+          },
+        },
+      ]
     }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
   >
-    Welcome to React native!
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    To get started, edit App.tsx
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
-  </Text>
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#F55C5F",
+              "flex": 1,
+              "justifyContent": "center",
+              "margin": 5,
+              "opacity": 1,
+              "padding": 5,
+            }
+          }
+        >
+          <Text>
+            Name: 
+            a
+          </Text>
+          <Text>
+            Location: 
+            b
+          </Text>
+          <Text>
+            Contact: 
+            c
+          </Text>
+          <Text>
+            Interests: 
+            d
+          </Text>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#F55C5F",
+              "flex": 1,
+              "justifyContent": "center",
+              "margin": 5,
+              "opacity": 1,
+              "padding": 5,
+            }
+          }
+        >
+          <Text>
+            Name: 
+            e
+          </Text>
+          <Text>
+            Location: 
+            f
+          </Text>
+          <Text>
+            Contact: 
+            g
+          </Text>
+          <Text>
+            Interests: 
+            h
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "height": 0,
+          }
+        }
+      />
+    </View>
+  </RCTScrollView>
 </View>
 `;

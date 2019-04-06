@@ -3,7 +3,7 @@ import { Alert, Button, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 
 import { Image, KeyboardAvoidingView } from 'react-native';
-import LoginForm from './LoginForm';
+import LoginForm from '../../Components/LoginForm/LoginForm';
 
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 
