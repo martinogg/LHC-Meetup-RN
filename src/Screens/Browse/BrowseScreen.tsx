@@ -4,7 +4,7 @@ import { NavigationActions, NavigationScreenProp, StackActions } from 'react-nav
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IUserFromFirebase, User, IUser } from '../../Helpers/UserStruct'
 import BrowseUserEntry from '../../Components/BrowseUserEntry/BrowseUserEntry'
-
+import { AppStyles } from '../../AppStyles'
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
     screenProps: {
@@ -47,7 +47,7 @@ export class BrowseScreen extends Component<IProps, IState> {
         const loadingScreen = this.state.users.length == 0 ? <Text>Loading</Text> : null
         
         return (
-            <View style={styles.container}>
+            <View style={AppStyles.container}>
                 {loadingScreen}
                 <FlatList
                     data={this.state.users}
@@ -65,12 +65,6 @@ export class BrowseScreen extends Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
     welcome: {
         fontSize: 20,
         textAlign: 'center',

@@ -4,10 +4,8 @@ exports[`should display BrowseScreen with no errors 1`] = `
 <View
   style={
     Object {
-      "alignItems": "center",
-      "backgroundColor": "#F5FCFF",
+      "backgroundColor": "#2c3e50",
       "flex": 1,
-      "justifyContent": "center",
     }
   }
 >

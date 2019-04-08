@@ -3,7 +3,7 @@ import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, TextInput, Text, Vi
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IUser, User } from '../../Helpers/UserStruct'
-
+import { AppStyles } from '../../AppStyles'
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
     screenProps: {
@@ -89,7 +89,7 @@ export class EditScreen extends Component<IProps, IState> {
 
     public render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
 
                 <View style={styles.loginContainer}>
 
@@ -193,10 +193,6 @@ export class EditScreen extends Component<IProps, IState> {
 const styles = StyleSheet.create({
     entriesContainer: {
         padding: 20
-    },
-    container: {
-        flex: 1,
-        backgroundColor: '#2c3e50',
     },
     loginContainer: {
         alignItems: 'center',

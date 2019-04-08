@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { Alert, Button, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native'
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 
+import { AppStyles } from '../../AppStyles'
+
 import LoginForm from '../../Components/LoginForm/LoginForm'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
-
 
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
@@ -17,7 +18,7 @@ export class LoginScreen extends Component<IProps> {
     public render() {
         //<Image resizeMode="contain" style={styles.logo} source={require('../../components/images/logo-dark-bg.png')} />
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
 
                 <View style={styles.loginContainer}>
 
@@ -83,10 +84,6 @@ export class LoginScreen extends Component<IProps> {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#2c3e50',
-    },
     loginContainer: {
         alignItems: 'center',
         flexGrow: 1,
