@@ -110,10 +110,10 @@ class FirebaseConnection {
               const id = userInList.id
               const data = userInList.data()
               if (data != null && id != currentUser.uid) {
-                
+
                 const user = User.create(data.name, data.location, data.contact, data.interests)
-                ret.push({id: id, user: user})                
-              } 
+                ret.push({ id: id, user: user })
+              }
 
             });
 
@@ -205,6 +205,22 @@ class FirebaseConnection {
     // TODO TEST
 
     return firebase.auth().currentUser != null
+  }
+
+  sendComment(comment: string) {
+    // TODO TEST
+
+    if (comment !== '') {
+
+      const date = (new Date).getTime().toString() + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+      if (firebase.auth().currentUser != null) {
+        
+        const currentUser = firebase.auth().currentUser as firebase.User
+        firebase.firestore().collection("LHC-Comments").doc(date).set({
+          'comment': comment
+        })
+      }
+    }
   }
 
   loginAnon() {

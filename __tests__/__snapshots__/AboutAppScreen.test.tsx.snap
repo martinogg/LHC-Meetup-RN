@@ -43,5 +43,26 @@ exports[`should display FeedbackScreen with no errors 1`] = `
     Press Cmd+R to reload,
 Cmd+D or shake for dev menu
   </Text>
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#2980b6",
+        "opacity": 1,
+        "paddingVertical": 15,
+      }
+    }
+  >
+    <Text>
+      Send Comment
+    </Text>
+  </View>
 </View>
 `;
