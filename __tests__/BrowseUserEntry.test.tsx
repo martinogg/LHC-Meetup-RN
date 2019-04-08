@@ -1,10 +1,10 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import 'react-native';
-import { Button, TouchableOpacity } from 'react-native'
+
 import { User, IUser } from '../src/Helpers/UserStruct'
 
-import { EditScreen } from '../src/Screens/Edit/EditScreen';
+import LHCButton from '../src/Components/LHCButton/LHCButton'
 
 import BrowseUserEntry from '../src/Components/BrowseUserEntry/BrowseUserEntry'
 
@@ -30,8 +30,7 @@ test('BrowseUserEntry responds to press', () => {
     const sut: any = wrapper.instance()
 
     sut.goToEditScreen = jest.fn()
-
-    wrapper.find(TouchableOpacity).first().simulate('press')
+    wrapper.find(LHCButton).first().simulate('selected')
 
     expect(callback).toHaveBeenCalledTimes(1)
 })

@@ -19,6 +19,7 @@ exports[`BrowseUserEntry matches snapshot 1`] = `
       "margin": 5,
       "opacity": 1,
       "padding": 5,
+      "paddingVertical": 15,
     }
   }
 >
@@ -60,6 +61,7 @@ exports[`BrowseUserEntry matches snapshot2 1`] = `
       "margin": 5,
       "opacity": 1,
       "padding": 5,
+      "paddingVertical": 15,
     }
   }
 >

@@ -42,7 +42,6 @@ export class BrowseScreen extends Component<IProps, IState> {
     }
 
     public render() {
-        // TODO TEST
 
         const loadingScreen = this.state.users.length == 0 ? <Text>Loading</Text> : null
         

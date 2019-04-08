@@ -78,6 +78,7 @@ exports[`should display BrowseScreen with no errors 1`] = `
               "margin": 5,
               "opacity": 1,
               "padding": 5,
+              "paddingVertical": 15,
             }
           }
         >
@@ -121,6 +122,7 @@ exports[`should display BrowseScreen with no errors 1`] = `
               "margin": 5,
               "opacity": 1,
               "padding": 5,
+              "paddingVertical": 15,
             }
           }
         >
