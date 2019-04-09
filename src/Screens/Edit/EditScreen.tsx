@@ -97,7 +97,7 @@ export class EditScreen extends Component<IProps, IState> {
                 </View>
 
                 <View style={styles.entriesContainer}>
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(name) => this.nameInput = name}
                         autoCapitalize="none"
                         onSubmitEditing={() => this.locationInput.focus()}
@@ -110,7 +110,7 @@ export class EditScreen extends Component<IProps, IState> {
                         onChangeText={(text) => this.handleNameChange(text)}
                     />
 
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(location) => this.locationInput = location}
                         autoCapitalize="none"
                         onSubmitEditing={() => this.contactInput.focus()}
@@ -123,7 +123,7 @@ export class EditScreen extends Component<IProps, IState> {
                         onChangeText={(text) => this.handleLocationChange(text)}
                     />
 
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(contact) => this.contactInput = contact}
                         autoCapitalize="none"
                         onSubmitEditing={() => this.interestsInput.focus()}
@@ -136,7 +136,7 @@ export class EditScreen extends Component<IProps, IState> {
                         onChangeText={(text) => this.handleContactChange(text)}
                     />
 
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(interests) => this.interestsInput = interests}
                         autoCapitalize="none"
                         onSubmitEditing={Keyboard.dismiss}
@@ -210,12 +210,5 @@ const styles = StyleSheet.create({
         width: 180,
         textAlign: 'center',
         opacity: 0.9
-    },
-    input: {
-        height: 40,
-        backgroundColor: 'rgba(225,225,225,0.2)',
-        marginBottom: 10,
-        padding: 10,
-        color: '#fff'
     }
 })

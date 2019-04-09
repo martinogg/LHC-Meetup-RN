@@ -8,5 +8,12 @@ export const AppStyles = {
     container: {
         flex: 1,
         backgroundColor: AppColours.background,
+    },
+    input: {
+        height: 40,
+        backgroundColor: 'rgba(225,225,225,0.2)',
+        marginBottom: 10,
+        padding: 10,
+        color: '#fff'
     }
 }
