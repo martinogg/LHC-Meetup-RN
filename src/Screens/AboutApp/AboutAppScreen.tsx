@@ -5,7 +5,7 @@ import { AppStyles } from '../../AppStyles'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import LHCButton from '../../Components/LHCButton/LHCButton'
 
-enum CommentMode {
+export enum CommentMode {
     ShowButton = 0,
     ShowTextEntry = 1,
     HideAll = 2
@@ -41,9 +41,8 @@ export class AboutAppScreen extends Component<IProps, IState> {
     }
 
     public render() {
-        // TODO TEST
+        
         const sendComment = this.commentComponent(this.state.showSendComment)
-
         return (
             <View style={AppStyles.container}>
                 <Text style={styles.welcome}>Welcome to About Screen native!</Text>
@@ -55,7 +54,7 @@ export class AboutAppScreen extends Component<IProps, IState> {
     }
 
     private commentComponent(commentMode: CommentMode) {
-        // TODO TEST
+        
         switch (+commentMode) {
             case CommentMode.ShowButton:
                 return <LHCButton onSelected={() => { this.showCommentField() }}>
@@ -84,19 +83,16 @@ export class AboutAppScreen extends Component<IProps, IState> {
 
     private handleCommentTextChange(text: string) {
 
-        // TODO TEST
         this.setState({ commentText: text })
     }
 
     private showCommentField() {
 
-        // TODO TEST
         this.setState({ showSendComment: CommentMode.ShowTextEntry })
     }
 
     private sendComment() {
 
-        //TODO TEST
         this.props.screenProps.firebaseConnection.sendComment(this.state.commentText)
         this.setState({ showSendComment: CommentMode.HideAll })
         Alert.alert('Thanks for your comment')

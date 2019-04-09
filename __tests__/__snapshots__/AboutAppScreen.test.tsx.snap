@@ -1,6 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should display FeedbackScreen with no errors 1`] = `
+exports[`send Comment button: 1 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 20,
+        "margin": 10,
+        "textAlign": "center",
+      }
+    }
+  >
+    Welcome to About Screen native!
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    To get started, edit App.tsx
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    Press Cmd+R to reload,
+Cmd+D or shake for dev menu
+  </Text>
+</View>
+`;
+
+exports[`send Comment button: 2 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 20,
+        "margin": 10,
+        "textAlign": "center",
+      }
+    }
+  >
+    Welcome to About Screen native!
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    To get started, edit App.tsx
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    Press Cmd+R to reload,
+Cmd+D or shake for dev menu
+  </Text>
+</View>
+`;
+
+exports[`should display AboutAppScreen with no errors 1`] = `
 <View
   style={
     Object {
@@ -61,8 +153,139 @@ Cmd+D or shake for dev menu
     }
   >
     <Text>
-      Send Comment
+      Send a Comment
     </Text>
+  </View>
+</View>
+`;
+
+exports[`showCommentField: 1 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 20,
+        "margin": 10,
+        "textAlign": "center",
+      }
+    }
+  >
+    Welcome to About Screen native!
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    To get started, edit App.tsx
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    Press Cmd+R to reload,
+Cmd+D or shake for dev menu
+  </Text>
+  <LHCButton
+    onSelected={[Function]}
+  >
+    <Text>
+      Send a Comment
+    </Text>
+  </LHCButton>
+</View>
+`;
+
+exports[`showCommentField: 2 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 20,
+        "margin": 10,
+        "textAlign": "center",
+      }
+    }
+  >
+    Welcome to About Screen native!
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    To get started, edit App.tsx
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#333333",
+        "marginBottom": 5,
+        "textAlign": "center",
+      }
+    }
+  >
+    Press Cmd+R to reload,
+Cmd+D or shake for dev menu
+  </Text>
+  <View>
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      autoCorrect={false}
+      keyboardType="default"
+      onChangeText={[Function]}
+      onSubmitEditing={[Function]}
+      placeholder="Comment"
+      placeholderTextColor="rgba(225,225,225,0.7)"
+      rejectResponderTermination={true}
+      returnKeyType="done"
+      style={
+        Object {
+          "backgroundColor": "rgba(225,225,225,0.2)",
+          "color": "#fff",
+          "height": 40,
+          "marginBottom": 10,
+          "padding": 10,
+        }
+      }
+      underlineColorAndroid="transparent"
+      value=""
+    />
+    <LHCButton
+      onSelected={[Function]}
+    >
+      <Text>
+        Send Comment!
+      </Text>
+    </LHCButton>
   </View>
 </View>
 `;
