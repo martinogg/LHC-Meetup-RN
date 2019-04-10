@@ -93,7 +93,7 @@ class FirebaseConnection {
     })
   }
 
-  public searchOtherUsers(): Promise<IUserFromFirebase[]> {
+  public searchOtherUsers(searchOtherUsers: string): Promise<IUserFromFirebase[]> {
     // TODO TEST
     return new Promise<IUserFromFirebase[]>((resolve, reject) => {
 
@@ -109,7 +109,10 @@ class FirebaseConnection {
 
               const id = userInList.id
               const data = userInList.data()
-              if (data != null && id != currentUser.uid) {
+              const matchesInterest: boolean = ((''+data.interests).toLowerCase()).includes(searchOtherUsers.toLowerCase())
+
+              if (data != null && id != currentUser.uid && matchesInterest) {
+                
 
                 const user = User.create(data.name, data.location, data.contact, data.interests)
                 ret.push({ id: id, user: user })

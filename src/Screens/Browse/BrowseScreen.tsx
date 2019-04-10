@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
-import { Alert, FlatList, Platform, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, Platform, StyleSheet, View } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
+import {
+    Container,
+    Header,
+    Button,
+    Icon,
+    Item,
+    Input,
+    Content,
+    Text
+} from "native-base";
+
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IUserFromFirebase, User, IUser } from '../../Helpers/UserStruct'
 import BrowseUserEntry from '../../Components/BrowseUserEntry/BrowseUserEntry'
@@ -14,6 +25,7 @@ interface IProps {
 
 interface IState {
     users: IUserFromFirebase[]
+    searchText: string
 }
 
 export class BrowseScreen extends Component<IProps, IState> {
@@ -22,13 +34,23 @@ export class BrowseScreen extends Component<IProps, IState> {
 
         super(props);
         this.state = {
-            users: []
+            users: [],
+            searchText: ''
         }
     }
 
     componentDidMount() {
 
-        this.props.screenProps.firebaseConnection.searchOtherUsers().then((otherUsers) => {
+    }
+
+    private onChangeSearchText(text: string) {
+        // TODO TEST 
+        this.setState({searchText: text})
+    }
+
+    private searchButtonPressed() {
+        // TODO TEST
+        this.props.screenProps.firebaseConnection.searchOtherUsers(this.state.searchText).then((otherUsers) => {
 
             this.setState({
                 users: otherUsers
@@ -44,17 +66,26 @@ export class BrowseScreen extends Component<IProps, IState> {
     public render() {
 
         const loadingScreen = this.state.users.length == 0 ? <Text>Loading</Text> : null
-        
+
         return (
-            <View style={AppStyles.container}>
-                {loadingScreen}
+            <Container>
+                <Header searchBar rounded>
+                    <Item>
+                        <Icon active name="search" />
+                        <Input placeholder="Search Interest"
+                            onChangeText={(text) => this.onChangeSearchText(text)} />
+                        <Icon active name="people" />
+                    </Item>
+                    <Button transparent onPress={() => { this.searchButtonPressed() }}>
+                        <Text>Search</Text>
+                    </Button>
+                </Header>
                 <FlatList
                     data={this.state.users}
                     keyExtractor={(item, index) => item.id}
-                    //renderItem={({ item }) => <Text style={styles.item}>{item.user.userName}</Text>}
                     renderItem={({ item }) => <BrowseUserEntry user={item.user} onSelected={() => { this.onUserSelected(item) }} />}
                 />
-            </View>
+            </Container>
         );
     }
 
