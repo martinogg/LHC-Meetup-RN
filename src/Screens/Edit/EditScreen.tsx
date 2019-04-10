@@ -51,12 +51,7 @@ export class EditScreen extends Component<IProps, IState> {
         
         this.props.screenProps.firebaseConnection.saveUserDetails(User.create(this.state.userName, this.state.userLocation, this.state.userContact, this.state.userInterests)).then( ()=> {
 
-            this.props.navigation.dispatch(
-                StackActions.reset({
-                    index: 0,
-                    actions: [NavigationActions.navigate({ routeName: 'Home' })]
-                })
-            )
+            this.props.navigation.pop()
         }, (error) => { 
 
             Alert.alert('Save Error: '+error)
@@ -67,12 +62,7 @@ export class EditScreen extends Component<IProps, IState> {
 
     cancelButtonPressed() {
 
-        this.props.navigation.dispatch(
-            StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'Home' })]
-            })
-        )
+        this.props.navigation.pop()
     }
 
     logoutButtonPressed() {

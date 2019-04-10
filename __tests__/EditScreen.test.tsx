@@ -13,7 +13,8 @@ const createTestProps = (props: Object) => ({
   navigation: {
     navigate: jest.fn(),
     replace: jest.fn(),
-    dispatch: jest.fn()
+    dispatch: jest.fn(),
+    pop: jest.fn()
   },
   ...props
 });
@@ -121,8 +122,7 @@ test('saveButton Func Success', async () => {
 
   await sut.saveButtonPressed()
 
-  expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+  expect(props.navigation.pop).toHaveBeenCalledTimes(1)
 
 })
 
@@ -327,8 +327,7 @@ test('test cancelButtonPressed function', async () => {
   const sut: any = new EditScreen(props)
   await sut.cancelButtonPressed()
 
-  expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({"actions": [{"routeName": "Home", "type": "Navigation/NAVIGATE"}], "index": 0, "key": null, "type": "Navigation/RESET"})
+  expect(props.navigation.pop).toHaveBeenCalledTimes(1)
 })
 
 test('test logout function', async () => {

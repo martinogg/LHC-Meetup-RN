@@ -48,10 +48,10 @@ test('test goToEditScreen function', () => {
 
   const wrapper = shallow(<RegisterScreen {...props} />);
   const sut: any = wrapper.instance()
-  sut.goToEditScreen()
+  sut.goToHomeScreen()
 
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "EditDetails", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" })
+  expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "Home", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" })
 });
 
 
@@ -89,12 +89,12 @@ test('test login function on pass', async () => {
     returnedAlertText = alertText
   }
 
-  sut.goToEditScreen = jest.fn()
+  sut.goToHomeScreen = jest.fn()
 
   await sut.register(username, password)
   expect(returnedAlertText).toBe('Registration OK!')
 
-  expect(sut.goToEditScreen).toHaveBeenCalledTimes(1)
+  expect(sut.goToHomeScreen).toHaveBeenCalledTimes(1)
 });
 
 test('test login function on fail', async () => {

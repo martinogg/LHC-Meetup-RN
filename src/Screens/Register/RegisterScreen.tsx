@@ -39,7 +39,7 @@ export class RegisterScreen extends Component<Props> {
             this.showAlert('Registration OK!');
             if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
 
-                this.goToEditScreen()
+                this.goToHomeScreen()
             }
         }, (fail) => {
 
@@ -52,12 +52,12 @@ export class RegisterScreen extends Component<Props> {
         Alert.alert(message);
     }
 
-    private goToEditScreen() {
+    private goToHomeScreen() {
 
         this.props.navigation.dispatch(
             StackActions.reset({
                 index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'EditDetails' })]
+                actions: [NavigationActions.navigate({ routeName: 'Home' })]
             })
         )
     }
