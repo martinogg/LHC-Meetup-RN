@@ -44,12 +44,12 @@ export class BrowseScreen extends Component<IProps, IState> {
     }
 
     private onChangeSearchText(text: string) {
-        // TODO TEST 
+
         this.setState({searchText: text})
     }
 
     private searchButtonPressed() {
-        // TODO TEST
+
         this.props.screenProps.firebaseConnection.searchOtherUsers(this.state.searchText).then((otherUsers) => {
 
             this.setState({
