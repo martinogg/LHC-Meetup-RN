@@ -45,7 +45,7 @@ export class BrowseScreen extends Component<IProps, IState> {
 
     private onChangeSearchText(text: string) {
 
-        this.setState({searchText: text})
+        this.setState({ searchText: text })
     }
 
     private searchButtonPressed() {
@@ -72,7 +72,7 @@ export class BrowseScreen extends Component<IProps, IState> {
                 <Header searchBar rounded>
                     <Item>
                         <Icon active name="search" />
-                        <Input placeholder="Search Interest"
+                        <Input onEndEditing={(text) => { this.searchButtonPressed() }} placeholder="Search Interest"
                             onChangeText={(text) => this.onChangeSearchText(text)} />
                         <Icon active name="people" />
                     </Item>

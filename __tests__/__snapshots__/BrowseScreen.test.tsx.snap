@@ -107,6 +107,7 @@ exports[`should display BrowseScreen with no errors 1`] = `
           allowFontScaling={true}
           editable={true}
           onChangeText={[Function]}
+          onEndEditing={[Function]}
           placeholder="Search Interest"
           placeholderTextColor="#575757"
           rejectResponderTermination={true}
