@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, StatusBar } from 'react-native';
 import LHCButton from '../LHCButton/LHCButton'
+import { AppStyles } from '../../AppStyles'
 
 interface IProps {
     onLoginCallback(username: string, password: string): void,
@@ -47,7 +48,7 @@ class LoginForm extends Component<IProps, IState> {
                 />
 
                 <LHCButton onSelected={() => this.loginButtonPress()}>
-                    <Text style={styles.buttonText}>{this.props.actionButtonText}</Text>
+                    <Text style={AppStyles.buttonText}>{this.props.actionButtonText}</Text>
                 </LHCButton>
             </View>
         );
@@ -82,11 +83,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 10,
         color: '#fff'
-    },
-    buttonText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: '700'
     },
     loginButton: {
         backgroundColor: '#2980b6',

@@ -6,37 +6,36 @@ import { AppStyles } from '../../AppStyles'
 
 import LoginForm from '../../Components/LoginForm/LoginForm'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
+import LHCButton from '../../Components/LHCButton/LHCButton'
 
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
-    screenProps: { 
+    screenProps: {
         firebaseConnection: FirebaseConnection
     }
 }
 
 export class LoginScreen extends Component<IProps> {
+
+    static navigationOptions = {
+        title: 'Lets Have Coffee',
+    };
+
     public render() {
         //<Image resizeMode="contain" style={styles.logo} source={require('../../components/images/logo-dark-bg.png')} />
         return (
             <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
 
                 <View style={styles.loginContainer}>
-
+                <Text style={[AppStyles.buttonText, {fontSize: 20}]}>Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests</Text>
 
                 </View>
                 <View style={styles.formContainer}>
                     <LoginForm onLoginCallback={(username, password) => this.login(username, password)} actionButtonText='LOGIN' />
                 </View>
-                <Button title="Register"
-                    onPress={() => this.props.navigation.navigate('Register')}
-                />
-                <Button title="Home Screen"
-                    onPress={() => this.goToHomeScreen()} 
-                />
-                <Button title="EditDetails Screen"
-                    onPress={() => this.goToEditScreen()} 
-                />
-
+                <LHCButton onSelected={() => { this.props.navigation.navigate('Register') }}>
+                    <Text style={AppStyles.buttonText}>CREATE NEW ACCOUNT</Text>
+                </LHCButton>
 
             </KeyboardAvoidingView>
         );
@@ -59,16 +58,6 @@ export class LoginScreen extends Component<IProps> {
     private showAlert(message: string) {
 
         Alert.alert(message);
-    }
-
-    private goToEditScreen() {
-
-        this.props.navigation.dispatch(
-            StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'EditDetails' })]
-            })
-        )
     }
 
     private goToHomeScreen() {

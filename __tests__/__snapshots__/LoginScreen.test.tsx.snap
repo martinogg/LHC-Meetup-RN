@@ -23,7 +23,24 @@ exports[`should display LoginScreen with no errors 1`] = `
         "justifyContent": "center",
       }
     }
-  />
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          },
+          Object {
+            "fontSize": 20,
+          },
+        ]
+      }
+    >
+      Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests
+    </Text>
+  </View>
   <View>
     <View
       style={
@@ -106,8 +123,6 @@ exports[`should display LoginScreen with no errors 1`] = `
     </View>
   </View>
   <View
-    accessibilityRole="button"
-    accessibilityStates={Array []}
     accessible={true}
     isTVSelectable={true}
     onResponderGrant={[Function]}
@@ -118,112 +133,23 @@ exports[`should display LoginScreen with no errors 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       Object {
+        "backgroundColor": "#2980b6",
         "opacity": 1,
+        "paddingVertical": 15,
       }
     }
   >
-    <View
+    <Text
       style={
-        Array [
-          Object {},
-        ]
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
       }
     >
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#007AFF",
-              "fontSize": 18,
-              "padding": 8,
-              "textAlign": "center",
-            },
-          ]
-        }
-      >
-        Register
-      </Text>
-    </View>
-  </View>
-  <View
-    accessibilityRole="button"
-    accessibilityStates={Array []}
-    accessible={true}
-    isTVSelectable={true}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Object {
-        "opacity": 1,
-      }
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {},
-        ]
-      }
-    >
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#007AFF",
-              "fontSize": 18,
-              "padding": 8,
-              "textAlign": "center",
-            },
-          ]
-        }
-      >
-        Home Screen
-      </Text>
-    </View>
-  </View>
-  <View
-    accessibilityRole="button"
-    accessibilityStates={Array []}
-    accessible={true}
-    isTVSelectable={true}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Object {
-        "opacity": 1,
-      }
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {},
-        ]
-      }
-    >
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#007AFF",
-              "fontSize": 18,
-              "padding": 8,
-              "textAlign": "center",
-            },
-          ]
-        }
-      >
-        EditDetails Screen
-      </Text>
-    </View>
+      CREATE NEW ACCOUNT
+    </Text>
   </View>
 </View>
 `;
