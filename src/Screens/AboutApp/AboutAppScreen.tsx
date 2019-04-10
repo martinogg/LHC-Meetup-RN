@@ -11,13 +11,6 @@ export enum CommentMode {
     HideAll = 2
 }
 
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-    android:
-        'Double tap R on your keyboard to reload,\n' +
-        'Shake or press menu button for dev menu',
-});
-
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
     screenProps: {
@@ -41,24 +34,24 @@ export class AboutAppScreen extends Component<IProps, IState> {
     }
 
     public render() {
-        
+
         const sendComment = this.commentComponent(this.state.showSendComment)
         return (
             <View style={AppStyles.container}>
-                <Text style={styles.welcome}>Welcome to About Screen native!</Text>
-                <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-                <Text style={styles.instructions}>{instructions}</Text>
+                
+                <Text style={AppStyles.buttonText}>Welcome to About Screen native!</Text>
+                <Text style={AppStyles.buttonText}>To get started, edit App.tsx</Text>
                 {sendComment}
             </View>
         );
     }
 
     private commentComponent(commentMode: CommentMode) {
-        
+
         switch (+commentMode) {
             case CommentMode.ShowButton:
                 return <LHCButton onSelected={() => { this.showCommentField() }}>
-                    <Text>Send a Comment</Text>
+                    <Text style={AppStyles.buttonText} >Send a Comment</Text>
                 </LHCButton>
             case CommentMode.ShowTextEntry:
                 return <View>
@@ -74,7 +67,7 @@ export class AboutAppScreen extends Component<IProps, IState> {
                         onChangeText={(text) => this.handleCommentTextChange(text)}
                     />
                     <LHCButton onSelected={() => { this.sendComment() }}>
-                        <Text>Send Comment!</Text>
+                        <Text style={AppStyles.buttonText}>Send Comment!</Text>
                     </LHCButton>
                 </View>
         }

@@ -12,8 +12,8 @@ exports[`send Comment button: 1 1`] = `
   <Text
     style={
       Object {
-        "fontSize": 20,
-        "margin": 10,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
@@ -23,25 +23,13 @@ exports[`send Comment button: 1 1`] = `
   <Text
     style={
       Object {
-        "color": "#333333",
-        "marginBottom": 5,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
   >
     To get started, edit App.tsx
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
   </Text>
 </View>
 `;
@@ -58,8 +46,8 @@ exports[`send Comment button: 2 1`] = `
   <Text
     style={
       Object {
-        "fontSize": 20,
-        "margin": 10,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
@@ -69,25 +57,13 @@ exports[`send Comment button: 2 1`] = `
   <Text
     style={
       Object {
-        "color": "#333333",
-        "marginBottom": 5,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
   >
     To get started, edit App.tsx
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
   </Text>
 </View>
 `;
@@ -104,8 +80,8 @@ exports[`should display AboutAppScreen with no errors 1`] = `
   <Text
     style={
       Object {
-        "fontSize": 20,
-        "margin": 10,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
@@ -115,25 +91,13 @@ exports[`should display AboutAppScreen with no errors 1`] = `
   <Text
     style={
       Object {
-        "color": "#333333",
-        "marginBottom": 5,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
   >
     To get started, edit App.tsx
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
   </Text>
   <View
     accessible={true}
@@ -152,7 +116,15 @@ Cmd+D or shake for dev menu
       }
     }
   >
-    <Text>
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
       Send a Comment
     </Text>
   </View>
@@ -171,8 +143,8 @@ exports[`showCommentField: 1 1`] = `
   <Text
     style={
       Object {
-        "fontSize": 20,
-        "margin": 10,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
@@ -182,30 +154,26 @@ exports[`showCommentField: 1 1`] = `
   <Text
     style={
       Object {
-        "color": "#333333",
-        "marginBottom": 5,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
   >
     To get started, edit App.tsx
   </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
-  </Text>
   <LHCButton
     onSelected={[Function]}
   >
-    <Text>
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
       Send a Comment
     </Text>
   </LHCButton>
@@ -224,8 +192,8 @@ exports[`showCommentField: 2 1`] = `
   <Text
     style={
       Object {
-        "fontSize": 20,
-        "margin": 10,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
@@ -235,25 +203,13 @@ exports[`showCommentField: 2 1`] = `
   <Text
     style={
       Object {
-        "color": "#333333",
-        "marginBottom": 5,
+        "color": "#fff",
+        "fontWeight": "700",
         "textAlign": "center",
       }
     }
   >
     To get started, edit App.tsx
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
   </Text>
   <View>
     <TextInput
@@ -282,7 +238,15 @@ Cmd+D or shake for dev menu
     <LHCButton
       onSelected={[Function]}
     >
-      <Text>
+      <Text
+        style={
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
+        }
+      >
         Send Comment!
       </Text>
     </LHCButton>

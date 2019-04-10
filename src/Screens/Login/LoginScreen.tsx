@@ -17,6 +17,15 @@ interface IProps {
 
 export class LoginScreen extends Component<IProps> {
 
+    componentDidMount() {
+        // TODO TEST
+        setTimeout(() => {
+            
+            this.proceedToLoginIfLoggedIn()
+        }, 500);
+        
+    }
+
     static navigationOptions = {
         title: 'Lets Have Coffee',
     };
@@ -27,7 +36,7 @@ export class LoginScreen extends Component<IProps> {
             <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
 
                 <View style={styles.loginContainer}>
-                <Text style={[AppStyles.buttonText, {fontSize: 20}]}>Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests</Text>
+                    <Text style={[AppStyles.buttonText, { fontSize: 20 }]}>Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests</Text>
 
                 </View>
                 <View style={styles.formContainer}>
@@ -41,14 +50,19 @@ export class LoginScreen extends Component<IProps> {
         );
     }
 
+    private proceedToLoginIfLoggedIn() {
+        // TODO TEST
+        if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
+
+            this.goToHomeScreen()
+        }
+    }
+
     private login(username: string, password: string) {
 
         this.props.screenProps.firebaseConnection.login(username, password).then(() => {
 
-            if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
-
-                this.goToHomeScreen()
-            }
+            this.proceedToLoginIfLoggedIn()
         }, (fail) => {
 
             this.showAlert('Login Fail. ' + fail);
