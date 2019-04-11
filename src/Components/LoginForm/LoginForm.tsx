@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, TextInput, StyleSheet, StatusBar } from 'react-native';
+import LHCButton from '../LHCButton/LHCButton'
+import { AppStyles } from '../../AppStyles'
 
 interface IProps {
     onLoginCallback(username: string, password: string): void,
@@ -20,7 +22,7 @@ class LoginForm extends Component<IProps, IState> {
             password: ''
         };
     }
-
+    
     public render() {
         return (
             <View style={styles.container}>
@@ -45,9 +47,9 @@ class LoginForm extends Component<IProps, IState> {
                     onChangeText={(text) => this.handlePasswordChange(text)}
                 />
 
-                <TouchableOpacity style={styles.buttonContainer} onPress={() => this.loginButtonPress()}>
-                    <Text style={styles.buttonText}>{this.props.actionButtonText}</Text>
-                </TouchableOpacity>
+                <LHCButton onSelected={() => this.loginButtonPress()}>
+                    <Text style={AppStyles.buttonText}>{this.props.actionButtonText}</Text>
+                </LHCButton>
             </View>
         );
     }
@@ -81,15 +83,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 10,
         color: '#fff'
-    },
-    buttonContainer: {
-        backgroundColor: '#2980b6',
-        paddingVertical: 15
-    },
-    buttonText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: '700'
     },
     loginButton: {
         backgroundColor: '#2980b6',

@@ -3,7 +3,7 @@ import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, TextInput, Text, Vi
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IUser, User } from '../../Helpers/UserStruct'
-
+import { AppStyles } from '../../AppStyles'
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
     screenProps: {
@@ -51,12 +51,7 @@ export class EditScreen extends Component<IProps, IState> {
         
         this.props.screenProps.firebaseConnection.saveUserDetails(User.create(this.state.userName, this.state.userLocation, this.state.userContact, this.state.userInterests)).then( ()=> {
 
-            this.props.navigation.dispatch(
-                StackActions.reset({
-                    index: 0,
-                    actions: [NavigationActions.navigate({ routeName: 'Home' })]
-                })
-            )
+            this.props.navigation.pop()
         }, (error) => { 
 
             Alert.alert('Save Error: '+error)
@@ -67,12 +62,7 @@ export class EditScreen extends Component<IProps, IState> {
 
     cancelButtonPressed() {
 
-        this.props.navigation.dispatch(
-            StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'Home' })]
-            })
-        )
+        this.props.navigation.pop()
     }
 
     logoutButtonPressed() {
@@ -89,7 +79,7 @@ export class EditScreen extends Component<IProps, IState> {
 
     public render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
 
                 <View style={styles.loginContainer}>
 
@@ -97,7 +87,7 @@ export class EditScreen extends Component<IProps, IState> {
                 </View>
 
                 <View style={styles.entriesContainer}>
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(name) => this.nameInput = name}
                         autoCapitalize="none"
                         onSubmitEditing={() => this.locationInput.focus()}
@@ -110,7 +100,7 @@ export class EditScreen extends Component<IProps, IState> {
                         onChangeText={(text) => this.handleNameChange(text)}
                     />
 
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(location) => this.locationInput = location}
                         autoCapitalize="none"
                         onSubmitEditing={() => this.contactInput.focus()}
@@ -123,7 +113,7 @@ export class EditScreen extends Component<IProps, IState> {
                         onChangeText={(text) => this.handleLocationChange(text)}
                     />
 
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(contact) => this.contactInput = contact}
                         autoCapitalize="none"
                         onSubmitEditing={() => this.interestsInput.focus()}
@@ -136,7 +126,7 @@ export class EditScreen extends Component<IProps, IState> {
                         onChangeText={(text) => this.handleContactChange(text)}
                     />
 
-                    <TextInput style={styles.input}
+                    <TextInput style={AppStyles.input}
                         ref={(interests) => this.interestsInput = interests}
                         autoCapitalize="none"
                         onSubmitEditing={Keyboard.dismiss}
@@ -194,10 +184,6 @@ const styles = StyleSheet.create({
     entriesContainer: {
         padding: 20
     },
-    container: {
-        flex: 1,
-        backgroundColor: '#2c3e50',
-    },
     loginContainer: {
         alignItems: 'center',
         flexGrow: 1,
@@ -214,12 +200,5 @@ const styles = StyleSheet.create({
         width: 180,
         textAlign: 'center',
         opacity: 0.9
-    },
-    input: {
-        height: 40,
-        backgroundColor: 'rgba(225,225,225,0.2)',
-        marginBottom: 10,
-        padding: 10,
-        color: '#fff'
     }
 })

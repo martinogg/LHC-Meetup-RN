@@ -1,5 +1,5 @@
 import React from 'react';
-import 'react-native';
+import { Alert } from 'react-native';
 
 import { IUser, User, IUserFromFirebase } from '../src/Helpers/UserStruct'
 import { BrowseScreen } from '../src/Screens/Browse/BrowseScreen';
@@ -54,14 +54,17 @@ test('BrowseScreen constructor', async () => {
 
   const sut: any = await new BrowseScreen(props)
 
-  expect(sut.state).toEqual({ "users": [] })
+  expect(sut.state).toEqual({ "users": [], searchText: '' })
 
 })
 
-test('BrowseScreen componentDidMount', async () => {
+test('BrowseScreen searchButtonPressed', async () => {
 
-  const searchOtherUsersFunc = () => {
+  const searchedString = 'aSearchQuery'
 
+  const searchOtherUsersFunc = (text: string) => {
+
+    expect(text).toBe(searchedString)
     return userlist()
   }
 
@@ -78,7 +81,10 @@ test('BrowseScreen componentDidMount', async () => {
   const wrapper = shallow(<BrowseScreen {...props} />);
   const sut: any = await wrapper.instance()
 
-  expect(sut.state).toEqual({ "users": [{ "id": "1", "user": { "userContact": "c", "userInterests": "d", "userLocation": "b", "userName": "a" } }, { "id": "2", "user": { "userContact": "g", "userInterests": "h", "userLocation": "f", "userName": "e" } }] })
+  sut.setState({ searchText: searchedString })
+  await sut.searchButtonPressed()
+
+  expect(sut.state).toEqual({ "searchText": "aSearchQuery", "users": [{ "id": "1", "user": { "userContact": "c", "userInterests": "d", "userLocation": "b", "userName": "a" } }, { "id": "2", "user": { "userContact": "g", "userInterests": "h", "userLocation": "f", "userName": "e" } }] })
 
 })
 
@@ -102,3 +108,56 @@ test('should display BrowseScreen with no errors', async () => {
   expect(await renderer.create(<BrowseScreen {...props} />)).toMatchSnapshot();
 })
 
+test('onChangeSearchText', () => {
+
+  const searchedString = 'aSearchQuery'
+
+  let props: any;
+  props = createTestProps({});
+
+  const wrapper = shallow(<BrowseScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  sut.onChangeSearchText(searchedString)
+
+  expect(sut.state.searchText).toEqual(searchedString)
+
+})
+
+test('BrowseScreen searchButtonPressed on Error', async () => {
+
+  jest.resetAllMocks()
+
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
+
+  const errorResp = 'anError'
+
+  const searchOtherUsersFunc = (text: string) => {
+
+    return new Promise<IUserFromFirebase[]>((resolve, reject) => {
+      reject(errorResp)
+    })
+  }
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        searchOtherUsers: searchOtherUsersFunc,
+        isLoggedIn: () => { return true }
+      }
+    }
+  });
+
+  const wrapper = shallow(<BrowseScreen {...props} />);
+  const sut: any = await wrapper.instance()
+
+  await sut.searchButtonPressed()
+
+  expect(Alert.alert).toBeCalledTimes(1)
+  expect(Alert.alert).toBeCalledWith('error: ' + errorResp)
+})

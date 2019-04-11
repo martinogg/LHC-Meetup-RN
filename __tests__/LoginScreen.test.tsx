@@ -2,10 +2,10 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 import 'react-native';
 import { Alert, Button } from 'react-native'
+import renderer from 'react-test-renderer';
 
 import { LoginScreen } from '../src/Screens/Login/LoginScreen';
-
-import renderer from 'react-test-renderer';
+import LHCButton from '../src/Components/LHCButton/LHCButton'
 
 const createTestProps = (props: Object) => ({
   navigation: {
@@ -30,41 +30,11 @@ test('test onPress Login functionality', () => {
   props = createTestProps({});
 
   const wrapper = shallow(<LoginScreen {...props} />);
-
-  wrapper.find(Button).first().simulate('press')
+  
+  wrapper.find(LHCButton).first().simulate('selected')
 
   expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
   expect(props.navigation.navigate).toHaveBeenCalledWith('Register')
-});
-
-test('test goToEditScreen()', () => {
-
-  let props: any;
-  props = createTestProps({});
-
-  const wrapper = shallow(<LoginScreen {...props} />);
-  const sut: any = wrapper.instance()
-
-  sut.goToEditScreen = jest.fn()
-
-  wrapper.find(Button).at(2).simulate('press')
-
-  expect(sut.goToEditScreen).toHaveBeenCalledTimes(1)
-});
-
-test('test pushHome()', () => {
-
-  let props: any;
-  props = createTestProps({});
-
-  const wrapper = shallow(<LoginScreen {...props} />);
-  const sut: any = wrapper.instance()
-
-  sut.goToHomeScreen = jest.fn()
-
-  wrapper.find(Button).at(1).simulate('press')
-
-  expect(sut.goToHomeScreen).toHaveBeenCalledTimes(1)
 });
 
 test('test goToHomeScreen function', () => {
@@ -92,19 +62,6 @@ test("test goToHomeScreen function", () => {
   sut.goToHomeScreen()
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
   expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "Home", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" });
-});
-
-test('test goToEditScreen function', () => {
-
-  let props: any;
-  props = createTestProps({});
-
-  const wrapper = shallow(<LoginScreen {...props} />);
-  const sut: any = wrapper.instance()
-  sut.goToEditScreen()
-
-  expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
-  expect(props.navigation.dispatch).toHaveBeenCalledWith({ "actions": [{ "routeName": "EditDetails", "type": "Navigation/NAVIGATE" }], "index": 0, "key": null, "type": "Navigation/RESET" })
 });
 
 test('test login function success', async () => {

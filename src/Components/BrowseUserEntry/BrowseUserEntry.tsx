@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { IUser } from '../../Helpers/UserStruct'
+
+import LHCButton from '../LHCButton/LHCButton'
 
 interface IProps {
     onSelected(): void,
@@ -16,16 +18,17 @@ export default class BrowseUserEntry extends Component<IProps> {
 
     render() {
 
-        return <TouchableOpacity style={styles.container} onPress={() => this.props.onSelected()}>
+        return <LHCButton styles={localStyles.container} onSelected={() => this.props.onSelected()}>
             <Text>Name: {this.props.user.userName}</Text>
             <Text>Location: {this.props.user.userLocation}</Text>
             <Text>Contact: {this.props.user.userContact}</Text>
             <Text>Interests: {this.props.user.userInterests}</Text>
-        </TouchableOpacity>
+        </LHCButton>
     }
 }
 
-const styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
+
     container: {
         margin: 5,
         padding: 5,
@@ -34,4 +37,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F55C5F'
     }
+    
 })

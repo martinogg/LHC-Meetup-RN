@@ -1,7 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 import 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native'
+import { TextInput } from 'react-native'
+
+import LHCButton from '../src/Components/LHCButton/LHCButton'
 
 import LoginForm from '../src/Components/LoginForm/LoginForm';
 
@@ -35,13 +37,13 @@ test('test onPress Button functionality', () => {
   sut.handleUsernameChange(testUsername)
   sut.handlePasswordChange(testPassword)
 
-  wrapper.find(TouchableOpacity).first().simulate('press')
+  wrapper.find(LHCButton).first().simulate('selected')
 
   expect(props.onLoginCallback).toHaveBeenCalledTimes(1)
   expect(props.onLoginCallback).toHaveBeenCalledWith(testUsername, testPassword)
 });
 
-test('test onPress Button functionality', () => {
+test('test onPress Button functionality2', () => {
 
   let props: any;
   props = createTestProps({});
@@ -55,7 +57,7 @@ test('test onPress Button functionality', () => {
   sut.handleUsernameChange(testUsername)
   sut.handlePasswordChange(testPassword)
 
-  wrapper.find(TouchableOpacity).first().simulate('press')
+  wrapper.find(LHCButton).first().simulate('selected')
 
   expect(props.onLoginCallback).toHaveBeenCalledTimes(1)
   expect(props.onLoginCallback).toHaveBeenCalledWith(testUsername, testPassword)

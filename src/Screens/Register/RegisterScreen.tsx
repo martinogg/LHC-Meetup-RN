@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Alert, Button, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
-
 import { Image, KeyboardAvoidingView } from 'react-native';
+
+import { AppStyles } from '../../AppStyles'
 import LoginForm from '../../Components/LoginForm/LoginForm';
-
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
-
 
 interface Props {
     navigation: NavigationScreenProp<any, any>,
@@ -19,7 +18,7 @@ export class RegisterScreen extends Component<Props> {
     public render() {
         //<Image resizeMode="contain" style={styles.logo} source={require('../../components/images/logo-dark-bg.png')} />
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
                 <View style={styles.loginContainer}>
 
                 </View>
@@ -40,7 +39,7 @@ export class RegisterScreen extends Component<Props> {
             this.showAlert('Registration OK!');
             if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
 
-                this.goToEditScreen()
+                this.goToHomeScreen()
             }
         }, (fail) => {
 
@@ -53,12 +52,12 @@ export class RegisterScreen extends Component<Props> {
         Alert.alert(message);
     }
 
-    private goToEditScreen() {
+    private goToHomeScreen() {
 
         this.props.navigation.dispatch(
             StackActions.reset({
                 index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'EditDetails' })]
+                actions: [NavigationActions.navigate({ routeName: 'Home' })]
             })
         )
     }
@@ -67,10 +66,6 @@ export class RegisterScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#2c3e50',
-    },
     loginContainer: {
         alignItems: 'center',
         flexGrow: 1,

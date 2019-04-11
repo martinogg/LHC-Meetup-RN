@@ -1,229 +1,165 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should display LoginScreen with no errors 1`] = `
-<View
-  onLayout={[Function]}
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
   style={
-    Array [
-      Object {
-        "backgroundColor": "#2c3e50",
-        "flex": 1,
-      },
-      Object {
-        "paddingBottom": 0,
-      },
-    ]
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
   }
 >
   <View
+    onLayout={[Function]}
     style={
-      Object {
-        "alignItems": "center",
-        "flexGrow": 1,
-        "justifyContent": "center",
-      }
+      Array [
+        Object {
+          "backgroundColor": "#2c3e50",
+          "flex": 1,
+        },
+        Object {
+          "paddingBottom": 0,
+        },
+      ]
     }
-  />
-  <View>
+  >
     <View
       style={
         Object {
-          "padding": 20,
+          "alignItems": "center",
+          "flexGrow": 1,
+          "justifyContent": "center",
         }
       }
     >
-      <TextInput
-        allowFontScaling={true}
-        autoCapitalize="none"
-        autoCorrect={false}
-        keyboardType="email-address"
-        onChangeText={[Function]}
-        onSubmitEditing={[Function]}
-        placeholder="Email"
-        placeholderTextColor="rgba(225,225,225,0.7)"
-        rejectResponderTermination={true}
-        returnKeyType="next"
+      <Text
         style={
-          Object {
-            "backgroundColor": "rgba(225,225,225,0.2)",
-            "color": "#fff",
-            "height": 40,
-            "marginBottom": 10,
-            "padding": 10,
-          }
-        }
-        underlineColorAndroid="transparent"
-      />
-      <TextInput
-        allowFontScaling={true}
-        onChangeText={[Function]}
-        onSubmitEditing={[Function]}
-        placeholder="Password"
-        placeholderTextColor="rgba(225,225,225,0.7)"
-        rejectResponderTermination={true}
-        returnKeyType="go"
-        secureTextEntry={true}
-        style={
-          Object {
-            "backgroundColor": "rgba(225,225,225,0.2)",
-            "color": "#fff",
-            "height": 40,
-            "marginBottom": 10,
-            "padding": 10,
-          }
-        }
-        underlineColorAndroid="transparent"
-      />
-      <View
-        accessible={true}
-        isTVSelectable={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "backgroundColor": "#2980b6",
-            "opacity": 1,
-            "paddingVertical": 15,
-          }
-        }
-      >
-        <Text
-          style={
+          Array [
             Object {
               "color": "#fff",
               "fontWeight": "700",
               "textAlign": "center",
+            },
+            Object {
+              "fontSize": 20,
+            },
+          ]
+        }
+      >
+        Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests
+      </Text>
+    </View>
+    <View>
+      <View
+        style={
+          Object {
+            "padding": 20,
+          }
+        }
+      >
+        <TextInput
+          allowFontScaling={true}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          onChangeText={[Function]}
+          onSubmitEditing={[Function]}
+          placeholder="Email"
+          placeholderTextColor="rgba(225,225,225,0.7)"
+          rejectResponderTermination={true}
+          returnKeyType="next"
+          style={
+            Object {
+              "backgroundColor": "rgba(225,225,225,0.2)",
+              "color": "#fff",
+              "height": 40,
+              "marginBottom": 10,
+              "padding": 10,
+            }
+          }
+          underlineColorAndroid="transparent"
+        />
+        <TextInput
+          allowFontScaling={true}
+          onChangeText={[Function]}
+          onSubmitEditing={[Function]}
+          placeholder="Password"
+          placeholderTextColor="rgba(225,225,225,0.7)"
+          rejectResponderTermination={true}
+          returnKeyType="go"
+          secureTextEntry={true}
+          style={
+            Object {
+              "backgroundColor": "rgba(225,225,225,0.2)",
+              "color": "#fff",
+              "height": 40,
+              "marginBottom": 10,
+              "padding": 10,
+            }
+          }
+          underlineColorAndroid="transparent"
+        />
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#2980b6",
+              "opacity": 1,
+              "paddingVertical": 15,
             }
           }
         >
-          LOGIN
-        </Text>
+          <Text
+            style={
+              Object {
+                "color": "#fff",
+                "fontWeight": "700",
+                "textAlign": "center",
+              }
+            }
+          >
+            LOGIN
+          </Text>
+        </View>
       </View>
     </View>
-  </View>
-  <View
-    accessibilityRole="button"
-    accessibilityStates={Array []}
-    accessible={true}
-    isTVSelectable={true}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Object {
-        "opacity": 1,
-      }
-    }
-  >
     <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        Array [
-          Object {},
-        ]
+        Object {
+          "backgroundColor": "#2980b6",
+          "opacity": 1,
+          "paddingVertical": 15,
+        }
       }
     >
       <Text
         style={
-          Array [
-            Object {
-              "color": "#007AFF",
-              "fontSize": 18,
-              "padding": 8,
-              "textAlign": "center",
-            },
-          ]
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
         }
       >
-        Register
+        CREATE NEW ACCOUNT
       </Text>
     </View>
   </View>
-  <View
-    accessibilityRole="button"
-    accessibilityStates={Array []}
-    accessible={true}
-    isTVSelectable={true}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Object {
-        "opacity": 1,
-      }
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {},
-        ]
-      }
-    >
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#007AFF",
-              "fontSize": 18,
-              "padding": 8,
-              "textAlign": "center",
-            },
-          ]
-        }
-      >
-        Home Screen
-      </Text>
-    </View>
-  </View>
-  <View
-    accessibilityRole="button"
-    accessibilityStates={Array []}
-    accessible={true}
-    isTVSelectable={true}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Object {
-        "opacity": 1,
-      }
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {},
-        ]
-      }
-    >
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#007AFF",
-              "fontSize": 18,
-              "padding": 8,
-              "textAlign": "center",
-            },
-          ]
-        }
-      >
-        EditDetails Screen
-      </Text>
-    </View>
-  </View>
-</View>
+</RCTSafeAreaView>
 `;
