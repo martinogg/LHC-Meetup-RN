@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, Button, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native'
+import { Alert, Button, KeyboardAvoidingView, Platform, StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 
 import { AppStyles } from '../../AppStyles'
@@ -20,10 +20,10 @@ export class LoginScreen extends Component<IProps> {
     componentDidMount() {
         // TODO TEST
         setTimeout(() => {
-            
+
             this.proceedToLoginIfLoggedIn()
         }, 500);
-        
+
     }
 
     static navigationOptions = {
@@ -33,20 +33,22 @@ export class LoginScreen extends Component<IProps> {
     public render() {
         //<Image resizeMode="contain" style={styles.logo} source={require('../../components/images/logo-dark-bg.png')} />
         return (
-            <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
+            <SafeAreaView style={AppStyles.container}>
+                <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
 
-                <View style={styles.loginContainer}>
-                    <Text style={[AppStyles.buttonText, { fontSize: 20 }]}>Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests</Text>
+                    <View style={styles.loginContainer}>
+                        <Text style={[AppStyles.buttonText, { fontSize: 20 }]}>Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests</Text>
 
-                </View>
-                <View style={styles.formContainer}>
-                    <LoginForm onLoginCallback={(username, password) => this.login(username, password)} actionButtonText='LOGIN' />
-                </View>
-                <LHCButton onSelected={() => { this.props.navigation.navigate('Register') }}>
-                    <Text style={AppStyles.buttonText}>CREATE NEW ACCOUNT</Text>
-                </LHCButton>
+                    </View>
+                    <View style={styles.formContainer}>
+                        <LoginForm onLoginCallback={(username, password) => this.login(username, password)} actionButtonText='LOGIN' />
+                    </View>
+                    <LHCButton onSelected={() => { this.props.navigation.navigate('Register') }}>
+                        <Text style={AppStyles.buttonText}>CREATE NEW ACCOUNT</Text>
+                    </LHCButton>
 
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 
