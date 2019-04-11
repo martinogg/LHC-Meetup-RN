@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import 'react-native';
-import { Button } from 'react-native'
+import LHCButton from '../src/Components/LHCButton/LHCButton'
 
 import { HomeScreen } from '../src/Screens/Home/HomeScreen';
 
@@ -21,7 +21,7 @@ test('test onPress About functionality', () => {
   
     const wrapper = shallow(<HomeScreen navigation={navigation} />);
   
-    wrapper.find(Button).first().simulate('press')
+    wrapper.find(LHCButton).at(2).simulate('selected')
   
     expect(navigateFunc).toHaveBeenCalledTimes(1)
     expect(navigateFunc).toHaveBeenCalledWith('AboutApp')
@@ -34,7 +34,7 @@ test('test onPress About functionality', () => {
   
     const wrapper = shallow(<HomeScreen navigation={navigation} />);
   
-    wrapper.find(Button).at(1).simulate('press')
+    wrapper.find(LHCButton).first().simulate('selected')
   
     expect(navigateFunc).toHaveBeenCalledTimes(1)
     expect(navigateFunc).toHaveBeenCalledWith('EditDetails')
@@ -47,7 +47,7 @@ test('test onPress About functionality', () => {
   
     const wrapper = shallow(<HomeScreen navigation={navigation} />);
   
-    wrapper.find(Button).at(2).simulate('press')
+    wrapper.find(LHCButton).at(1).simulate('selected')
   
     expect(navigateFunc).toHaveBeenCalledTimes(1)
     expect(navigateFunc).toHaveBeenCalledWith('Browse')

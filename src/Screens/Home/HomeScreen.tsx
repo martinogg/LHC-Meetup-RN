@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Platform, StyleSheet, Text, View } from 'react-native';
+import { Button, Platform, StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import LHCButton from '../../Components/LHCButton/LHCButton'
 import { AppStyles } from '../../AppStyles'
 
 const instructions = Platform.select({
@@ -18,20 +19,20 @@ export class HomeScreen extends Component<Props> {
     public render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={AppStyles.container}>
-                <Text style={styles.welcome}>Welcome to HOME!</Text>
+            <SafeAreaView style={AppStyles.container}>
+                <Text style={[styles.welcome, { flex: 1 }]}>Welcome to HOME!</Text>
                 <Text style={styles.instructions}>To get started, edit App.tsx</Text>
                 <Text style={styles.instructions}>{instructions}</Text>
-                <Button title='About' 
-                    onPress={() => navigate('AboutApp')}
-                />
-                <Button title='Edit' 
-                    onPress={() => navigate('EditDetails')}
-                />
-                <Button title='Browse' 
-                    onPress={() => navigate('Browse')}
-                />
-            </View>
+                <LHCButton onSelected={() => navigate('EditDetails')}>
+                    <Text style={AppStyles.buttonText} >Edit</Text>
+                </LHCButton>
+                <LHCButton onSelected={() => navigate('Browse')}>
+                    <Text style={AppStyles.buttonText} >Browse</Text>
+                </LHCButton>
+                <LHCButton onSelected={() => navigate('AboutApp')}>
+                    <Text style={AppStyles.buttonText}>About</Text>
+                </LHCButton>
+            </SafeAreaView >
         );
     }
 }

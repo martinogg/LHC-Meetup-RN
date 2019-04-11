@@ -112,6 +112,7 @@ exports[`should display LoginScreen with no errors 1`] = `
           style={
             Object {
               "backgroundColor": "#2980b6",
+              "margin": 10,
               "opacity": 1,
               "paddingVertical": 15,
             }
@@ -143,6 +144,7 @@ exports[`should display LoginScreen with no errors 1`] = `
       style={
         Object {
           "backgroundColor": "#2980b6",
+          "margin": 10,
           "opacity": 1,
           "paddingVertical": 15,
         }
