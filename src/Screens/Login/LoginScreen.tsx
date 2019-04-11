@@ -18,7 +18,7 @@ interface IProps {
 export class LoginScreen extends Component<IProps> {
 
     componentDidMount() {
-        // TODO TEST
+        // TODO TEST -- needs to wait a bit after app loads to let fb actually log in
         setTimeout(() => {
 
             this.proceedToLoginIfLoggedIn()

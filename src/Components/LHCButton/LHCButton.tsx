@@ -27,14 +27,4 @@ const localStyles = StyleSheet.create({
         backgroundColor: '#2980b6',
         paddingVertical: 15
     },
-    /*
-    container: {
-        margin: 5,
-        padding: 5,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F55C5F'
-    }
-    */
 })
