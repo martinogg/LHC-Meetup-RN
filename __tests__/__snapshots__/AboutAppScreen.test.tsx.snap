@@ -32,33 +32,52 @@ exports[`send Comment button: 1 1`] = `
           Object {
             "flex": 1,
           },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
         ]
       }
     >
-      Some more text
+      I’m working to improve this app and make it as useful as possible. Please leave a comment or get in touch!
     </Text>
     <Text
       style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
+        Array [
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
+        ]
       }
     >
-      Welcome to About Screen native!
+      This project is open source.
     </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
+    <LHCButton
+      onSelected={[Function]}
     >
-      To get started, edit App.tsx
-    </Text>
+      <Text
+        style={
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
+        }
+      >
+        See project in github
+      </Text>
+    </LHCButton>
   </KeyboardAvoidingView>
 </SafeAreaView>
 `;
@@ -95,33 +114,52 @@ exports[`send Comment button: 2 1`] = `
           Object {
             "flex": 1,
           },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
         ]
       }
     >
-      Some more text
+      I’m working to improve this app and make it as useful as possible. Please leave a comment or get in touch!
     </Text>
     <Text
       style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
+        Array [
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
+        ]
       }
     >
-      Welcome to About Screen native!
+      This project is open source.
     </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
+    <LHCButton
+      onSelected={[Function]}
     >
-      To get started, edit App.tsx
-    </Text>
+      <Text
+        style={
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
+        }
+      >
+        See project in github
+      </Text>
+    </LHCButton>
   </KeyboardAvoidingView>
 </SafeAreaView>
 `;
@@ -162,32 +200,15 @@ exports[`should display AboutAppScreen with no errors 1`] = `
           Object {
             "flex": 1,
           },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
         ]
       }
     >
-      Some more text
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
-    >
-      Welcome to About Screen native!
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
-    >
-      To get started, edit App.tsx
+      I’m working to improve this app and make it as useful as possible. Please leave a comment or get in touch!
     </Text>
     <View
       accessible={true}
@@ -217,6 +238,57 @@ exports[`should display AboutAppScreen with no errors 1`] = `
         }
       >
         Send a Comment
+      </Text>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      This project is open source.
+    </Text>
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#2980b6",
+          "margin": 10,
+          "opacity": 1,
+          "paddingVertical": 15,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
+        }
+      >
+        See project in github
       </Text>
     </View>
   </View>
@@ -255,32 +327,15 @@ exports[`showCommentField: 1 1`] = `
           Object {
             "flex": 1,
           },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
         ]
       }
     >
-      Some more text
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
-    >
-      Welcome to About Screen native!
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
-    >
-      To get started, edit App.tsx
+      I’m working to improve this app and make it as useful as possible. Please leave a comment or get in touch!
     </Text>
     <LHCButton
       onSelected={[Function]}
@@ -295,6 +350,42 @@ exports[`showCommentField: 1 1`] = `
         }
       >
         Send a Comment
+      </Text>
+    </LHCButton>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      This project is open source.
+    </Text>
+    <LHCButton
+      onSelected={[Function]}
+    >
+      <Text
+        style={
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
+        }
+      >
+        See project in github
       </Text>
     </LHCButton>
   </KeyboardAvoidingView>
@@ -333,32 +424,15 @@ exports[`showCommentField: 2 1`] = `
           Object {
             "flex": 1,
           },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
         ]
       }
     >
-      Some more text
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
-    >
-      Welcome to About Screen native!
-    </Text>
-    <Text
-      style={
-        Object {
-          "color": "#fff",
-          "fontWeight": "700",
-          "textAlign": "center",
-        }
-      }
-    >
-      To get started, edit App.tsx
+      I’m working to improve this app and make it as useful as possible. Please leave a comment or get in touch!
     </Text>
     <View>
       <TextInput
@@ -400,6 +474,42 @@ exports[`showCommentField: 2 1`] = `
         </Text>
       </LHCButton>
     </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      This project is open source.
+    </Text>
+    <LHCButton
+      onSelected={[Function]}
+    >
+      <Text
+        style={
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
+        }
+      >
+        See project in github
+      </Text>
+    </LHCButton>
   </KeyboardAvoidingView>
 </SafeAreaView>
 `;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 
 import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
@@ -56,7 +56,7 @@ test('send Comment button', () => {
 })
 
 test('showCommentField', () => {
-  
+
   const props: any = createTestProps({})
   const wrapper = shallow(<AboutAppScreen {...props} />)
   const sut: any = wrapper.instance()
@@ -67,7 +67,7 @@ test('showCommentField', () => {
 })
 
 test('handleCommentTextChange', () => {
-  
+
   const props: any = createTestProps({})
   const wrapper = shallow(<AboutAppScreen {...props} />)
   const sut: any = wrapper.instance()
@@ -75,4 +75,22 @@ test('handleCommentTextChange', () => {
   const testComment = 'aComment'
   sut.handleCommentTextChange(testComment)
   expect(sut.state.commentText).toBe(testComment)
+})
+
+test('linkToProject function', () => {
+
+  jest.clearAllMocks()
+  jest.mock('Linking', () => {
+    return {
+      openURL: jest.fn()
+    }
+  });
+
+  const props: any = createTestProps({})
+  const wrapper = shallow(<AboutAppScreen {...props} />)
+  const sut: any = wrapper.instance()
+
+  sut.linkToProject()
+  expect(Linking.openURL).toHaveBeenCalledTimes(1)
+  expect(Linking.openURL).toHaveBeenCalledWith('https://github.com/martinogg/LHC-Meetup')
 })

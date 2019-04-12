@@ -80,6 +80,8 @@ export class BrowseScreen extends Component<IProps, IState> {
                         <Text>Search</Text>
                     </Button>
                 </Header>
+                <Text>Search people by specified interest.</Text>
+                <Text>(search with no text to find everyone)</Text>
                 <FlatList
                     data={this.state.users}
                     keyExtractor={(item, index) => item.id}

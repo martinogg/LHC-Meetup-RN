@@ -81,13 +81,11 @@ export class EditScreen extends Component<IProps, IState> {
     public render() {
         return (
             <SafeAreaView style={AppStyles.container}>
-                <KeyboardAvoidingView behavior="padding" style={[{flex: 1}]}>
+                <KeyboardAvoidingView behavior="padding" style={[{ flex: 1 }]}>
 
-                    <View style={[styles.loginContainer, {flex: 1}]}>
-
-
+                    <View style={[styles.loginContainer, { flex: 1 }]}>
+                        <Text style={AppStyles.buttonText}>Add in your details so other people can find you</Text>
                     </View>
-
                     <View style={styles.entriesContainer}>
                         <TextInput style={AppStyles.input}
                             ref={(name) => this.nameInput = name}

@@ -38,7 +38,19 @@ exports[`should display EditScreen with no errors 1`] = `
           },
         ]
       }
-    />
+    >
+      <Text
+        style={
+          Object {
+            "color": "#fff",
+            "fontWeight": "700",
+            "textAlign": "center",
+          }
+        }
+      >
+        Add in your details so other people can find you
+      </Text>
+    </View>
     <View
       style={
         Object {

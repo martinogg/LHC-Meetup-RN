@@ -221,6 +221,30 @@ exports[`should display BrowseScreen with no errors 1`] = `
       </View>
     </View>
   </View>
+  <Text
+    style={
+      Object {
+        "color": "#000",
+        "fontFamily": "System",
+        "fontSize": 16,
+      }
+    }
+    uppercase={false}
+  >
+    Search people by specified interest.
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#000",
+        "fontFamily": "System",
+        "fontSize": 16,
+      }
+    }
+    uppercase={false}
+  >
+    (search with no text to find everyone)
+  </Text>
   <RCTScrollView
     data={Array []}
     disableVirtualization={false}

@@ -15,7 +15,7 @@ export class HomeScreen extends Component<Props> {
         const { navigate } = this.props.navigation;
         return (
             <SafeAreaView style={AppStyles.container}>
-                <Text style={[styles.welcome, { flex: 1 }]}>Welcome to HOME!</Text>
+                <Text style={[AppStyles.buttonText, { flex: 1 }]}>Hello! Create your profile to Begin, then Search for other people</Text>
                 <LHCButton onSelected={() => navigate('EditDetails')}>
                     <Text style={AppStyles.buttonText} >Enter Profile Details</Text>
                 </LHCButton>
@@ -29,16 +29,3 @@ export class HomeScreen extends Component<Props> {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});

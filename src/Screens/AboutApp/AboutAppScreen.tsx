@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Keyboard, Platform, StyleSheet, Text, View, Alert, TextInput, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import { Button, Keyboard, Platform, StyleSheet, Text, View, Alert, TextInput, SafeAreaView, KeyboardAvoidingView, Linking } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import { AppStyles } from '../../AppStyles'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
@@ -43,13 +43,20 @@ export class AboutAppScreen extends Component<IProps, IState> {
         return (
             <SafeAreaView style={AppStyles.container}>
                 <KeyboardAvoidingView behavior="padding" style={[{ flex: 1 }]}>
-                <Text style={[AppStyles.buttonText, {flex:1}]}>Some more text</Text>
-                    <Text style={AppStyles.buttonText}>Welcome to About Screen native!</Text>
-                    <Text style={AppStyles.buttonText}>To get started, edit App.tsx</Text>
+                    <Text style={[AppStyles.buttonText, { flex: 1 }, styles.welcome]}>I’m working to improve this app and make it as useful as possible. Please leave a comment or get in touch!</Text>
                     {sendComment}
+                    <Text style={[AppStyles.buttonText, { flex: 1 }, styles.welcome]}>This project is open source.</Text>
+                    <LHCButton onSelected={() => { this.linkToProject() }}>
+                        <Text style={AppStyles.buttonText}>See project in github</Text>
+                    </LHCButton>
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );
+    }
+
+    private linkToProject() {
+
+        Linking.openURL('https://github.com/martinogg/LHC-Meetup');
     }
 
     private commentComponent(commentMode: CommentMode) {
