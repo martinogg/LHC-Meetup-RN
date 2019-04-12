@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Keyboard, Platform, StyleSheet, Text, View, Alert, TextInput } from 'react-native';
+import { Button, Keyboard, Platform, StyleSheet, Text, View, Alert, TextInput, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import { AppStyles } from '../../AppStyles'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
@@ -37,12 +37,14 @@ export class AboutAppScreen extends Component<IProps, IState> {
 
         const sendComment = this.commentComponent(this.state.showSendComment)
         return (
-            <View style={AppStyles.container}>
-                
-                <Text style={AppStyles.buttonText}>Welcome to About Screen native!</Text>
-                <Text style={AppStyles.buttonText}>To get started, edit App.tsx</Text>
-                {sendComment}
-            </View>
+            <SafeAreaView style={AppStyles.container}>
+                <KeyboardAvoidingView behavior="padding" style={[{ flex: 1 }]}>
+                <Text style={[AppStyles.buttonText, {flex:1}]}>Some more text</Text>
+                    <Text style={AppStyles.buttonText}>Welcome to About Screen native!</Text>
+                    <Text style={AppStyles.buttonText}>To get started, edit App.tsx</Text>
+                    {sendComment}
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 
