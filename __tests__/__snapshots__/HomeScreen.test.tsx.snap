@@ -26,29 +26,6 @@ exports[`should display HomeScreen with no errors 1`] = `
   >
     Welcome to HOME!
   </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    To get started, edit App.tsx
-  </Text>
-  <Text
-    style={
-      Object {
-        "color": "#333333",
-        "marginBottom": 5,
-        "textAlign": "center",
-      }
-    }
-  >
-    Press Cmd+R to reload,
-Cmd+D or shake for dev menu
-  </Text>
   <View
     accessible={true}
     isTVSelectable={true}
@@ -76,7 +53,7 @@ Cmd+D or shake for dev menu
         }
       }
     >
-      Edit
+      Enter Profile Details
     </Text>
   </View>
   <View
@@ -106,7 +83,7 @@ Cmd+D or shake for dev menu
         }
       }
     >
-      Browse
+      Browse by Interest
     </Text>
   </View>
   <View
@@ -136,7 +113,7 @@ Cmd+D or shake for dev menu
         }
       }
     >
-      About
+      About this App
     </Text>
   </View>
 </RCTSafeAreaView>

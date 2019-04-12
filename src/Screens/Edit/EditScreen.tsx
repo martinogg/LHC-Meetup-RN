@@ -22,6 +22,10 @@ interface IState {
 
 export class EditScreen extends Component<IProps, IState> {
 
+    private static navigationOptions = {
+        title: 'Edit Profile',
+    };
+
     constructor(props: IProps) {
 
         super(props);

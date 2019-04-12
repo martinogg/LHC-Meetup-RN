@@ -30,6 +30,10 @@ interface IState {
 
 export class BrowseScreen extends Component<IProps, IState> {
 
+    private static navigationOptions = {
+        title: 'Search',
+    };
+
     constructor(props: IProps) {
 
         super(props);
@@ -37,10 +41,6 @@ export class BrowseScreen extends Component<IProps, IState> {
             users: [],
             searchText: ''
         }
-    }
-
-    componentDidMount() {
-
     }
 
     private onChangeSearchText(text: string) {

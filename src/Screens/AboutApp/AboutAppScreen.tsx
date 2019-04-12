@@ -25,6 +25,10 @@ interface IState {
 
 export class AboutAppScreen extends Component<IProps, IState> {
 
+    private static navigationOptions = {
+        title: 'Lets Have Coffee',
+    };
+
     constructor(props: IProps) {
         super(props)
         this.state = {

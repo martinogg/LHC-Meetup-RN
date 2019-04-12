@@ -22,7 +22,7 @@ export class LoginScreen extends Component<IProps> {
         setTimeout(() => {
 
             this.proceedToLoginIfLoggedIn()
-        }, 500);
+        }, 1000);
 
     }
 
