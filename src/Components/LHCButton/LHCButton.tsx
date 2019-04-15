@@ -24,6 +24,7 @@ export default class LHCButton extends Component<IProps> {
 
 const localStyles = StyleSheet.create({
     container: {
+        margin: 10,
         backgroundColor: '#2980b6',
         paddingVertical: 15
     },

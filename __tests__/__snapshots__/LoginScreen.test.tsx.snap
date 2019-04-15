@@ -47,7 +47,7 @@ exports[`should display LoginScreen with no errors 1`] = `
           ]
         }
       >
-        Lets Have Coffee aims to co-ordinate people so they can meet one-on-one in real life for informal discussions about their shared interests
+        Make new friends who share the same interests and hobbies. Meet in real life for a chat
       </Text>
     </View>
     <View>
@@ -112,6 +112,7 @@ exports[`should display LoginScreen with no errors 1`] = `
           style={
             Object {
               "backgroundColor": "#2980b6",
+              "margin": 10,
               "opacity": 1,
               "paddingVertical": 15,
             }
@@ -143,6 +144,7 @@ exports[`should display LoginScreen with no errors 1`] = `
       style={
         Object {
           "backgroundColor": "#2980b6",
+          "margin": 10,
           "opacity": 1,
           "paddingVertical": 15,
         }

@@ -20,14 +20,11 @@ export class RegisterScreen extends Component<Props> {
         return (
             <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
                 <View style={styles.loginContainer}>
-
+                    <Text style={AppStyles.buttonText}>Register to create your profile and then get started finding other people</Text>
                 </View>
                 <View style={styles.formContainer}>
                     <LoginForm onLoginCallback={(username, password) => this.register(username, password)} actionButtonText='REGISTER' />
                 </View>
-                <Button title="Edit Screen"
-                    onPress={() => this.goToEditScreen()}
-                />
             </KeyboardAvoidingView>
         );
     }

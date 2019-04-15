@@ -30,6 +30,10 @@ interface IState {
 
 export class BrowseScreen extends Component<IProps, IState> {
 
+    private static navigationOptions = {
+        title: 'Search',
+    };
+
     constructor(props: IProps) {
 
         super(props);
@@ -37,10 +41,6 @@ export class BrowseScreen extends Component<IProps, IState> {
             users: [],
             searchText: ''
         }
-    }
-
-    componentDidMount() {
-
     }
 
     private onChangeSearchText(text: string) {
@@ -80,6 +80,8 @@ export class BrowseScreen extends Component<IProps, IState> {
                         <Text>Search</Text>
                     </Button>
                 </Header>
+                <Text>Search people by specified interest.</Text>
+                <Text>(search with no text to find everyone)</Text>
                 <FlatList
                     data={this.state.users}
                     keyExtractor={(item, index) => item.id}

@@ -26,22 +26,7 @@ it('should display RegisterScreen with no errors', () => {
   expect(renderer.create(<RegisterScreen {...props} />)).toMatchSnapshot();
 });
 
-test('test Edit Button push', () => {
-
-  let props: any;
-  props = createTestProps({});
-
-  const wrapper = shallow(<RegisterScreen {...props} />);
-  const sut: any = wrapper.instance()
-
-  sut.goToEditScreen = jest.fn()
-
-  wrapper.find(Button).first().simulate('press')
-
-  expect(sut.goToEditScreen).toHaveBeenCalledTimes(1)
-});
-
-test('test goToEditScreen function', () => {
+test('test goToHomeScreen function', () => {
 
   let props: any;
   props = createTestProps({});

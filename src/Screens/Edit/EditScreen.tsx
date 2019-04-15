@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, TextInput, Text, View, Alert } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, TextInput, Text, View, Alert, SafeAreaView } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IUser, User } from '../../Helpers/UserStruct'
+import LHCButton from '../../Components/LHCButton/LHCButton'
 import { AppStyles } from '../../AppStyles'
+
 interface IProps {
     navigation: NavigationScreenProp<any, any>,
     screenProps: {
@@ -20,8 +22,12 @@ interface IState {
 
 export class EditScreen extends Component<IProps, IState> {
 
+    private static navigationOptions = {
+        title: 'Edit Profile',
+    };
+
     constructor(props: IProps) {
-        
+
         super(props);
         this.state = {
             userName: '',
@@ -48,21 +54,16 @@ export class EditScreen extends Component<IProps, IState> {
     }
 
     saveButtonPressed() {
-        
-        this.props.screenProps.firebaseConnection.saveUserDetails(User.create(this.state.userName, this.state.userLocation, this.state.userContact, this.state.userInterests)).then( ()=> {
+
+        this.props.screenProps.firebaseConnection.saveUserDetails(User.create(this.state.userName, this.state.userLocation, this.state.userContact, this.state.userInterests)).then(() => {
 
             this.props.navigation.pop()
-        }, (error) => { 
+        }, (error) => {
 
-            Alert.alert('Save Error: '+error)
+            Alert.alert('Save Error: ' + error)
         })
 
-        
-    }
 
-    cancelButtonPressed() {
-
-        this.props.navigation.pop()
     }
 
     logoutButtonPressed() {
@@ -79,78 +80,76 @@ export class EditScreen extends Component<IProps, IState> {
 
     public render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={AppStyles.container}>
+            <SafeAreaView style={AppStyles.container}>
+                <KeyboardAvoidingView behavior="padding" style={[{ flex: 1 }]}>
 
-                <View style={styles.loginContainer}>
+                    <View style={[styles.loginContainer, { flex: 1 }]}>
+                        <Text style={AppStyles.buttonText}>Add in your details so other people can find you</Text>
+                    </View>
+                    <View style={styles.entriesContainer}>
+                        <TextInput style={AppStyles.input}
+                            ref={(name) => this.nameInput = name}
+                            autoCapitalize="none"
+                            onSubmitEditing={() => this.locationInput.focus()}
+                            autoCorrect={false}
+                            keyboardType='default'
+                            returnKeyType="next"
+                            placeholder='Name'
+                            value={this.state.userName}
+                            placeholderTextColor='rgba(225,225,225,0.7)'
+                            onChangeText={(text) => this.handleNameChange(text)}
+                        />
 
+                        <TextInput style={AppStyles.input}
+                            ref={(location) => this.locationInput = location}
+                            autoCapitalize="none"
+                            onSubmitEditing={() => this.contactInput.focus()}
+                            autoCorrect={false}
+                            keyboardType='default'
+                            returnKeyType="next"
+                            placeholder='Location'
+                            value={this.state.userLocation}
+                            placeholderTextColor='rgba(225,225,225,0.7)'
+                            onChangeText={(text) => this.handleLocationChange(text)}
+                        />
 
-                </View>
+                        <TextInput style={AppStyles.input}
+                            ref={(contact) => this.contactInput = contact}
+                            autoCapitalize="none"
+                            onSubmitEditing={() => this.interestsInput.focus()}
+                            autoCorrect={false}
+                            keyboardType='default'
+                            returnKeyType="next"
+                            value={this.state.userContact}
+                            placeholder='Contact: Skype or phone number'
+                            placeholderTextColor='rgba(225,225,225,0.7)'
+                            onChangeText={(text) => this.handleContactChange(text)}
+                        />
 
-                <View style={styles.entriesContainer}>
-                    <TextInput style={AppStyles.input}
-                        ref={(name) => this.nameInput = name}
-                        autoCapitalize="none"
-                        onSubmitEditing={() => this.locationInput.focus()}
-                        autoCorrect={false}
-                        keyboardType='default'
-                        returnKeyType="next"
-                        placeholder='Name'
-                        value={this.state.userName}
-                        placeholderTextColor='rgba(225,225,225,0.7)'
-                        onChangeText={(text) => this.handleNameChange(text)}
-                    />
+                        <TextInput style={AppStyles.input}
+                            ref={(interests) => this.interestsInput = interests}
+                            autoCapitalize="none"
+                            onSubmitEditing={Keyboard.dismiss}
+                            autoCorrect={false}
+                            keyboardType='default'
+                            returnKeyType="next"
+                            placeholder='Interests'
+                            value={this.state.userInterests}
+                            placeholderTextColor='rgba(225,225,225,0.7)'
+                            onChangeText={(text) => this.handleInterestsChange(text)}
+                        />
+                    </View>
 
-                    <TextInput style={AppStyles.input}
-                        ref={(location) => this.locationInput = location}
-                        autoCapitalize="none"
-                        onSubmitEditing={() => this.contactInput.focus()}
-                        autoCorrect={false}
-                        keyboardType='default'
-                        returnKeyType="next"
-                        placeholder='Location'
-                        value={this.state.userLocation}
-                        placeholderTextColor='rgba(225,225,225,0.7)'
-                        onChangeText={(text) => this.handleLocationChange(text)}
-                    />
+                    <LHCButton onSelected={() => this.saveButtonPressed()}>
+                        <Text style={AppStyles.buttonText}>Save Changes</Text>
+                    </LHCButton>
 
-                    <TextInput style={AppStyles.input}
-                        ref={(contact) => this.contactInput = contact}
-                        autoCapitalize="none"
-                        onSubmitEditing={() => this.interestsInput.focus()}
-                        autoCorrect={false}
-                        keyboardType='default'
-                        returnKeyType="next"
-                        value={this.state.userContact}
-                        placeholder='Contact: Skype or phone number'
-                        placeholderTextColor='rgba(225,225,225,0.7)'
-                        onChangeText={(text) => this.handleContactChange(text)}
-                    />
+                    <LHCButton onSelected={() => this.logoutButtonPressed()}>
+                        <Text style={AppStyles.buttonText}>Logout</Text>
+                    </LHCButton>
 
-                    <TextInput style={AppStyles.input}
-                        ref={(interests) => this.interestsInput = interests}
-                        autoCapitalize="none"
-                        onSubmitEditing={Keyboard.dismiss}
-                        autoCorrect={false}
-                        keyboardType='default'
-                        returnKeyType="next"
-                        placeholder='Interests'
-                        value={this.state.userInterests}
-                        placeholderTextColor='rgba(225,225,225,0.7)'
-                        onChangeText={(text) => this.handleInterestsChange(text)}
-                    />
-                </View>
-
-                <Button title="Save"
-                    onPress={() => this.saveButtonPressed()}
-                />
-                <Button title="Cancel"
-                    onPress={() => this.cancelButtonPressed()}
-                />
-                <Button title="Logout"
-                    onPress={() => this.logoutButtonPressed()}
-                />
-
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 

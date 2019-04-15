@@ -1,9 +1,9 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import 'react-native';
-import { Alert, Button } from 'react-native'
+import { Alert } from 'react-native'
 import { User, IUser } from '../src/Helpers/UserStruct'
-
+import LHCButton from '../src/Components/LHCButton/LHCButton'
 import { EditScreen } from '../src/Screens/Edit/EditScreen';
 
 // Note: test renderer must be required after react-native.
@@ -275,29 +275,9 @@ test('test save button push', () => {
 
   sut.saveButtonPressed = jest.fn()
 
-  wrapper.find(Button).at(0).simulate('press')
+  wrapper.find(LHCButton).at(0).simulate('selected')
 
   expect(sut.saveButtonPressed).toHaveBeenCalledTimes(1)
-});
-
-test('test cancel push', async () => {
-
-  const props = createTestProps({
-    screenProps: {
-      firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
-      }
-    }
-  });
-
-  const wrapper = shallow(<EditScreen {...props} />);
-  const sut: any = await wrapper.instance()
-
-  sut.cancelButtonPressed = jest.fn()
-
-  wrapper.find(Button).at(1).simulate('press')
-
-  expect(sut.cancelButtonPressed).toHaveBeenCalledTimes(1)
 });
 
 test('test logout button push', () => {
@@ -315,20 +295,10 @@ test('test logout button push', () => {
 
   sut.logoutButtonPressed = jest.fn()
 
-  wrapper.find(Button).at(2).simulate('press')
+  wrapper.find(LHCButton).at(1).simulate('selected')
 
   expect(sut.logoutButtonPressed).toHaveBeenCalledTimes(1)
 });
-
-test('test cancelButtonPressed function', async () => {
-  let props: any;
-  props = createTestProps({})
-
-  const sut: any = new EditScreen(props)
-  await sut.cancelButtonPressed()
-
-  expect(props.navigation.pop).toHaveBeenCalledTimes(1)
-})
 
 test('test logout function', async () => {
 
