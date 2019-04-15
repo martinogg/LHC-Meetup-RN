@@ -252,7 +252,16 @@ exports[`should display BrowseScreen with no errors 1`] = `
           "id": "1",
           "user": Object {
             "userContact": "c",
-            "userInterests": "d",
+            "userInterests": Array [
+              Object {
+                "description": "e",
+                "title": "d",
+              },
+              Object {
+                "description": "g",
+                "title": "f",
+              },
+            ],
             "userLocation": "b",
             "userName": "a",
           },
@@ -261,7 +270,16 @@ exports[`should display BrowseScreen with no errors 1`] = `
           "id": "2",
           "user": Object {
             "userContact": "g",
-            "userInterests": "h",
+            "userInterests": Array [
+              Object {
+                "description": "i",
+                "title": "h",
+              },
+              Object {
+                "description": "k",
+                "title": "j",
+              },
+            ],
             "userLocation": "f",
             "userName": "e",
           },
@@ -332,7 +350,7 @@ exports[`should display BrowseScreen with no errors 1`] = `
           </Text>
           <Text>
             Interests: 
-            d
+            d, f, 
           </Text>
         </View>
       </View>
@@ -376,7 +394,7 @@ exports[`should display BrowseScreen with no errors 1`] = `
           </Text>
           <Text>
             Interests: 
-            h
+            h, j, 
           </Text>
         </View>
       </View>

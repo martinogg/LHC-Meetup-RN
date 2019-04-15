@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import 'react-native';
 
-import { User, IUser } from '../src/Helpers/UserStruct'
+import { User, IUser, UserInterest, IUserInterest } from '../src/Helpers/UserStruct'
 
 import LHCButton from '../src/Components/LHCButton/LHCButton'
 
@@ -12,19 +12,20 @@ import renderer from 'react-test-renderer';
 
 test('BrowseUserEntry matches snapshot', () => {
 
-    const user = User.create('a', 'b', 'c', 'd')
+    const interests: IUserInterest[] = [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')]
+    const user = User.create('a', 'b', 'c', interests)
     expect(renderer.create(<BrowseUserEntry user={user} onSelected={() => { }} />)).toMatchSnapshot();
 })
 
 test('BrowseUserEntry matches snapshot2', () => {
 
-    const user = User.create('e', 'f', 'g', 'h')
+    const user = User.create('e', 'f', 'g', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
     expect(renderer.create(<BrowseUserEntry user={user} onSelected={() => { }} />)).toMatchSnapshot();
 })
 
 test('BrowseUserEntry responds to press', () => {
 
-    const user = User.create('e', 'f', 'g', 'h')
+    const user = User.create('e', 'f', 'g', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
     const callback = jest.fn()
     const wrapper = shallow(<BrowseUserEntry user={user} onSelected={() => { callback() }} />);
     const sut: any = wrapper.instance()

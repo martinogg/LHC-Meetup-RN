@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Keyboard, KeyboardAvoidingView, StyleSheet, TextInput, Text, View, Alert, SafeAreaView } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, TextInput, Text, View, Alert, SafeAreaView, FlatList } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
-import { IUser, User } from '../../Helpers/UserStruct'
+import { IUser, User, IUserInterest, UserInterest } from '../../Helpers/UserStruct'
 import LHCButton from '../../Components/LHCButton/LHCButton'
 import { AppStyles } from '../../AppStyles'
 
@@ -17,7 +17,7 @@ interface IState {
     userName: string,
     userLocation: string,
     userContact: string,
-    userInterests: string,
+    userInterests: IUserInterest[],
 }
 
 export class EditScreen extends Component<IProps, IState> {
@@ -33,13 +33,15 @@ export class EditScreen extends Component<IProps, IState> {
             userName: '',
             userLocation: '',
             userContact: '',
-            userInterests: ''
+            userInterests: []
         };
     }
 
     componentDidMount() {
 
-        this.props.screenProps.firebaseConnection.loadUserDetails().then((user) => {
+        this.props.screenProps.firebaseConnection.loadUserDetails().then((snapshot) => {
+
+            const user: IUser = snapshot
 
             this.setState({
                 userName: user.userName,
@@ -78,66 +80,84 @@ export class EditScreen extends Component<IProps, IState> {
         })
     }
 
+    private interestButtons(interests: IUserInterest[]) {
+
+        let ret = []
+        interests.forEach((element) => {
+
+            const interest: IUserInterest = element
+
+            ret.push(<LHCButton onSelected={() => { }}>
+                <Text style={AppStyles.buttonText}>Hey look {interest.title}, a Button!</Text>
+                <Text style={AppStyles.buttonText}>Great.</Text>
+            </LHCButton>)
+        });
+
+        if (ret.length == 0) {
+
+            ret.push(<LHCButton onSelected={() => { }}>
+                <Text style={AppStyles.buttonText}>No Interests</Text>
+            </LHCButton>)
+        }
+
+        return ret
+    }
+
     public render() {
+
+        const editItems = [<TextInput style={AppStyles.input}
+            ref={(name) => this.nameInput = name}
+            autoCapitalize="none"
+            onSubmitEditing={() => this.locationInput.focus()}
+            autoCorrect={false}
+            keyboardType='default'
+            returnKeyType="next"
+            placeholder='Name'
+            value={this.state.userName}
+            placeholderTextColor='rgba(225,225,225,0.7)'
+            onChangeText={(text) => this.handleNameChange(text)}
+        />,
+
+        <TextInput style={AppStyles.input}
+            ref={(location) => this.locationInput = location}
+            autoCapitalize="none"
+            onSubmitEditing={() => this.contactInput.focus()}
+            autoCorrect={false}
+            keyboardType='default'
+            returnKeyType="next"
+            placeholder='Location'
+            value={this.state.userLocation}
+            placeholderTextColor='rgba(225,225,225,0.7)'
+            onChangeText={(text) => this.handleLocationChange(text)}
+        />,
+
+        <TextInput style={AppStyles.input}
+            ref={(contact) => this.contactInput = contact}
+            autoCapitalize="none"
+            onSubmitEditing={() => this.interestsInput.focus()}
+            autoCorrect={false}
+            keyboardType='default'
+            returnKeyType="next"
+            value={this.state.userContact}
+            placeholder='Contact: Skype or phone number'
+            placeholderTextColor='rgba(225,225,225,0.7)'
+            onChangeText={(text) => this.handleContactChange(text)}
+        />, ...this.interestButtons(this.state.userInterests)]
+
         return (
             <SafeAreaView style={AppStyles.container}>
                 <KeyboardAvoidingView behavior="padding" style={[{ flex: 1 }]}>
 
-                    <View style={[styles.loginContainer, { flex: 1 }]}>
+                    <View style={styles.loginContainer}>
                         <Text style={AppStyles.buttonText}>Add in your details so other people can find you</Text>
                     </View>
                     <View style={styles.entriesContainer}>
-                        <TextInput style={AppStyles.input}
-                            ref={(name) => this.nameInput = name}
-                            autoCapitalize="none"
-                            onSubmitEditing={() => this.locationInput.focus()}
-                            autoCorrect={false}
-                            keyboardType='default'
-                            returnKeyType="next"
-                            placeholder='Name'
-                            value={this.state.userName}
-                            placeholderTextColor='rgba(225,225,225,0.7)'
-                            onChangeText={(text) => this.handleNameChange(text)}
+                        <FlatList
+                            data={editItems}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item }) => item}
                         />
 
-                        <TextInput style={AppStyles.input}
-                            ref={(location) => this.locationInput = location}
-                            autoCapitalize="none"
-                            onSubmitEditing={() => this.contactInput.focus()}
-                            autoCorrect={false}
-                            keyboardType='default'
-                            returnKeyType="next"
-                            placeholder='Location'
-                            value={this.state.userLocation}
-                            placeholderTextColor='rgba(225,225,225,0.7)'
-                            onChangeText={(text) => this.handleLocationChange(text)}
-                        />
-
-                        <TextInput style={AppStyles.input}
-                            ref={(contact) => this.contactInput = contact}
-                            autoCapitalize="none"
-                            onSubmitEditing={() => this.interestsInput.focus()}
-                            autoCorrect={false}
-                            keyboardType='default'
-                            returnKeyType="next"
-                            value={this.state.userContact}
-                            placeholder='Contact: Skype or phone number'
-                            placeholderTextColor='rgba(225,225,225,0.7)'
-                            onChangeText={(text) => this.handleContactChange(text)}
-                        />
-
-                        <TextInput style={AppStyles.input}
-                            ref={(interests) => this.interestsInput = interests}
-                            autoCapitalize="none"
-                            onSubmitEditing={Keyboard.dismiss}
-                            autoCorrect={false}
-                            keyboardType='default'
-                            returnKeyType="next"
-                            placeholder='Interests'
-                            value={this.state.userInterests}
-                            placeholderTextColor='rgba(225,225,225,0.7)'
-                            onChangeText={(text) => this.handleInterestsChange(text)}
-                        />
                     </View>
 
                     <LHCButton onSelected={() => this.saveButtonPressed()}>
@@ -172,20 +192,15 @@ export class EditScreen extends Component<IProps, IState> {
 
         this.setState({ userContact: text })
     }
-
-    private handleInterestsChange(text: string) {
-
-        this.setState({ userInterests: text })
-    }
 }
 
 const styles = StyleSheet.create({
     entriesContainer: {
+        flex: 1,
         padding: 20
     },
     loginContainer: {
         alignItems: 'center',
-        flexGrow: 1,
         justifyContent: 'center'
     },
     logo: {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { IUser } from '../../Helpers/UserStruct'
+import { IUser, IUserInterest } from '../../Helpers/UserStruct'
 
 import LHCButton from '../LHCButton/LHCButton'
 
@@ -16,13 +16,25 @@ export default class BrowseUserEntry extends Component<IProps> {
         super(props);
     }
 
+    private getInterestsString(interests: IUserInterest[]): string {
+
+        let ret = ''
+        interests.forEach((interest) => {
+
+            ret = ret.concat(interest.title + ', ')
+        })
+
+        return ret
+    }
+
     render() {
 
+        const interests = this.getInterestsString(this.props.user.userInterests)
         return <LHCButton styles={localStyles.container} onSelected={() => this.props.onSelected()}>
             <Text>Name: {this.props.user.userName}</Text>
             <Text>Location: {this.props.user.userLocation}</Text>
             <Text>Contact: {this.props.user.userContact}</Text>
-            <Text>Interests: {this.props.user.userInterests}</Text>
+            <Text>Interests: {interests}</Text>
         </LHCButton>
     }
 }
@@ -37,5 +49,5 @@ const localStyles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F55C5F'
     }
-    
+
 })

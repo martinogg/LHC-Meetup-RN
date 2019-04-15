@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import 'react-native';
 import { Alert } from 'react-native'
-import { User, IUser } from '../src/Helpers/UserStruct'
+import { User, IUser, UserInterest } from '../src/Helpers/UserStruct'
 import LHCButton from '../src/Components/LHCButton/LHCButton'
 import { EditScreen } from '../src/Screens/Edit/EditScreen';
 
@@ -27,12 +27,12 @@ test('EditScreen constructor', () => {
   expect(sut.state.userName).toBe('')
   expect(sut.state.userLocation).toBe('')
   expect(sut.state.userContact).toBe('')
-  expect(sut.state.userInterests).toBe('')
+  expect(sut.state.userInterests).toEqual([])
 })
 
 test('EditScreen didMount on load Success', async () => {
 
-  const testUser = User.create('name', 'loc', 'con', 'int')
+  const testUser = User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
   const loadUserDetailsFunc = () => {
 
     return new Promise<IUser>((resolve, reject) => {
@@ -61,7 +61,7 @@ test('EditScreen didMount on load Success', async () => {
 })
 
 test('EditScreen didMount on load Fail', async () => {
-  
+
   jest.resetAllMocks()
 
   jest.mock('Alert', () => {
@@ -97,7 +97,7 @@ test('EditScreen didMount on load Fail', async () => {
 
 test('saveButton Func Success', async () => {
 
-  const testUser = User.create('name', 'loc', 'con', 'int')
+  const testUser = User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
   const saveUserDetailsFunc = (user: IUser) => {
 
     expect(user.userName).toBe(testUser.userName)
@@ -111,7 +111,7 @@ test('saveButton Func Success', async () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve(testUser)})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve(testUser) }) },
         saveUserDetails: saveUserDetailsFunc
       }
     }
@@ -137,7 +137,7 @@ test('saveButton Func FAIL', async () => {
   });
 
   const errorMsg = 'anErrora'
-  const testUser = User.create('name', 'loc', 'con', 'int')
+  const testUser = User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
   const saveUserDetailsFunc = (user: IUser) => {
 
     expect(user.userName).toBe(testUser.userName)
@@ -151,7 +151,7 @@ test('saveButton Func FAIL', async () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve(testUser)})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve(testUser) }) },
         saveUserDetails: saveUserDetailsFunc
       }
     }
@@ -173,7 +173,7 @@ test('EditScreen handleNameChange function', () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
   });
@@ -184,7 +184,7 @@ test('EditScreen handleNameChange function', () => {
   const textChange = 'abcd'
   sut.handleNameChange(textChange)
 
-  expect(sut.state.userName).toBe(textChange)  
+  expect(sut.state.userName).toBe(textChange)
 })
 
 test('EditScreen handleLocationChange function', () => {
@@ -193,7 +193,7 @@ test('EditScreen handleLocationChange function', () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
   });
@@ -204,7 +204,7 @@ test('EditScreen handleLocationChange function', () => {
   const textChange = 'abcd'
   sut.handleLocationChange(textChange)
 
-  expect(sut.state.userLocation).toBe(textChange)  
+  expect(sut.state.userLocation).toBe(textChange)
 })
 
 test('EditScreen handleContactChange function', () => {
@@ -213,7 +213,7 @@ test('EditScreen handleContactChange function', () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
   });
@@ -224,27 +224,7 @@ test('EditScreen handleContactChange function', () => {
   const textChange = 'abcd'
   sut.handleContactChange(textChange)
 
-  expect(sut.state.userContact).toBe(textChange)  
-})
-
-test('EditScreen handleInterestsChange function', () => {
-
-  let props: any;
-  props = createTestProps({
-    screenProps: {
-      firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
-      }
-    }
-  });
-
-  const wrapper = shallow(<EditScreen {...props} />);
-  const sut: any = wrapper.instance()
-
-  const textChange = 'abcd'
-  sut.handleInterestsChange(textChange)
-
-  expect(sut.state.userInterests).toBe(textChange)  
+  expect(sut.state.userContact).toBe(textChange)
 })
 
 it('should display EditScreen with no errors', () => {
@@ -252,12 +232,12 @@ it('should display EditScreen with no errors', () => {
   const props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
   });
 
-  expect(renderer.create(<EditScreen {...props}/>)).toMatchSnapshot();
+  expect(renderer.create(<EditScreen {...props} />)).toMatchSnapshot();
 });
 
 test('test save button push', () => {
@@ -265,7 +245,7 @@ test('test save button push', () => {
   const props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
   });
@@ -285,7 +265,7 @@ test('test logout button push', () => {
   const props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})},
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
   });
@@ -314,7 +294,7 @@ test('test logout function', async () => {
     screenProps: {
       firebaseConnection: {
         logout: logoutFunc,
-        loadUserDetails: () => {return new Promise((resolve)=>{resolve()})}
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
     }
   });

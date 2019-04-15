@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert } from 'react-native';
 
-import { IUser, User, IUserFromFirebase } from '../src/Helpers/UserStruct'
+import { IUser, User, IUserFromFirebase, UserInterest } from '../src/Helpers/UserStruct'
 import { BrowseScreen } from '../src/Screens/Browse/BrowseScreen';
 
 
@@ -25,11 +25,11 @@ const userlist = () => {
       [
         {
           id: '1', user:
-            User.create('a', 'b', 'c', 'd')
+            User.create('a', 'b', 'c', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
         },
         {
           id: '2', user:
-            User.create('e', 'f', 'g', 'h')
+            User.create('e', 'f', 'g', [UserInterest.create('h', 'i'), UserInterest.create('j', 'k')])
         },
       ])
   })
@@ -85,8 +85,7 @@ test('BrowseScreen searchButtonPressed', async () => {
   await sut.setState({ searchText: searchedString })
   await sut.searchButtonPressed()
 
-  expect(sut.state).toEqual({ "searchText": "aSearchQuery", "users": [{ "id": "1", "user": { "userContact": "c", "userInterests": "d", "userLocation": "b", "userName": "a" } }, { "id": "2", "user": { "userContact": "g", "userInterests": "h", "userLocation": "f", "userName": "e" } }] })
-
+  expect(sut.state).toEqual({ "searchText": "aSearchQuery", "users": [{ "id": "1", "user": { "userContact": "c", "userInterests": [{ "description": "e", "title": "d" }, { "description": "g", "title": "f" }], "userLocation": "b", "userName": "a" } }, { "id": "2", "user": { "userContact": "g", "userInterests": [{ "description": "i", "title": "h" }, { "description": "k", "title": "j" }], "userLocation": "f", "userName": "e" } }] })
 })
 
 test('should display BrowseScreen with no errors', async () => {
