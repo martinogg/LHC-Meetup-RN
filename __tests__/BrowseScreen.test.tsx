@@ -72,7 +72,7 @@ test('BrowseScreen searchButtonPressed', async () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        searchOtherUsers: searchOtherUsersFunc,
+        searchOtherUsers: () => { return userlist() },
         isLoggedIn: () => { return true }
       }
     }
@@ -81,7 +81,8 @@ test('BrowseScreen searchButtonPressed', async () => {
   const wrapper = shallow(<BrowseScreen {...props} />);
   const sut: any = await wrapper.instance()
 
-  sut.setState({ searchText: searchedString })
+  props.screenProps.firebaseConnection.searchOtherUsers = searchOtherUsersFunc
+  await sut.setState({ searchText: searchedString })
   await sut.searchButtonPressed()
 
   expect(sut.state).toEqual({ "searchText": "aSearchQuery", "users": [{ "id": "1", "user": { "userContact": "c", "userInterests": "d", "userLocation": "b", "userName": "a" } }, { "id": "2", "user": { "userContact": "g", "userInterests": "h", "userLocation": "f", "userName": "e" } }] })
@@ -113,7 +114,13 @@ test('onChangeSearchText', () => {
   const searchedString = 'aSearchQuery'
 
   let props: any;
-  props = createTestProps({});
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        searchOtherUsers: () => { return userlist() }
+      }
+    }
+  });
 
   const wrapper = shallow(<BrowseScreen {...props} />);
   const sut: any = wrapper.instance()
@@ -147,7 +154,7 @@ test('BrowseScreen searchButtonPressed on Error', async () => {
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        searchOtherUsers: searchOtherUsersFunc,
+        searchOtherUsers: () => { return userlist() },
         isLoggedIn: () => { return true }
       }
     }
@@ -156,6 +163,7 @@ test('BrowseScreen searchButtonPressed on Error', async () => {
   const wrapper = shallow(<BrowseScreen {...props} />);
   const sut: any = await wrapper.instance()
 
+  props.screenProps.firebaseConnection.searchOtherUsers = searchOtherUsersFunc
   await sut.searchButtonPressed()
 
   expect(Alert.alert).toBeCalledTimes(1)
