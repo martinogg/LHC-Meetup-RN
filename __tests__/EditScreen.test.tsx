@@ -305,3 +305,26 @@ test('test logout function', async () => {
   await sut.logoutButtonPressed()
   expect(props.navigation.dispatch).toHaveBeenCalledTimes(1)
 });
+
+test('addInterestButtonPressed function', async () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
+      }
+    }
+  });
+
+  const wrapper = shallow(<EditScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  expect(sut.state.userInterests).toEqual([])
+  expect(sut.render()).toMatchSnapshot();
+
+  await sut.addInterestButtonPressed()
+
+  expect(sut.state.userInterests).toEqual([{"description": "", "title": "Tap to Edit New Interest"}])
+  expect(sut.render()).toMatchSnapshot();
+})

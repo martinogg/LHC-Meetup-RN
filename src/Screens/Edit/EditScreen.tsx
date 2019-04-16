@@ -55,6 +55,14 @@ export class EditScreen extends Component<IProps, IState> {
         })
     }
 
+    addInterestButtonPressed() {
+
+        const currentInterests = this.state.userInterests
+        const newInterest = UserInterest.create('Tap to Edit New Interest', '')
+        const newInterests = [newInterest, ...currentInterests]
+        this.setState({ userInterests: newInterests })
+    }
+
     saveButtonPressed() {
 
         this.props.screenProps.firebaseConnection.saveUserDetails(User.create(this.state.userName, this.state.userLocation, this.state.userContact, this.state.userInterests)).then(() => {
@@ -88,8 +96,8 @@ export class EditScreen extends Component<IProps, IState> {
             const interest: IUserInterest = element
 
             ret.push(<LHCButton onSelected={() => { }}>
-                <Text style={AppStyles.buttonText}>Hey look {interest.title}, a Button!</Text>
-                <Text style={AppStyles.buttonText}>Great.</Text>
+                <Text style={AppStyles.buttonText}>Interest: {interest.title}</Text>
+                <Text style={AppStyles.buttonText}>{interest.description}</Text>
             </LHCButton>)
         });
 
@@ -106,7 +114,6 @@ export class EditScreen extends Component<IProps, IState> {
     public render() {
 
         const editItems = [<TextInput style={AppStyles.input}
-            ref={(name) => this.nameInput = name}
             autoCapitalize="none"
             onSubmitEditing={() => this.locationInput.focus()}
             autoCorrect={false}
@@ -134,7 +141,6 @@ export class EditScreen extends Component<IProps, IState> {
         <TextInput style={AppStyles.input}
             ref={(contact) => this.contactInput = contact}
             autoCapitalize="none"
-            onSubmitEditing={() => this.interestsInput.focus()}
             autoCorrect={false}
             keyboardType='default'
             returnKeyType="next"
@@ -142,41 +148,40 @@ export class EditScreen extends Component<IProps, IState> {
             placeholder='Contact: Skype or phone number'
             placeholderTextColor='rgba(225,225,225,0.7)'
             onChangeText={(text) => this.handleContactChange(text)}
-        />, ...this.interestButtons(this.state.userInterests)]
+        />, ...this.interestButtons(this.state.userInterests),
+        <LHCButton onSelected={() => this.addInterestButtonPressed()}>
+            <Text style={AppStyles.buttonText}>Add Interest</Text>
+        </LHCButton>]
 
         return (
             <SafeAreaView style={AppStyles.container}>
-                <KeyboardAvoidingView behavior="padding" style={[{ flex: 1 }]}>
 
-                    <View style={styles.loginContainer}>
-                        <Text style={AppStyles.buttonText}>Add in your details so other people can find you</Text>
-                    </View>
-                    <View style={styles.entriesContainer}>
-                        <FlatList
-                            data={editItems}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({ item }) => item}
-                        />
+                <View style={styles.loginContainer}>
+                    <Text style={AppStyles.buttonText}>Add in your details so other people can find you</Text>
+                </View>
+                <View style={styles.entriesContainer}>
+                    <FlatList
+                        data={editItems}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => item}
+                    />
 
-                    </View>
+                </View>
 
-                    <LHCButton onSelected={() => this.saveButtonPressed()}>
-                        <Text style={AppStyles.buttonText}>Save Changes</Text>
-                    </LHCButton>
+                <LHCButton onSelected={() => this.saveButtonPressed()}>
+                    <Text style={AppStyles.buttonText}>Save Changes</Text>
+                </LHCButton>
 
-                    <LHCButton onSelected={() => this.logoutButtonPressed()}>
-                        <Text style={AppStyles.buttonText}>Logout</Text>
-                    </LHCButton>
+                <LHCButton onSelected={() => this.logoutButtonPressed()}>
+                    <Text style={AppStyles.buttonText}>Logout</Text>
+                </LHCButton>
 
-                </KeyboardAvoidingView>
             </SafeAreaView>
         );
     }
 
-    private nameInput: any
     private locationInput: any
     private contactInput: any
-    private interestsInput: any
 
     private handleNameChange(text: string) {
 
