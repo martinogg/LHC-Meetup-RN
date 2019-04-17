@@ -307,7 +307,6 @@ exports[`addInterestButtonPressed function 2`] = `
                 }
               }
             >
-              Interest: 
               Tap to Edit New Interest
             </Text>
             <Text
@@ -384,6 +383,83 @@ exports[`addInterestButtonPressed function 2`] = `
     </Text>
   </LHCButton>
 </SafeAreaView>
+`;
+
+exports[`interestButtons function with interests 1`] = `
+Array [
+  <LHCButton
+    onSelected={[Function]}
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      Interest: a
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      b
+    </Text>
+  </LHCButton>,
+  <LHCButton
+    onSelected={[Function]}
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      Interest: c
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      d
+    </Text>
+  </LHCButton>,
+]
+`;
+
+exports[`interestButtons function with no interests 1`] = `
+Array [
+  <LHCButton
+    onSelected={[Function]}
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      No Interests
+    </Text>
+  </LHCButton>,
+]
 `;
 
 exports[`should display EditScreen with no errors 1`] = `

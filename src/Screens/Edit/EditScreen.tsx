@@ -58,7 +58,7 @@ export class EditScreen extends Component<IProps, IState> {
     addInterestButtonPressed() {
 
         const currentInterests = this.state.userInterests
-        const newInterest = UserInterest.create('Tap to Edit New Interest', '')
+        const newInterest = UserInterest.create('', '')
         const newInterests = [newInterest, ...currentInterests]
         this.setState({ userInterests: newInterests })
     }
@@ -72,8 +72,6 @@ export class EditScreen extends Component<IProps, IState> {
 
             Alert.alert('Save Error: ' + error)
         })
-
-
     }
 
     logoutButtonPressed() {
@@ -88,15 +86,33 @@ export class EditScreen extends Component<IProps, IState> {
         })
     }
 
+    private editInterest(interest: IUserInterest) {
+        
+        this.props.navigation.navigate('Interest', {
+            previousUserInterest: interest,
+            saveCallback: (newInterest: IUserInterest) => {
+
+                interest.title = newInterest.title
+                interest.description = newInterest.description
+                this.setState({})
+            },
+            removeCallback: () => {
+
+                const newInterests = this.state.userInterests.filter((interestElement) => { return interestElement != interest })
+                this.setState({userInterests: newInterests})
+            }
+        })
+    }
+
     private interestButtons(interests: IUserInterest[]) {
 
         let ret = []
         interests.forEach((element) => {
 
             const interest: IUserInterest = element
-
-            ret.push(<LHCButton onSelected={() => { }}>
-                <Text style={AppStyles.buttonText}>Interest: {interest.title}</Text>
+            const interestText = interest.title == '' ? 'Tap to Edit New Interest' : 'Interest: ' + interest.title
+            ret.push(<LHCButton onSelected={() => { this.editInterest(element) }}>
+                <Text style={AppStyles.buttonText}>{interestText}</Text>
                 <Text style={AppStyles.buttonText}>{interest.description}</Text>
             </LHCButton>)
         });

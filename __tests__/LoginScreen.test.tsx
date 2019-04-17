@@ -13,6 +13,11 @@ const createTestProps = (props: Object) => ({
     replace: jest.fn(),
     dispatch: jest.fn()
   },
+  screenProps: {
+    firebaseConnection: {
+      isLoggedIn: () => { return true }
+    }
+  },
   ...props
 });
 
@@ -30,7 +35,7 @@ test('test onPress Login functionality', () => {
   props = createTestProps({});
 
   const wrapper = shallow(<LoginScreen {...props} />);
-  
+
   wrapper.find(LHCButton).first().simulate('selected')
 
   expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
@@ -161,4 +166,30 @@ test('test showAlert', () => {
 
   expect(Alert.alert).toBeCalledTimes(1)
   expect(Alert.alert).toBeCalledWith(showMessage)
+})
+
+test('proceedToLoginIfLoggedIn function', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        isLoggedIn: () => { return true }
+      }
+    },
+    navigation: {
+      dispatch: () => { }
+    }
+  });
+
+  const wrapper = shallow(<LoginScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  sut.goToHomeScreen = jest.fn()
+  sut.proceedToLoginIfLoggedIn()
+
+  expect(sut.goToHomeScreen).toHaveBeenCalledTimes(1)
+
+
+
 })

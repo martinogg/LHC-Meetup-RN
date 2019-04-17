@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should display InterestScreen with no errors 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <TextInput
+    allowFontScaling={true}
+    autoCapitalize="none"
+    autoCorrect={false}
+    keyboardType="default"
+    onChangeText={[Function]}
+    onSubmitEditing={[Function]}
+    placeholder="Interest Title"
+    placeholderTextColor="rgba(225,225,225,0.7)"
+    rejectResponderTermination={true}
+    returnKeyType="next"
+    style={
+      Object {
+        "backgroundColor": "rgba(225,225,225,0.2)",
+        "color": "#fff",
+        "height": 40,
+        "marginBottom": 10,
+        "padding": 10,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCapitalize="none"
+    autoCorrect={false}
+    keyboardType="default"
+    onChangeText={[Function]}
+    placeholder="Description"
+    placeholderTextColor="rgba(225,225,225,0.7)"
+    rejectResponderTermination={true}
+    returnKeyType="done"
+    style={
+      Object {
+        "backgroundColor": "rgba(225,225,225,0.2)",
+        "color": "#fff",
+        "height": 40,
+        "marginBottom": 10,
+        "padding": 10,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#2980b6",
+        "margin": 10,
+        "opacity": 1,
+        "paddingVertical": 15,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      Save Changes
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#2980b6",
+        "margin": 10,
+        "opacity": 1,
+        "paddingVertical": 15,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      Remove interest
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;

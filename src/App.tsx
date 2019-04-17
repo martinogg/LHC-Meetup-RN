@@ -20,6 +20,7 @@ import { HomeScreen } from './Screens/Home/HomeScreen'
 import { LoginScreen } from './Screens/Login/LoginScreen'
 import { RegisterScreen } from './Screens/Register/RegisterScreen'
 import { BrowseScreen } from './Screens/Browse/BrowseScreen'
+import { InterestScreen } from './Screens/Interest/InterestScreen'
 import FirebaseConnection from './Helpers/FirebaseConnection'
 
 import AReducer from './Redux/Reducers/DummyReducer'
@@ -30,7 +31,8 @@ const MainNavigator = createStackNavigator({
   EditDetails: { screen: EditScreen },
   Home: { screen: HomeScreen },
   AboutApp: { screen: AboutAppScreen },
-  Browse: { screen: BrowseScreen }
+  Browse: { screen: BrowseScreen },
+  Interest: { screen: InterestScreen }
 },
   { initialRouteName: 'Login' });
 
