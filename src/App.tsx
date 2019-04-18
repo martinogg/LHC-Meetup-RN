@@ -15,7 +15,7 @@ import { Provider } from 'react-redux'
 import logger from 'redux-logger'
 
 import { AboutAppScreen } from './Screens/AboutApp/AboutAppScreen'
-import { EditScreen } from './Screens/Edit/EditScreen'
+import { ProfileScreen } from './Screens/Profile/ProfileScreen'
 import { HomeScreen } from './Screens/Home/HomeScreen'
 import { LoginScreen } from './Screens/Login/LoginScreen'
 import { RegisterScreen } from './Screens/Register/RegisterScreen'
@@ -28,7 +28,7 @@ import AReducer from './Redux/Reducers/DummyReducer'
 const MainNavigator = createStackNavigator({
   Login: { screen: LoginScreen },
   Register: { screen: RegisterScreen },
-  EditDetails: { screen: EditScreen },
+  Profile: { screen: ProfileScreen },
   Home: { screen: HomeScreen },
   AboutApp: { screen: AboutAppScreen },
   Browse: { screen: BrowseScreen },

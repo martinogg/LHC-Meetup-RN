@@ -16,7 +16,7 @@ export class HomeScreen extends Component<Props> {
         return (
             <SafeAreaView style={AppStyles.container}>
                 <Text style={[AppStyles.buttonText, { flex: 1 }]}>Hello! Create your profile to Begin, then Search for other people</Text>
-                <LHCButton onSelected={() => navigate('EditDetails')}>
+                <LHCButton onSelected={() => navigate('Profile', {editable: true})}>
                     <Text style={AppStyles.buttonText} >Enter Profile Details</Text>
                 </LHCButton>
                 <LHCButton onSelected={() => navigate('Browse')}>

@@ -4,26 +4,31 @@ import 'react-native';
 import { Alert } from 'react-native'
 import { User, IUser, UserInterest } from '../src/Helpers/UserStruct'
 import LHCButton from '../src/Components/LHCButton/LHCButton'
-import { EditScreen } from '../src/Screens/Edit/EditScreen';
+import { ProfileScreen } from '../src/Screens/Profile/ProfileScreen';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-const createTestProps = (props: Object) => ({
+const createTestProps = (props: Object, editable: boolean) => ({
   navigation: {
     navigate: jest.fn(),
     getParam: (param: string) => { return {} },
     replace: jest.fn(),
     dispatch: jest.fn(),
-    pop: jest.fn()
+    pop: jest.fn(),
+    state: {
+      params: {
+        editable: editable
+      }
+    }
   },
   ...props
 });
 
-test('EditScreen constructor', () => {
+test('ProfileScreen constructor', () => {
 
-  const props: any = createTestProps({})
-  const sut: any = new EditScreen(props)
+  const props: any = createTestProps({}, true)
+  const sut: any = new ProfileScreen(props)
 
   expect(sut.state.userName).toBe('')
   expect(sut.state.userLocation).toBe('')
@@ -31,7 +36,7 @@ test('EditScreen constructor', () => {
   expect(sut.state.userInterests).toEqual([])
 })
 
-test('EditScreen didMount on load Success', async () => {
+test('ProfileScreen didMount on load Success', async () => {
 
   const testUser = User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
   const loadUserDetailsFunc = () => {
@@ -49,9 +54,9 @@ test('EditScreen didMount on load Success', async () => {
         isLoggedIn: () => { return true }
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = await wrapper.instance()
 
   expect(sut.state.userName).toBe(testUser.userName)
@@ -61,7 +66,7 @@ test('EditScreen didMount on load Success', async () => {
 
 })
 
-test('EditScreen didMount on load Fail', async () => {
+test('ProfileScreen didMount on load Fail', async () => {
 
   jest.resetAllMocks()
 
@@ -86,9 +91,9 @@ test('EditScreen didMount on load Fail', async () => {
         loadUserDetails: loadUserDetailsFunc,
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = await wrapper.instance()
 
   expect(Alert.alert).toBeCalledTimes(1)
@@ -116,9 +121,9 @@ test('saveButton Func Success', async () => {
         saveUserDetails: saveUserDetailsFunc
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = await wrapper.instance()
 
   await sut.saveButtonPressed()
@@ -156,9 +161,9 @@ test('saveButton Func FAIL', async () => {
         saveUserDetails: saveUserDetailsFunc
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = await wrapper.instance()
 
   await sut.saveButtonPressed()
@@ -168,7 +173,7 @@ test('saveButton Func FAIL', async () => {
 
 })
 
-test('EditScreen handleNameChange function', () => {
+test('ProfileScreen handleNameChange function', () => {
 
   let props: any;
   props = createTestProps({
@@ -177,9 +182,9 @@ test('EditScreen handleNameChange function', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   const textChange = 'abcd'
@@ -188,7 +193,7 @@ test('EditScreen handleNameChange function', () => {
   expect(sut.state.userName).toBe(textChange)
 })
 
-test('EditScreen handleLocationChange function', () => {
+test('ProfileScreen handleLocationChange function', () => {
 
   let props: any;
   props = createTestProps({
@@ -197,9 +202,9 @@ test('EditScreen handleLocationChange function', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   const textChange = 'abcd'
@@ -208,7 +213,7 @@ test('EditScreen handleLocationChange function', () => {
   expect(sut.state.userLocation).toBe(textChange)
 })
 
-test('EditScreen handleContactChange function', () => {
+test('ProfileScreen handleContactChange function', () => {
 
   let props: any;
   props = createTestProps({
@@ -217,9 +222,9 @@ test('EditScreen handleContactChange function', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   const textChange = 'abcd'
@@ -228,7 +233,7 @@ test('EditScreen handleContactChange function', () => {
   expect(sut.state.userContact).toBe(textChange)
 })
 
-it('should display EditScreen with no errors', () => {
+it('should display ProfileScreen Editable with no errors', () => {
 
   const props = createTestProps({
     screenProps: {
@@ -238,10 +243,26 @@ it('should display EditScreen with no errors', () => {
         loadUserDetails: () => { return new Promise((resolve, reject) => { }) }
       }
     }
-  });
+  }, true);
 
-  expect(renderer.create(<EditScreen {...props} />)).toMatchSnapshot();
+  expect(renderer.create(<ProfileScreen {...props} />)).toMatchSnapshot();
 });
+
+it('should display ProfileScreen Non-Editable with no errors', () => {
+
+  const props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        searchOtherUsers: jest.fn(),
+        isLoggedIn: () => { return true },
+        loadUserDetails: () => { return new Promise((resolve, reject) => { }) }
+      }
+    }
+  }, false);
+
+  expect(renderer.create(<ProfileScreen {...props} />)).toMatchSnapshot();
+});
+
 
 test('test save button push', () => {
 
@@ -251,9 +272,9 @@ test('test save button push', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   sut.saveButtonPressed = jest.fn()
@@ -271,9 +292,9 @@ test('test logout button push', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) },
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   sut.logoutButtonPressed = jest.fn()
@@ -300,9 +321,9 @@ test('test logout function', async () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   await sut.logoutButtonPressed()
@@ -318,9 +339,9 @@ test('addInterestButtonPressed function', async () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   expect(sut.state.userInterests).toEqual([])
@@ -332,7 +353,7 @@ test('addInterestButtonPressed function', async () => {
   expect(sut.render()).toMatchSnapshot();
 })
 
-test('editInterest function', () => {
+test('editInterest Editable function', () => {
 
   let props: any;
   props = createTestProps({
@@ -341,9 +362,9 @@ test('editInterest function', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
   const mockInterest = UserInterest.create('a', 'b')
   sut.editInterest(mockInterest)
@@ -351,6 +372,37 @@ test('editInterest function', () => {
   expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
   expect(props.navigation.navigate).toBeCalledWith('Interest',
     expect.objectContaining({
+      "editable": true,
+      "previousUserInterest": {
+        "description": "b",
+        "title": "a",
+      },
+      "removeCallback": expect.any(Function),
+      "saveCallback": expect.any(Function),
+    })
+  )
+})
+
+test('editInterest Non-Editable function', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
+      }
+    }
+  }, false);
+
+  const wrapper = shallow(<ProfileScreen {...props} />);
+  const sut: any = wrapper.instance()
+  const mockInterest = UserInterest.create('a', 'b')
+  sut.editInterest(mockInterest)
+
+  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
+  expect(props.navigation.navigate).toBeCalledWith('Interest',
+    expect.objectContaining({
+      "editable": false,
       "previousUserInterest": {
         "description": "b",
         "title": "a",
@@ -371,16 +423,16 @@ test('editInterest saveCallback function', async () => {
       firebaseConnection: {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
-    },
-    navigation: {
-      navigate: (screenName: string, params: any) => {
-
-        sentParams = params
-      }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const newNavigation = {...props.navigation, navigate: (screenName: string, params: any) => {
+
+    sentParams = params
+  }}
+  props.navigation = newNavigation
+  
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
   const mockInterest = UserInterest.create('a', 'b')
   const mockInterestNew = UserInterest.create('c', 'd')
@@ -394,7 +446,7 @@ test('editInterest saveCallback function', async () => {
 
   expect(sut.setState).toHaveBeenCalledTimes(1)
   expect(sut.setState).toBeCalledWith({})
-  
+
 })
 
 test('editInterest removeCallback function', async () => {
@@ -407,22 +459,23 @@ test('editInterest removeCallback function', async () => {
       firebaseConnection: {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
-    },
-    navigation: {
-      navigate: (screenName: string, params: any) => {
-
-        sentParams = params
-      }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
-  const sut: any = wrapper.instance()
+  props.navigation = {...props.navigation,
+    navigate: (screenName: string, params: any) => {
+
+      sentParams = params
+    }
+  }
   
+  const wrapper = shallow(<ProfileScreen {...props} />);
+  const sut: any = wrapper.instance()
+
   const mockInterest1 = UserInterest.create('a', 'b')
   const mockInterest2 = UserInterest.create('c', 'd')
 
-  sut.setState({userInterests: [mockInterest1, mockInterest2]})
+  sut.setState({ userInterests: [mockInterest1, mockInterest2] })
 
   sut.setState = jest.fn()
 
@@ -431,11 +484,11 @@ test('editInterest removeCallback function', async () => {
   sentParams.removeCallback()
 
   expect(sut.setState).toHaveBeenCalledTimes(1)
-  expect(sut.setState).toBeCalledWith({userInterests: [mockInterest2]})
-  
+  expect(sut.setState).toBeCalledWith({ userInterests: [mockInterest2] })
+
 })
 
-test('interestButtons function with no interests', () => {
+test('interestButtons Editable function with no interests', () => {
 
   let props: any;
   props = createTestProps({
@@ -444,16 +497,16 @@ test('interestButtons function with no interests', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
     }
-  });
+  }, true);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   const result: any = sut.interestButtons([])
   expect(result).toMatchSnapshot()
 })
 
-test('interestButtons function with interests', () => {
+test('interestButtons Non-Editable function with no interests', () => {
 
   let props: any;
   props = createTestProps({
@@ -462,9 +515,48 @@ test('interestButtons function with interests', () => {
         loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
       }
     }
-  });
+  }, false);
 
-  const wrapper = shallow(<EditScreen {...props} />);
+  const wrapper = shallow(<ProfileScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const result: any = sut.interestButtons([])
+  expect(result).toMatchSnapshot()
+})
+
+test('interestButtons Editable function with interests', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
+      }
+    }
+  }, true);
+
+  const wrapper = shallow(<ProfileScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const mockInterest1 = UserInterest.create('a', 'b')
+  const mockInterest2 = UserInterest.create('c', 'd')
+
+  const result: any = sut.interestButtons([mockInterest1, mockInterest2])
+  expect(result).toMatchSnapshot()
+})
+
+test('interestButtons Non-Editable function with interests', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        loadUserDetails: () => { return new Promise((resolve) => { resolve() }) }
+      }
+    }
+  }, false);
+
+  const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
   const mockInterest1 = UserInterest.create('a', 'b')

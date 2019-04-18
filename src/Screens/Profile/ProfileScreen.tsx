@@ -17,13 +17,13 @@ interface IState {
     userName: string,
     userLocation: string,
     userContact: string,
-    userInterests: IUserInterest[],
+    userInterests: IUserInterest[]
 }
 
-export class EditScreen extends Component<IProps, IState> {
+export class ProfileScreen extends Component<IProps, IState> {
 
     private static navigationOptions = {
-        title: 'Edit Profile',
+        title: 'Profile',
     };
 
     constructor(props: IProps) {
@@ -87,8 +87,11 @@ export class EditScreen extends Component<IProps, IState> {
     }
 
     private editInterest(interest: IUserInterest) {
-        
+
+        const isEditable = this.props.navigation.state.params.editable
+
         this.props.navigation.navigate('Interest', {
+            editable: isEditable,
             previousUserInterest: interest,
             saveCallback: (newInterest: IUserInterest) => {
 
@@ -99,7 +102,7 @@ export class EditScreen extends Component<IProps, IState> {
             removeCallback: () => {
 
                 const newInterests = this.state.userInterests.filter((interestElement) => { return interestElement != interest })
-                this.setState({userInterests: newInterests})
+                this.setState({ userInterests: newInterests })
             }
         })
     }
@@ -127,54 +130,91 @@ export class EditScreen extends Component<IProps, IState> {
         return ret
     }
 
+    private getRenderButtons(editable: boolean) {
+
+        return editable ? <View>
+            <LHCButton onSelected={() => this.saveButtonPressed()}>
+                <Text style={AppStyles.buttonText}>Save Changes</Text>
+            </LHCButton>
+            <LHCButton onSelected={() => this.logoutButtonPressed()}>
+                <Text style={AppStyles.buttonText}>Logout</Text>
+            </LHCButton>
+        </View> : null
+    }
+
+    getTitle(editable: boolean): JSX.Element | null {
+        return editable ? <View style={styles.loginContainer}>
+            <Text style={AppStyles.buttonText}>Add in your details so other people can find you</Text>
+        </View> : null
+    }
+
+    private getEditItems(editable: boolean): JSX.Element[] {
+
+        let ret =
+            [<TextInput style={AppStyles.input}
+                autoCapitalize="none"
+                onSubmitEditing={() => this.locationInput.focus()}
+                autoCorrect={false}
+                editable={editable}
+                keyboardType='default'
+                returnKeyType="next"
+                placeholder='Name'
+                value={this.state.userName}
+                placeholderTextColor='rgba(225,225,225,0.7)'
+                onChangeText={(text) => this.handleNameChange(text)}
+            />,
+
+            <TextInput style={AppStyles.input}
+                ref={(location) => this.locationInput = location}
+                autoCapitalize="none"
+                editable={editable}
+                onSubmitEditing={() => this.contactInput.focus()}
+                autoCorrect={false}
+                keyboardType='default'
+                returnKeyType="next"
+                placeholder='Location'
+                value={this.state.userLocation}
+                placeholderTextColor='rgba(225,225,225,0.7)'
+                onChangeText={(text) => this.handleLocationChange(text)}
+            />,
+
+            <TextInput style={AppStyles.input}
+                ref={(contact) => this.contactInput = contact}
+                autoCapitalize="none"
+                editable={editable}
+                autoCorrect={false}
+                keyboardType='default'
+                returnKeyType="next"
+                value={this.state.userContact}
+                placeholder='Contact: Skype or phone number'
+                placeholderTextColor='rgba(225,225,225,0.7)'
+                onChangeText={(text) => this.handleContactChange(text)}
+            />, ...this.interestButtons(this.state.userInterests)
+            ]
+
+        if (editable == true) {
+
+            ret.push(
+                <LHCButton onSelected={() => this.addInterestButtonPressed()}>
+                    <Text style={AppStyles.buttonText}>Add Interest</Text>
+                </LHCButton>
+            )
+        }
+
+        return ret
+    }
+
     public render() {
 
-        const editItems = [<TextInput style={AppStyles.input}
-            autoCapitalize="none"
-            onSubmitEditing={() => this.locationInput.focus()}
-            autoCorrect={false}
-            keyboardType='default'
-            returnKeyType="next"
-            placeholder='Name'
-            value={this.state.userName}
-            placeholderTextColor='rgba(225,225,225,0.7)'
-            onChangeText={(text) => this.handleNameChange(text)}
-        />,
+        const editable = this.props.navigation.state.params.editable
+        const lowerButtons = this.getRenderButtons(editable)
+        const titleText = this.getTitle(editable)
+        const editItems = this.getEditItems(editable)
 
-        <TextInput style={AppStyles.input}
-            ref={(location) => this.locationInput = location}
-            autoCapitalize="none"
-            onSubmitEditing={() => this.contactInput.focus()}
-            autoCorrect={false}
-            keyboardType='default'
-            returnKeyType="next"
-            placeholder='Location'
-            value={this.state.userLocation}
-            placeholderTextColor='rgba(225,225,225,0.7)'
-            onChangeText={(text) => this.handleLocationChange(text)}
-        />,
-
-        <TextInput style={AppStyles.input}
-            ref={(contact) => this.contactInput = contact}
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType='default'
-            returnKeyType="next"
-            value={this.state.userContact}
-            placeholder='Contact: Skype or phone number'
-            placeholderTextColor='rgba(225,225,225,0.7)'
-            onChangeText={(text) => this.handleContactChange(text)}
-        />, ...this.interestButtons(this.state.userInterests),
-        <LHCButton onSelected={() => this.addInterestButtonPressed()}>
-            <Text style={AppStyles.buttonText}>Add Interest</Text>
-        </LHCButton>]
 
         return (
             <SafeAreaView style={AppStyles.container}>
-
-                <View style={styles.loginContainer}>
-                    <Text style={AppStyles.buttonText}>Add in your details so other people can find you</Text>
-                </View>
+                {titleText}
                 <View style={styles.entriesContainer}>
                     <FlatList
                         data={editItems}
@@ -183,14 +223,7 @@ export class EditScreen extends Component<IProps, IState> {
                     />
 
                 </View>
-
-                <LHCButton onSelected={() => this.saveButtonPressed()}>
-                    <Text style={AppStyles.buttonText}>Save Changes</Text>
-                </LHCButton>
-
-                <LHCButton onSelected={() => this.logoutButtonPressed()}>
-                    <Text style={AppStyles.buttonText}>Logout</Text>
-                </LHCButton>
+                {lowerButtons}
 
             </SafeAreaView>
         );
