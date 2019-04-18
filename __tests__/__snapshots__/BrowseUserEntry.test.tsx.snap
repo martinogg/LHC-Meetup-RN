@@ -37,7 +37,7 @@ exports[`BrowseUserEntry matches snapshot 1`] = `
   </Text>
   <Text>
     Interests: 
-    d
+    d, f, 
   </Text>
 </View>
 `;
@@ -79,7 +79,7 @@ exports[`BrowseUserEntry matches snapshot2 1`] = `
   </Text>
   <Text>
     Interests: 
-    h
+    d, f, 
   </Text>
 </View>
 `;

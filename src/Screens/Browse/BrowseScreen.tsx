@@ -43,6 +43,11 @@ export class BrowseScreen extends Component<IProps, IState> {
         }
     }
 
+    componentDidMount() {
+        
+        this.searchButtonPressed()
+    }
+
     private onChangeSearchText(text: string) {
 
         this.setState({ searchText: text })
