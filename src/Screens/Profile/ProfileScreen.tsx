@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Keyboard, KeyboardAvoidingView, StyleSheet, TextInput, Text, View, Alert, SafeAreaView, FlatList } from 'react-native';
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
-import { IUser, User, IUserInterest, UserInterest } from '../../Helpers/UserStruct'
+import { IUser, User, IUserInterest, UserInterest, IUserFromFirebase } from '../../Helpers/UserStruct'
 import LHCButton from '../../Components/LHCButton/LHCButton'
 import { AppStyles } from '../../AppStyles'
 
@@ -37,7 +37,7 @@ export class ProfileScreen extends Component<IProps, IState> {
         };
     }
 
-    componentDidMount() {
+    private loadUserProfile() {
 
         this.props.screenProps.firebaseConnection.loadUserDetails().then((snapshot) => {
 
@@ -53,6 +53,33 @@ export class ProfileScreen extends Component<IProps, IState> {
 
             Alert.alert('error: ' + error)
         })
+    }
+
+    private loadParamsSpecifiedProfile() {
+
+        const userFromFB: IUserFromFirebase = this.props.navigation.state.params.profile
+
+        this.setState({
+            userName: userFromFB.user.userName,
+            userLocation: userFromFB.user.userLocation,
+            userContact: userFromFB.user.userContact,
+            userInterests: userFromFB.user.userInterests
+        })
+    }
+
+    componentDidMount() {
+
+        const isEditable = this.props.navigation.state.params.editable
+
+        if (isEditable) {
+
+            this.loadUserProfile()
+        }
+        else {
+
+            this.loadParamsSpecifiedProfile()
+        }
+        
     }
 
     addInterestButtonPressed() {

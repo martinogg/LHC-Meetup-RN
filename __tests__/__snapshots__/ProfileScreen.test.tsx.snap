@@ -984,7 +984,7 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
               }
             }
             underlineColorAndroid="transparent"
-            value=""
+            value="name"
           />,
           <TextInput
             allowFontScaling={true}
@@ -1008,7 +1008,7 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
               }
             }
             underlineColorAndroid="transparent"
-            value=""
+            value="loc"
           />,
           <TextInput
             allowFontScaling={true}
@@ -1031,7 +1031,7 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
               }
             }
             underlineColorAndroid="transparent"
-            value=""
+            value="con"
           />,
           <LHCButton
             onSelected={[Function]}
@@ -1045,7 +1045,44 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
                 }
               }
             >
-              No Interests
+              Interest: d
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontWeight": "700",
+                  "textAlign": "center",
+                }
+              }
+            >
+              e
+            </Text>
+          </LHCButton>,
+          <LHCButton
+            onSelected={[Function]}
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontWeight": "700",
+                  "textAlign": "center",
+                }
+              }
+            >
+              Interest: f
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontWeight": "700",
+                  "textAlign": "center",
+                }
+              }
+            >
+              g
             </Text>
           </LHCButton>,
         ]
@@ -1100,7 +1137,7 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
               }
             }
             underlineColorAndroid="transparent"
-            value=""
+            value="name"
           />
         </View>
         <View
@@ -1129,7 +1166,7 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
               }
             }
             underlineColorAndroid="transparent"
-            value=""
+            value="loc"
           />
         </View>
         <View
@@ -1157,7 +1194,7 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
               }
             }
             underlineColorAndroid="transparent"
-            value=""
+            value="con"
           />
         </View>
         <View
@@ -1191,10 +1228,74 @@ exports[`should display ProfileScreen Non-Editable with no errors 1`] = `
                 }
               }
             >
-              No Interests
+              Interest: d
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontWeight": "700",
+                  "textAlign": "center",
+                }
+              }
+            >
+              e
             </Text>
           </View>
         </View>
+        <View
+          onLayout={[Function]}
+          style={null}
+        >
+          <View
+            accessible={true}
+            isTVSelectable={true}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#2980b6",
+                "margin": 10,
+                "opacity": 1,
+                "paddingVertical": 15,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontWeight": "700",
+                  "textAlign": "center",
+                }
+              }
+            >
+              Interest: f
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "#fff",
+                  "fontWeight": "700",
+                  "textAlign": "center",
+                }
+              }
+            >
+              g
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "height": 0,
+            }
+          }
+        />
       </View>
     </RCTScrollView>
   </View>

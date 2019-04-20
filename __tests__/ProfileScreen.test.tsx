@@ -250,7 +250,7 @@ it('should display ProfileScreen Editable with no errors', () => {
 
 it('should display ProfileScreen Non-Editable with no errors', () => {
 
-  const props = createTestProps({
+  let props = createTestProps({
     screenProps: {
       firebaseConnection: {
         searchOtherUsers: jest.fn(),
@@ -259,6 +259,16 @@ it('should display ProfileScreen Non-Editable with no errors', () => {
       }
     }
   }, false);
+
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+
+  props.navigation.state.params = newParams
 
   expect(renderer.create(<ProfileScreen {...props} />)).toMatchSnapshot();
 });
@@ -394,6 +404,16 @@ test('editInterest Non-Editable function', () => {
     }
   }, false);
 
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+
+  props.navigation.state.params = newParams
+
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
   const mockInterest = UserInterest.create('a', 'b')
@@ -426,12 +446,14 @@ test('editInterest saveCallback function', async () => {
     }
   }, true);
 
-  const newNavigation = {...props.navigation, navigate: (screenName: string, params: any) => {
+  const newNavigation = {
+    ...props.navigation, navigate: (screenName: string, params: any) => {
 
-    sentParams = params
-  }}
+      sentParams = params
+    }
+  }
   props.navigation = newNavigation
-  
+
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
   const mockInterest = UserInterest.create('a', 'b')
@@ -462,13 +484,14 @@ test('editInterest removeCallback function', async () => {
     }
   }, true);
 
-  props.navigation = {...props.navigation,
+  props.navigation = {
+    ...props.navigation,
     navigate: (screenName: string, params: any) => {
 
       sentParams = params
     }
   }
-  
+
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
@@ -517,6 +540,16 @@ test('interestButtons Non-Editable function with no interests', () => {
     }
   }, false);
 
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+
+  props.navigation.state.params = newParams
+
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
 
@@ -555,6 +588,16 @@ test('interestButtons Non-Editable function with interests', () => {
       }
     }
   }, false);
+
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+
+  props.navigation.state.params = newParams
 
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = wrapper.instance()
