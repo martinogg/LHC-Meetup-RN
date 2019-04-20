@@ -13,22 +13,50 @@ const createTestProps = (props: Object) => ({
     navigation: {
         navigate: jest.fn(),
         replace: jest.fn(),
-        dispatch: jest.fn()
+        dispatch: jest.fn(),
+        getParam: (param: string) => { return {} },
+        state: {
+            params: {
+                editable: true
+            }
+        }
     },
     ...props
 });
 
-it('should display InterestScreen with no errors', () => {
+it('should display InterestScreen Editable with no errors', () => {
 
-    const props = createTestProps({
-        navigation: {
-            getParam: (param: string) => { return {} },
-        },
+    let props = createTestProps({
         previousUserInterest: UserInterest.create('a', 'b'),
-        screenProp: {
-
-        }
+        screenProp: {}
     });
+
+    const newNavigation = {
+        ...props.navigation,
+        getParam: (param: string) => { return {} },
+    }
+    props.navigation = newNavigation
+
+    expect(renderer.create(<InterestScreen {...props} />)).toMatchSnapshot();
+});
+
+it('should display InterestScreen Non-Editable with no errors', () => {
+
+    let props = createTestProps({
+        previousUserInterest: UserInterest.create('a', 'b'),
+        screenProp: {}
+    });
+
+    const newNavigation = {
+        ...props.navigation,
+        getParam: (param: string) => { return {} },
+        state: {
+            params: {
+                editable: false
+            }
+        }
+    }
+    props.navigation = newNavigation
 
     expect(renderer.create(<InterestScreen {...props} />)).toMatchSnapshot();
 });
@@ -36,15 +64,15 @@ it('should display InterestScreen with no errors', () => {
 test('InterestScreen constructor ', () => {
 
     const mockInterest = UserInterest.create('a', 'b')
-    const props = createTestProps({
-        navigation: {
-            getParam: (param: string) => { return mockInterest },
-        },
+    let props = createTestProps({
         previousUserInterest: UserInterest.create('a', 'b'),
-        screenProp: {
-
-        }
+        screenProp: {}
     });
+    const newNavigation = {
+        ...props.navigation,
+        getParam: (param: string) => { return mockInterest },
+    }
+    props.navigation = newNavigation
 
     const sut: any = new InterestScreen(props)
 
@@ -58,16 +86,17 @@ test('InterestScreen saveButtonPressed function', () => {
     const mockCallbackFunc = jest.fn()
     let getParamCallback: (param: string) => any = (param) => { return {} }
     const mockInterest = UserInterest.create('a', 'b')
-    const props = createTestProps({
-        navigation: {
-            getParam: (param: string) => { return getParamCallback(param) },
-            pop: jest.fn()
-        },
+    let props = createTestProps({
+        
         previousUserInterest: UserInterest.create('a', 'b'),
-        screenProp: {
-
-        }
+        screenProp: { }
     });
+    const newNavigation = {
+        ...props.navigation,
+        getParam: (param: string) => { return getParamCallback(param) },
+        pop: jest.fn()
+    }
+    props.navigation = newNavigation
 
     const sut: any = new InterestScreen(props)
     getParamCallback = (param: string) => {
@@ -119,11 +148,7 @@ test('InterestScreen removeButtonPressed function', () => {
 
 test('InterestScreen handleTitleChange function', () => {
 
-    const props = createTestProps({
-        navigation: {
-            getParam: (param: string) => { return {} },
-        }
-    });
+    const props = createTestProps({});
     const changeText = 'change'
 
     const wrapper = shallow(<InterestScreen {...props} />);
@@ -134,11 +159,7 @@ test('InterestScreen handleTitleChange function', () => {
 
 test('InterestScreen handleDescriptionChange function', () => {
 
-    const props = createTestProps({
-        navigation: {
-            getParam: (param: string) => { return {} },
-        }
-    });
+    const props = createTestProps({});
     const changeText = 'change'
 
     const wrapper = shallow(<InterestScreen {...props} />);

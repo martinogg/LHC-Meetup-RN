@@ -48,8 +48,21 @@ export class InterestScreen extends Component<IProps, IState> {
         this.props.navigation.pop()
     }
 
+    private getLowerButtons(editable: boolean): JSX.Element | null {
+        return editable ? <View>
+            <LHCButton onSelected={() => this.saveButtonPressed()}>
+                <Text style={AppStyles.buttonText}>Save Changes</Text>
+            </LHCButton>
+            <LHCButton onSelected={() => this.removeButtonPressed()}>
+                <Text style={AppStyles.buttonText}>Remove interest</Text>
+            </LHCButton>
+        </View> : null
+    }
+
     public render() {
 
+        const isEditable = this.props.navigation.state.params.editable
+        const lowerButtons = this.getLowerButtons(isEditable)
         return (
             <SafeAreaView style={AppStyles.container}>
 
@@ -59,6 +72,7 @@ export class InterestScreen extends Component<IProps, IState> {
                     autoCorrect={false}
                     keyboardType='default'
                     returnKeyType="next"
+                    editable={isEditable}
                     placeholder='Interest Title'
                     value={this.state.title}
                     placeholderTextColor='rgba(225,225,225,0.7)'
@@ -71,6 +85,7 @@ export class InterestScreen extends Component<IProps, IState> {
                     autoCorrect={false}
                     keyboardType='default'
                     returnKeyType="done"
+                    editable={isEditable}
                     value={this.state.description}
                     placeholder='Description'
                     placeholderTextColor='rgba(225,225,225,0.7)'
@@ -79,13 +94,7 @@ export class InterestScreen extends Component<IProps, IState> {
 
                 <View style={{ flex: 1 }} />
 
-                <LHCButton onSelected={() => this.saveButtonPressed()}>
-                    <Text style={AppStyles.buttonText}>Save Changes</Text>
-                </LHCButton>
-
-                <LHCButton onSelected={() => this.removeButtonPressed()}>
-                    <Text style={AppStyles.buttonText}>Remove interest</Text>
-                </LHCButton>
+                {lowerButtons}
 
             </SafeAreaView>
         );
