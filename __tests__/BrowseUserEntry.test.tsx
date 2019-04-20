@@ -30,7 +30,7 @@ test('BrowseUserEntry responds to press', () => {
     const wrapper = shallow(<BrowseUserEntry user={user} onSelected={() => { callback() }} />);
     const sut: any = wrapper.instance()
 
-    sut.goToEditScreen = jest.fn()
+    sut.goToProfileScreen = jest.fn()
     wrapper.find(LHCButton).first().simulate('selected')
 
     expect(callback).toHaveBeenCalledTimes(1)

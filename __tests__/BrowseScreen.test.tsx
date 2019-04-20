@@ -168,3 +168,31 @@ test('BrowseScreen searchButtonPressed on Error', async () => {
   expect(Alert.alert).toBeCalledTimes(1)
   expect(Alert.alert).toBeCalledWith('error: ' + errorResp)
 })
+
+test('onUserSelected function', () => {
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        searchOtherUsers: () => { return userlist() },
+        isLoggedIn: () => { return true }
+      }
+    },
+    navigation: {
+      navigate: jest.fn()
+    }
+  });
+
+  const wrapper = shallow(<BrowseScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  const mockUser: IUserFromFirebase = {
+    id: '1111',
+    user: User.create('a', 'b', 'c', [])
+  }
+  sut.onUserSelected(mockUser)
+
+  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
+  expect(props.navigation.navigate).toHaveBeenCalledWith('Profile', { profile: mockUser, editable: false })
+})

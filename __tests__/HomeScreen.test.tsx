@@ -27,7 +27,7 @@ test('test onPress About functionality', () => {
   expect(navigateFunc).toHaveBeenCalledWith('AboutApp')
 });
 
-test('test onPress EditDetails functionality', () => {
+test('test onPress Profile functionality', () => {
 
   const navigateFunc = jest.fn()
   const navigation = { navigate: navigateFunc };
@@ -37,7 +37,7 @@ test('test onPress EditDetails functionality', () => {
   wrapper.find(LHCButton).first().simulate('selected')
 
   expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('EditDetails')
+  expect(navigateFunc).toHaveBeenCalledWith('Profile', {editable: true})
 });
 
 test('test onPress Browse functionality', () => {

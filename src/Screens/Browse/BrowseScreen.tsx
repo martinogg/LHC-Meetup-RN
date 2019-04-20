@@ -97,7 +97,8 @@ export class BrowseScreen extends Component<IProps, IState> {
     }
 
     public onUserSelected(user: IUserFromFirebase) {
-        // TODO Selected user.
+
+        this.props.navigation.navigate('Profile', {profile: user, editable: false})
     }
 }
 
