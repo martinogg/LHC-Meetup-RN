@@ -1,0 +1,224 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should display HomeScreen with Entries 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <FlatList
+    data={
+      Array [
+        <Text
+          style={
+            Object {
+              "color": "#fff",
+              "fontWeight": "700",
+              "textAlign": "center",
+            }
+          }
+        >
+          Sent
+        </Text>,
+        <View>
+          <Text>
+            ID
+            1
+          </Text>
+          <Text>
+            FROM
+            a
+          </Text>
+          <Text>
+            TO
+            b
+          </Text>
+          <Text>
+            REASON
+            c
+          </Text>
+          <Text>
+            .
+          </Text>
+        </View>,
+        <View>
+          <Text>
+            ID
+            2
+          </Text>
+          <Text>
+            FROM
+            d
+          </Text>
+          <Text>
+            TO
+            e
+          </Text>
+          <Text>
+            REASON
+            f
+          </Text>
+          <Text>
+            .
+          </Text>
+        </View>,
+        <Text
+          style={
+            Object {
+              "color": "#fff",
+              "fontWeight": "700",
+              "textAlign": "center",
+            }
+          }
+        >
+          Received
+        </Text>,
+        <View>
+          <Text>
+            ID
+            12
+          </Text>
+          <Text>
+            FROM
+            a2
+          </Text>
+          <Text>
+            TO
+            b2
+          </Text>
+          <Text>
+            REASON
+            c2
+          </Text>
+          <Text>
+            .
+          </Text>
+        </View>,
+        <View>
+          <Text>
+            ID
+            22
+          </Text>
+          <Text>
+            FROM
+            d2
+          </Text>
+          <Text>
+            TO
+            e2
+          </Text>
+          <Text>
+            REASON
+            f2
+          </Text>
+          <Text>
+            .
+          </Text>
+        </View>,
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+</View>
+`;
+
+exports[`should display HomeScreen with no Entries 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <FlatList
+    data={
+      Array [
+        <Text>
+          No Invitations. Go to Browse Screen to find a new person to meet
+        </Text>,
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+</View>
+`;
+
+exports[`should display HomeScreen with no errors 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#2c3e50",
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    data={
+      Array [
+        <Text>
+          No Invitations. Go to Browse Screen to find a new person to meet
+        </Text>,
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <Text>
+          No Invitations. Go to Browse Screen to find a new person to meet
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

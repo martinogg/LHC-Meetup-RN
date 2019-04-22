@@ -9,9 +9,10 @@ export class HomeScreen extends Component<Props> {
     
     private static navigationOptions = {
         title: 'Welcome',
-    };
+    }
 
     public render() {
+
         const { navigate } = this.props.navigation;
         return (
             <SafeAreaView style={AppStyles.container}>
@@ -20,7 +21,10 @@ export class HomeScreen extends Component<Props> {
                     <Text style={AppStyles.buttonText} >Enter Profile Details</Text>
                 </LHCButton>
                 <LHCButton onSelected={() => navigate('Browse')}>
-                    <Text style={AppStyles.buttonText} >Browse by Interest</Text>
+                    <Text style={AppStyles.buttonText}>Browse by Interest</Text>
+                </LHCButton>
+                <LHCButton onSelected={() => navigate('Invitations')}>
+                    <Text style={AppStyles.buttonText}>Invitations</Text>
                 </LHCButton>
                 <LHCButton onSelected={() => navigate('AboutApp')}>
                     <Text style={AppStyles.buttonText}>About this App</Text>

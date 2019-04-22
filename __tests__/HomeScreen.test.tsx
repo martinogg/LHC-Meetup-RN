@@ -21,7 +21,7 @@ test('test onPress About functionality', () => {
 
   const wrapper = shallow(<HomeScreen navigation={navigation} />);
 
-  wrapper.find(LHCButton).at(2).simulate('selected')
+  wrapper.find(LHCButton).at(3).simulate('selected')
 
   expect(navigateFunc).toHaveBeenCalledTimes(1)
   expect(navigateFunc).toHaveBeenCalledWith('AboutApp')
@@ -51,4 +51,17 @@ test('test onPress Browse functionality', () => {
 
   expect(navigateFunc).toHaveBeenCalledTimes(1)
   expect(navigateFunc).toHaveBeenCalledWith('Browse')
+});
+
+test('test onPress Invitations functionality', () => {
+
+  const navigateFunc = jest.fn()
+  const navigation = { navigate: navigateFunc };
+
+  const wrapper = shallow(<HomeScreen navigation={navigation} />);
+
+  wrapper.find(LHCButton).at(2).simulate('selected')
+
+  expect(navigateFunc).toHaveBeenCalledTimes(1)
+  expect(navigateFunc).toHaveBeenCalledWith('Invitations')
 });

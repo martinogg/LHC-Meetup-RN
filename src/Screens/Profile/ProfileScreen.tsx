@@ -79,10 +79,10 @@ export class ProfileScreen extends Component<IProps, IState> {
 
             this.loadParamsSpecifiedProfile()
         }
-        
+
     }
 
-    addInterestButtonPressed() {
+    private addInterestButtonPressed() {
 
         const currentInterests = this.state.userInterests
         const newInterest = UserInterest.create('', '')
@@ -90,7 +90,7 @@ export class ProfileScreen extends Component<IProps, IState> {
         this.setState({ userInterests: newInterests })
     }
 
-    saveButtonPressed() {
+    private saveButtonPressed() {
 
         this.props.screenProps.firebaseConnection.saveUserDetails(User.create(this.state.userName, this.state.userLocation, this.state.userContact, this.state.userInterests)).then(() => {
 
@@ -101,7 +101,7 @@ export class ProfileScreen extends Component<IProps, IState> {
         })
     }
 
-    logoutButtonPressed() {
+    private logoutButtonPressed() {
         this.props.screenProps.firebaseConnection.logout().then(() => {
 
             this.props.navigation.dispatch(
@@ -112,6 +112,8 @@ export class ProfileScreen extends Component<IProps, IState> {
             )
         })
     }
+
+
 
     private editInterest(interest: IUserInterest) {
 
@@ -157,6 +159,18 @@ export class ProfileScreen extends Component<IProps, IState> {
         return ret
     }
 
+    private inviteButtonPressed() {
+
+        // TODO - Push new Invitation Screen
+        this.props.screenProps.firebaseConnection.createNewInvitation().then(() => {
+
+            Alert.alert('new invite OK')
+        }, (error) => {
+
+            Alert.alert('new invite Error:'+error)
+        })
+    }
+
     private getRenderButtons(editable: boolean) {
 
         return editable ? <View>
@@ -166,7 +180,10 @@ export class ProfileScreen extends Component<IProps, IState> {
             <LHCButton onSelected={() => this.logoutButtonPressed()}>
                 <Text style={AppStyles.buttonText}>Logout</Text>
             </LHCButton>
-        </View> : null
+        </View> :
+            <LHCButton onSelected={() => this.inviteButtonPressed()}>
+                <Text style={AppStyles.buttonText}>Invite</Text>
+            </LHCButton>
     }
 
     getTitle(editable: boolean): JSX.Element | null {

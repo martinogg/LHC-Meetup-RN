@@ -10,6 +10,7 @@ import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
 import { IUser, User, IUserFromFirebase, IUserInterest } from './UserStruct'
+import { IInvitation, IInvitationFromFirebase, Invitation, IInvitationFromAndTo } from './InvitationStruct'
 
 var instance: FirebaseConnection | null = null;
 
@@ -61,6 +62,76 @@ class FirebaseConnection {
         Alert.alert('Error: ' + failReason)
         resolve()
       })
+    })
+  }
+
+  public getInvitations(): Promise<IInvitationFromAndTo> {
+    // TODO TEST
+    return new Promise<IInvitationFromAndTo>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Invitations").get()
+          .then((snap) => {
+
+            let ret: IInvitationFromFirebase[] = []
+
+            snap.forEach(invitationInList => {
+
+              const id = invitationInList.id
+              const data = invitationInList.data()
+
+              if (data) {
+
+                const invitation = Invitation.create(data.from, data.to, data.reason)
+                ret.push({ id: id, invitation: invitation })
+              }
+
+            });
+
+            resolve({ from: ret.filter((item) => { return item.invitation.from == currentUser.uid }), to: ret.filter((item) => { return item.invitation.to == currentUser.uid }) })
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+
+  }
+
+  public createNewInvitation(): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+
+        const newInvitationId = this.dateEpochPlusUID()
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Invitations").doc(newInvitationId).set({
+          from: currentUser.uid,
+          to: 'anotherUser',
+          reason: 'aReason',
+        })
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
     })
   }
 
@@ -229,12 +300,17 @@ class FirebaseConnection {
     return firebase.auth().currentUser != null
   }
 
+  private dateEpochPlusUID(): string {
+    // TODO TEST
+    return (new Date).getTime().toString() + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+  }
+
   sendComment(comment: string) {
     // TODO TEST
 
     if (comment !== '') {
 
-      const date = (new Date).getTime().toString() + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+      const date = this.dateEpochPlusUID()
       if (firebase.auth().currentUser != null) {
 
         const currentUser = firebase.auth().currentUser as firebase.User
