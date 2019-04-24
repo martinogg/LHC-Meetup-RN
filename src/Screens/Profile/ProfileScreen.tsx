@@ -14,6 +14,7 @@ interface IProps {
 }
 
 interface IState {
+    userID: string,
     userName: string,
     userLocation: string,
     userContact: string,
@@ -30,6 +31,7 @@ export class ProfileScreen extends Component<IProps, IState> {
 
         super(props);
         this.state = {
+            userID: '',
             userName: '',
             userLocation: '',
             userContact: '',
@@ -44,6 +46,7 @@ export class ProfileScreen extends Component<IProps, IState> {
             const user: IUser = snapshot
 
             this.setState({
+                userID: '',
                 userName: user.userName,
                 userLocation: user.userLocation,
                 userContact: user.userContact,
@@ -60,6 +63,7 @@ export class ProfileScreen extends Component<IProps, IState> {
         const userFromFB: IUserFromFirebase = this.props.navigation.state.params.profile
 
         this.setState({
+            userID: userFromFB.id,
             userName: userFromFB.user.userName,
             userLocation: userFromFB.user.userLocation,
             userContact: userFromFB.user.userContact,
@@ -160,15 +164,8 @@ export class ProfileScreen extends Component<IProps, IState> {
     }
 
     private inviteButtonPressed() {
-
-        // TODO - Push new Invitation Screen
-        this.props.screenProps.firebaseConnection.createNewInvitation().then(() => {
-
-            Alert.alert('new invite OK')
-        }, (error) => {
-
-            Alert.alert('new invite Error:'+error)
-        })
+        
+        this.props.navigation.navigate('Invitation', {from: this.props.screenProps.firebaseConnection.getCurrentUserID(), to: this.state.userID})
     }
 
     private getRenderButtons(editable: boolean) {

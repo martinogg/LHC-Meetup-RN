@@ -105,7 +105,7 @@ class FirebaseConnection {
 
   }
 
-  public createNewInvitation(): Promise<string> {
+  public createNewInvitation(invitation: IInvitation): Promise<string> {
     // TODO TEST
     return new Promise<string>((resolve, reject) => {
 
@@ -114,11 +114,7 @@ class FirebaseConnection {
         const newInvitationId = this.dateEpochPlusUID()
         const currentUser = firebase.auth().currentUser as firebase.User
 
-        firebase.firestore().collection("LHC-Invitations").doc(newInvitationId).set({
-          from: currentUser.uid,
-          to: 'anotherUser',
-          reason: 'aReason',
-        })
+        firebase.firestore().collection("LHC-Invitations").doc(newInvitationId).set(invitation)
           .then(() => {
 
             resolve()
@@ -298,6 +294,16 @@ class FirebaseConnection {
     // TODO TEST
 
     return firebase.auth().currentUser != null
+  }
+
+  public getCurrentUserID(): string {
+    // TODO TEST
+    if (firebase.auth().currentUser == null) {
+      return 'Error: Not logged In'
+    }
+
+    const currentUser = firebase.auth().currentUser as firebase.User
+    return currentUser.uid
   }
 
   private dateEpochPlusUID(): string {

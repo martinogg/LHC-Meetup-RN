@@ -608,3 +608,34 @@ test('interestButtons Non-Editable function with interests', () => {
   const result: any = sut.interestButtons([mockInterest1, mockInterest2])
   expect(result).toMatchSnapshot()
 })
+
+test('inviteButtonPressed function', async () => {
+
+  let props: any = createTestProps({
+    screenProps: {
+      firebaseConnection: { getCurrentUserID: () => { return '123' } }
+    }
+  }, false)
+
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+  props.navigation.state.params = newParams
+
+  const navigateFunc = jest.fn()
+  props.navigation.navigate = navigateFunc
+
+  const wrapper = shallow(<ProfileScreen {...props} />);
+  const sut: any = await wrapper.instance()
+
+
+  await sut.inviteButtonPressed()
+
+  expect(navigateFunc).toHaveBeenCalledTimes(1)
+  expect(navigateFunc).toHaveBeenCalledWith('Invitation', { from: '123', to: 'a' })
+
+})

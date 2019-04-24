@@ -8,7 +8,6 @@ import { InvitationsScreen } from '../src/Screens/Invitations/InvitationsScreen'
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-import { tsModuleBlock } from '@babel/types';
 
 const createTestProps = (props: Object) => ({
     navigation: {

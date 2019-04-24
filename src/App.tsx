@@ -22,6 +22,7 @@ import { RegisterScreen } from './Screens/Register/RegisterScreen'
 import { BrowseScreen } from './Screens/Browse/BrowseScreen'
 import { InterestScreen } from './Screens/Interest/InterestScreen'
 import { InvitationsScreen } from './Screens/Invitations/InvitationsScreen'
+import { InvitationScreen } from './Screens/Invitation/InvitationScreen'
 
 import FirebaseConnection from './Helpers/FirebaseConnection'
 
@@ -35,6 +36,7 @@ const MainNavigator = createStackNavigator({
   AboutApp: { screen: AboutAppScreen },
   Browse: { screen: BrowseScreen },
   Interest: { screen: InterestScreen },
+  Invitation: { screen: InvitationScreen },
   Invitations: { screen: InvitationsScreen }
 },
   { initialRouteName: 'Login' });
