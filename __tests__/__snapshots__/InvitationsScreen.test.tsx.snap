@@ -1,5 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`invitationComponentForElement function ownInvitation False 1`] = `
+<LHCButton
+  onSelected={[Function]}
+>
+  <Text>
+    ID
+    1
+  </Text>
+  <Text>
+    FROM
+    a
+  </Text>
+  <Text>
+    TO
+    b
+  </Text>
+  <Text>
+    REASON
+    c
+  </Text>
+  <Text>
+    .
+  </Text>
+</LHCButton>
+`;
+
+exports[`invitationComponentForElement function ownInvitation True 1`] = `
+<LHCButton
+  onSelected={[Function]}
+>
+  <Text>
+    ID
+    1
+  </Text>
+  <Text>
+    FROM
+    a
+  </Text>
+  <Text>
+    TO
+    b
+  </Text>
+  <Text>
+    REASON
+    c
+  </Text>
+  <Text>
+    .
+  </Text>
+</LHCButton>
+`;
+
 exports[`should display HomeScreen with Entries 1`] = `
 <View
   style={

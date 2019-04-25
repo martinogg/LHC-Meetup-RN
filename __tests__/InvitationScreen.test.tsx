@@ -9,7 +9,7 @@ import renderer from 'react-test-renderer';
 
 import LHCButton from '../src/Components/LHCButton/LHCButton'
 
-import { IInvitationFromAndTo, IInvitation, Invitation, IInvitationFromFirebase } from '../src/Helpers/InvitationStruct'
+import { IInvitationFromAndTo, IInvitation, Invitation, IInvitationFromFirebase, InvitationStatus } from '../src/Helpers/InvitationStruct'
 import { InvitationScreen } from '../src/Screens/Invitation/InvitationScreen';
 
 
@@ -36,15 +36,18 @@ const createTestProps = (props: Object) => ({
 
 it('should display InvitationScreen with no errors', () => {
 
-    const props = createTestProps({})
+    const props: any = createTestProps({})
     expect(renderer.create(<InvitationScreen {...props} />)).toMatchSnapshot();
 });
 
 test('componentDidMount function', () => {
 
-    let props = createTestProps({})
+    let props: any = createTestProps({})
     props.navigation.state.params.from = 'aaa111'
     props.navigation.state.params.to = 'abb122'
+    props.navigation.state.params.uid = 'abb123'
+    props.navigation.state.params.reason = 'abb124'
+    props.navigation.state.params.viewMode = 'New'
 
     const sut = new InvitationScreen(props)
 
@@ -53,12 +56,12 @@ test('componentDidMount function', () => {
     sut.componentDidMount()
 
     expect(sut.setState).toHaveBeenCalledTimes(1)
-    expect(sut.setState).toBeCalledWith({ "from": "aaa111", "to": "abb122" })
+    expect(sut.setState).toBeCalledWith({ "from": "aaa111", "reason": "abb124", "to": "abb122", "uid": "abb123", "viewMode": "New" })
 })
 
 test('handleCustomDescriptionChange function', () => {
 
-    let props = createTestProps({})
+    let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
     const textToChange = 'someText'
@@ -80,8 +83,8 @@ test('sendButtonPressed function SUCCESS', async () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    const mockInvitation = Invitation.create('a', 'b', 'c')
-    
+    const mockInvitation = Invitation.create('a', 'b', 'c', InvitationStatus.New)
+
     sut.setState(mockInvitation)
     props.screenProps.firebaseConnection = {
         createNewInvitation: (invitation: IInvitation) => {
@@ -109,8 +112,8 @@ test('sendButtonPressed function FAIL', async () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    const mockInvitation = Invitation.create('a', 'b', 'c')
-    
+    const mockInvitation = Invitation.create('a', 'b', 'c', InvitationStatus.New)
+
     sut.setState(mockInvitation)
     props.screenProps.firebaseConnection = {
         createNewInvitation: (invitation: IInvitation) => {
@@ -125,3 +128,183 @@ test('sendButtonPressed function FAIL', async () => {
     expect(Alert.alert).toHaveBeenCalledTimes(1)
     expect(Alert.alert).toHaveBeenCalledWith('new invite Error:anError')
 })
+
+test('updateButtonPressed function SUCCESS', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        updateInvitation: (uid: string, reason: string) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            expect(reason).toEqual(mockInvitation.reason)
+            return new Promise((resolve, reject) => { resolve() })
+        }
+    }
+
+    await sut.updateButtonPressed()
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('update invite OK')
+})
+
+test('updateButtonPressed function FAIL', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        updateInvitation: (uid: string, reason: string) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            expect(reason).toEqual(mockInvitation.reason)
+            return new Promise((resolve, reject) => { reject('anError') })
+        }
+    }
+
+    await sut.updateButtonPressed()
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('update invite Error:anError')
+})
+
+test('sendResponse function SUCCESS', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+    const mockResponse: InvitationStatus = InvitationStatus.Accepted
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        updateInvitationResponse: (uid: string, response: InvitationStatus) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            expect(response).toEqual(mockResponse)
+            return new Promise((resolve, reject) => { resolve() })
+        }
+    }
+
+    await sut.sendResponse(mockResponse)
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('update invite response OK')
+})
+
+test('sendResponse function FAIL', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+    const mockResponse: InvitationStatus = InvitationStatus.Accepted
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        updateInvitationResponse: (uid: string, response: InvitationStatus) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            expect(response).toEqual(mockResponse)
+            return new Promise((resolve, reject) => { reject('anError') })
+        }
+    }
+
+    await sut.sendResponse(mockResponse)
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('update invite response Error:anError')
+})
+
+test('acceptButtonPressed function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    sut.sendResponse = jest.fn()
+
+    sut.acceptButtonPressed()
+
+    expect(sut.sendResponse).toHaveBeenCalledTimes(1)
+    expect(sut.sendResponse).toHaveBeenCalledWith(InvitationStatus.Accepted)
+})
+
+test('rejectButtonPressed function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    sut.sendResponse = jest.fn()
+
+    sut.rejectButtonPressed()
+
+    expect(sut.sendResponse).toHaveBeenCalledTimes(1)
+    expect(sut.sendResponse).toHaveBeenCalledWith(InvitationStatus.Rejected)
+})
+
+
+
+test('buttonButtons function with New', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    expect(sut.buttonButtons('New')).toMatchSnapshot()
+})
+
+test('buttonButtons function with Edit', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    expect(sut.buttonButtons('Edit')).toMatchSnapshot()
+})
+
+test('buttonButtons function with Reply', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    expect(sut.buttonButtons('Reply')).toMatchSnapshot()
+})
+

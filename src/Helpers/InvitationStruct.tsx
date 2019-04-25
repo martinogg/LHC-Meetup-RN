@@ -1,7 +1,8 @@
 export interface IInvitation {
     from: string,
     to: string,
-    reason: string
+    reason: string,
+    status: InvitationStatus
 }
 
 export interface IInvitationFromFirebase {
@@ -14,14 +15,21 @@ export interface IInvitationFromAndTo {
     to: IInvitationFromFirebase[]
 }
 
+export enum InvitationStatus {
+    New = 'New',
+    Accepted = 'Accepted',
+    Rejected = 'Rejected'
+}
+
 export class Invitation {
 
-    public static create(_from: string, _to: string, _reason: string): IInvitation {
+    public static create(_from: string, _to: string, _reason: string, _status: InvitationStatus): IInvitation {
 
         const ret = {
             from: _from,
             to: _to,
-            reason: _reason
+            reason: _reason,
+            status: _status
         }
         return ret
     }

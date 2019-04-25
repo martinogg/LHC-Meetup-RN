@@ -52,13 +52,13 @@ export class InvitationsScreen extends Component<IProps, IState> {
     }
 
     private invitationTapped(item: IInvitationFromFirebase, ownInvititation: boolean) {
-        // TODO TEST
+
         const mode = ownInvititation ? 'Edit' : 'Reply'
-        this.props.navigation.navigate('Invitation', {...item, mode: mode})
+        this.props.navigation.navigate('Invitation', {...item.invitation, viewMode: mode, uid: item.id})
     }
 
     private invitationComponentForElement(item: IInvitationFromFirebase, ownInvititation: boolean): JSX.Element {
-        // TODO TEST
+
         // TODO - this needs to look better
         return <LHCButton onSelected={() => { this.invitationTapped(item, ownInvititation) }}>
             <Text>ID{item.id}</Text>

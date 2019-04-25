@@ -4,7 +4,7 @@ import { Alert, Text, View, TextInput } from 'react-native';
 import { AppStyles } from '../../AppStyles'
 import { NavigationScreenProp } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
-import { Invitation } from '../../Helpers/InvitationStruct'
+import { IInvitationFromFirebase, Invitation, InvitationStatus } from '../../Helpers/InvitationStruct'
 import LHCButton from '../../Components/LHCButton/LHCButton'
 
 interface Props {
@@ -18,7 +18,8 @@ interface State {
     reason: string,
     from: string,
     to: string,
-    mode: string
+    uid: string,
+    viewMode: string
 }
 
 export class InvitationScreen extends Component<Props, State> {
@@ -30,12 +31,13 @@ export class InvitationScreen extends Component<Props, State> {
             reason: '',
             from: '',
             to: '',
-            mode: '' // TODO- change view depending on New, Edit, Reply
+            uid: '',
+            viewMode: ''
         }
     }
 
     private static navigationOptions = {
-        title: 'Create Invitation',
+        title: 'Invitation',
     };
 
     public componentDidMount() {
@@ -43,7 +45,9 @@ export class InvitationScreen extends Component<Props, State> {
         this.setState({
             from: this.props.navigation.state.params.from,
             to: this.props.navigation.state.params.to,
-            mode: this.props.navigation.state.params.mode
+            uid: this.props.navigation.state.params.uid,
+            reason: this.props.navigation.state.params.reason,
+            viewMode: this.props.navigation.state.params.viewMode
         })
     }
 
@@ -54,7 +58,7 @@ export class InvitationScreen extends Component<Props, State> {
 
     private sendButtonPressed() {
 
-        const invitation = Invitation.create(this.state.from, this.state.to, this.state.reason)
+        const invitation = Invitation.create(this.state.from, this.state.to, this.state.reason, InvitationStatus.New)
         this.props.screenProps.firebaseConnection.createNewInvitation(invitation).then(() => {
 
             Alert.alert('new invite OK')
@@ -64,7 +68,73 @@ export class InvitationScreen extends Component<Props, State> {
         })
     }
 
+    private updateButtonPressed() {
+
+        this.props.screenProps.firebaseConnection.updateInvitation(this.state.uid, this.state.reason).then(() => {
+
+            Alert.alert('update invite OK')
+        }, (error) => {
+
+            Alert.alert('update invite Error:' + error)
+        })
+
+    }
+
+    private sendResponse(response: InvitationStatus) {
+
+        this.props.screenProps.firebaseConnection.updateInvitationResponse(this.state.uid, response).then(() => {
+
+            Alert.alert('update invite response OK')
+        }, (error) => {
+
+            Alert.alert('update invite response Error:' + error)
+        })
+    }
+
+    private acceptButtonPressed() {
+
+        this.sendResponse(InvitationStatus.Accepted)
+    }
+
+    private rejectButtonPressed() {
+
+        this.sendResponse(InvitationStatus.Rejected)
+    }
+
+    private buttonButtons(viewMode: string): JSX.Element {
+
+        let ret: JSX.Element = <View></View>
+
+        switch (viewMode) {
+            case 'New':
+                ret = <LHCButton onSelected={() => { this.sendButtonPressed() }}>
+                    <Text style={AppStyles.buttonText}>Create Invitation</Text>
+                </LHCButton>
+                break;
+            case 'Edit':
+                ret = <LHCButton onSelected={() => { this.updateButtonPressed() }}>
+                    <Text style={AppStyles.buttonText}>Update Invitation</Text>
+                </LHCButton>
+                break;
+            case 'Reply':
+                ret = <View>
+                    <LHCButton onSelected={() => { this.acceptButtonPressed() }}>
+                        <Text style={AppStyles.buttonText}>Accept Invitation</Text>
+                    </LHCButton>
+                    <LHCButton onSelected={() => { this.rejectButtonPressed() }}>
+                        <Text style={AppStyles.buttonText}>Reject Invitation</Text>
+                    </LHCButton>
+                </View>
+                break;
+        }
+
+        return ret
+
+    }
+
     public render() {
+
+        const buttonButtons = this.buttonButtons(this.state.viewMode)
 
         return (
             <View style={AppStyles.container}>
@@ -91,11 +161,9 @@ export class InvitationScreen extends Component<Props, State> {
 
                 <View style={{ flex: 1 }} />
 
-                <LHCButton onSelected={() => { this.sendButtonPressed() }}>
-                    <Text style={AppStyles.buttonText}>Send Invitation</Text>
-                </LHCButton>
+                {buttonButtons}
             </View >
         );
     }
-    
+
 }

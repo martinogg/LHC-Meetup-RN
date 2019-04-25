@@ -10,7 +10,8 @@ import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
 import { IUser, User, IUserFromFirebase, IUserInterest } from './UserStruct'
-import { IInvitation, IInvitationFromFirebase, Invitation, IInvitationFromAndTo } from './InvitationStruct'
+import { IInvitation, IInvitationFromFirebase, Invitation, IInvitationFromAndTo, InvitationStatus } from './InvitationStruct'
+import { string } from 'prop-types';
 
 var instance: FirebaseConnection | null = null;
 
@@ -84,7 +85,7 @@ class FirebaseConnection {
 
               if (data) {
 
-                const invitation = Invitation.create(data.from, data.to, data.reason)
+                const invitation = Invitation.create(data.from, data.to, data.reason, data.mode)
                 ret.push({ id: id, invitation: invitation })
               }
 
@@ -104,6 +105,53 @@ class FirebaseConnection {
     })
 
   }
+
+  public updateInvitationResponse(uid: string, response: InvitationStatus): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+
+        firebase.firestore().collection("LHC-Invitations").doc(uid).update({ status: response })
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+  }
+
+  public updateInvitation(uid: string, reason: string): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+
+        firebase.firestore().collection("LHC-Invitations").doc(uid).update({ reason })
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+  }
+
 
   public createNewInvitation(invitation: IInvitation): Promise<string> {
     // TODO TEST
