@@ -165,7 +165,7 @@ export class ProfileScreen extends Component<IProps, IState> {
 
     private inviteButtonPressed() {
         
-        this.props.navigation.navigate('Invitation', {from: this.props.screenProps.firebaseConnection.getCurrentUserID(), to: this.state.userID})
+        this.props.navigation.navigate('Invitation', {from: this.props.screenProps.firebaseConnection.getCurrentUserID(), to: this.state.userID, mode: 'New'})
     }
 
     private getRenderButtons(editable: boolean) {

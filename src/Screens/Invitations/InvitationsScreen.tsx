@@ -4,6 +4,7 @@ import { NavigationActions, NavigationScreenProp, StackActions } from 'react-nav
 import { AppStyles } from '../../AppStyles'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IInvitationFromFirebase } from '../../Helpers/InvitationStruct';
+import LHCButton from '../../Components/LHCButton/LHCButton';
 
 interface IProps {
 
@@ -50,16 +51,22 @@ export class InvitationsScreen extends Component<IProps, IState> {
         })
     }
 
-    private invitationComponentForElement(item: IInvitationFromFirebase): JSX.Element {
+    private invitationTapped(item: IInvitationFromFirebase, ownInvititation: boolean) {
+        // TODO TEST
+        const mode = ownInvititation ? 'Edit' : 'Reply'
+        this.props.navigation.navigate('Invitation', {...item, mode: mode})
+    }
 
+    private invitationComponentForElement(item: IInvitationFromFirebase, ownInvititation: boolean): JSX.Element {
+        // TODO TEST
         // TODO - this needs to look better
-        return <View>
+        return <LHCButton onSelected={() => { this.invitationTapped(item, ownInvititation) }}>
             <Text>ID{item.id}</Text>
             <Text>FROM{item.invitation.from}</Text>
             <Text>TO{item.invitation.to}</Text>
             <Text>REASON{item.invitation.reason}</Text>
             <Text>.</Text>
-        </View>
+        </LHCButton>
     }
 
     private listElements(sentInvitations: IInvitationFromFirebase[], receivedInvitations: IInvitationFromFirebase[]): JSX.Element[] {
@@ -71,7 +78,7 @@ export class InvitationsScreen extends Component<IProps, IState> {
         }
 
         sentInvitations.forEach(element => {
-            ret.push(this.invitationComponentForElement(element))
+            ret.push(this.invitationComponentForElement(element, true))
         });
 
 
@@ -80,7 +87,7 @@ export class InvitationsScreen extends Component<IProps, IState> {
         }
 
         receivedInvitations.forEach(element => {
-            ret.push(this.invitationComponentForElement(element))
+            ret.push(this.invitationComponentForElement(element, false))
         });
 
         if (ret.length == 0) {

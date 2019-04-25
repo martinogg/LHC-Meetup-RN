@@ -23,7 +23,9 @@ exports[`should display HomeScreen with Entries 1`] = `
         >
           Sent
         </Text>,
-        <View>
+        <LHCButton
+          onSelected={[Function]}
+        >
           <Text>
             ID
             1
@@ -43,8 +45,10 @@ exports[`should display HomeScreen with Entries 1`] = `
           <Text>
             .
           </Text>
-        </View>,
-        <View>
+        </LHCButton>,
+        <LHCButton
+          onSelected={[Function]}
+        >
           <Text>
             ID
             2
@@ -64,7 +68,7 @@ exports[`should display HomeScreen with Entries 1`] = `
           <Text>
             .
           </Text>
-        </View>,
+        </LHCButton>,
         <Text
           style={
             Object {
@@ -76,7 +80,9 @@ exports[`should display HomeScreen with Entries 1`] = `
         >
           Received
         </Text>,
-        <View>
+        <LHCButton
+          onSelected={[Function]}
+        >
           <Text>
             ID
             12
@@ -96,8 +102,10 @@ exports[`should display HomeScreen with Entries 1`] = `
           <Text>
             .
           </Text>
-        </View>,
-        <View>
+        </LHCButton>,
+        <LHCButton
+          onSelected={[Function]}
+        >
           <Text>
             ID
             22
@@ -117,7 +125,7 @@ exports[`should display HomeScreen with Entries 1`] = `
           <Text>
             .
           </Text>
-        </View>,
+        </LHCButton>,
       ]
     }
     disableVirtualization={false}

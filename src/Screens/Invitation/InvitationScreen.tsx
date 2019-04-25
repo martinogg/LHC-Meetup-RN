@@ -17,7 +17,8 @@ interface Props {
 interface State {
     reason: string,
     from: string,
-    to: string
+    to: string,
+    mode: string
 }
 
 export class InvitationScreen extends Component<Props, State> {
@@ -28,7 +29,8 @@ export class InvitationScreen extends Component<Props, State> {
         this.state = {
             reason: '',
             from: '',
-            to: ''
+            to: '',
+            mode: '' // TODO- change view depending on New, Edit, Reply
         }
     }
 
@@ -40,7 +42,8 @@ export class InvitationScreen extends Component<Props, State> {
 
         this.setState({
             from: this.props.navigation.state.params.from,
-            to: this.props.navigation.state.params.to
+            to: this.props.navigation.state.params.to,
+            mode: this.props.navigation.state.params.mode
         })
     }
 

@@ -636,6 +636,6 @@ test('inviteButtonPressed function', async () => {
   await sut.inviteButtonPressed()
 
   expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('Invitation', { from: '123', to: 'a' })
+  expect(navigateFunc).toHaveBeenCalledWith('Invitation', { from: '123', to: 'a', "mode": "New" })
 
 })
