@@ -50,7 +50,7 @@ export class LoginScreen extends Component<IProps> {
     }
 
     private proceedToLoginIfLoggedIn() {
-        // TODO TEST
+
         if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
 
             this.goToHomeScreen()

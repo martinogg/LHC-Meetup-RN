@@ -10,6 +10,8 @@ import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
 import { IUser, User, IUserFromFirebase, IUserInterest } from './UserStruct'
+import { IInvitation, IInvitationFromFirebase, Invitation, IInvitationFromAndTo, InvitationStatus } from './InvitationStruct'
+import { string } from 'prop-types';
 
 var instance: FirebaseConnection | null = null;
 
@@ -61,6 +63,119 @@ class FirebaseConnection {
         Alert.alert('Error: ' + failReason)
         resolve()
       })
+    })
+  }
+
+  public getInvitations(): Promise<IInvitationFromAndTo> {
+    // TODO TEST
+    return new Promise<IInvitationFromAndTo>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Invitations").get()
+          .then((snap) => {
+
+            let ret: IInvitationFromFirebase[] = []
+
+            snap.forEach(invitationInList => {
+
+              const id = invitationInList.id
+              const data = invitationInList.data()
+
+              if (data) {
+
+                const invitation = Invitation.create(data.from, data.to, data.reason, data.mode)
+                ret.push({ id: id, invitation: invitation })
+              }
+
+            });
+
+            resolve({ from: ret.filter((item) => { return item.invitation.from == currentUser.uid }), to: ret.filter((item) => { return item.invitation.to == currentUser.uid }) })
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+
+  }
+
+  public updateInvitationResponse(uid: string, response: InvitationStatus): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+
+        firebase.firestore().collection("LHC-Invitations").doc(uid).update({ status: response })
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+  }
+
+  public updateInvitation(uid: string, reason: string): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+
+        firebase.firestore().collection("LHC-Invitations").doc(uid).update({ reason })
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+  }
+
+
+  public createNewInvitation(invitation: IInvitation): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+
+        const newInvitationId = this.dateEpochPlusUID()
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Invitations").doc(newInvitationId).set(invitation)
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
     })
   }
 
@@ -229,12 +344,27 @@ class FirebaseConnection {
     return firebase.auth().currentUser != null
   }
 
+  public getCurrentUserID(): string {
+    // TODO TEST
+    if (firebase.auth().currentUser == null) {
+      return 'Error: Not logged In'
+    }
+
+    const currentUser = firebase.auth().currentUser as firebase.User
+    return currentUser.uid
+  }
+
+  private dateEpochPlusUID(): string {
+    // TODO TEST
+    return (new Date).getTime().toString() + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+  }
+
   sendComment(comment: string) {
     // TODO TEST
 
     if (comment !== '') {
 
-      const date = (new Date).getTime().toString() + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+      const date = this.dateEpochPlusUID()
       if (firebase.auth().currentUser != null) {
 
         const currentUser = firebase.auth().currentUser as firebase.User

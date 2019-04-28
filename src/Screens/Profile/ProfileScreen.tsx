@@ -14,6 +14,7 @@ interface IProps {
 }
 
 interface IState {
+    userID: string,
     userName: string,
     userLocation: string,
     userContact: string,
@@ -30,6 +31,7 @@ export class ProfileScreen extends Component<IProps, IState> {
 
         super(props);
         this.state = {
+            userID: '',
             userName: '',
             userLocation: '',
             userContact: '',
@@ -44,6 +46,7 @@ export class ProfileScreen extends Component<IProps, IState> {
             const user: IUser = snapshot
 
             this.setState({
+                userID: '',
                 userName: user.userName,
                 userLocation: user.userLocation,
                 userContact: user.userContact,
@@ -60,6 +63,7 @@ export class ProfileScreen extends Component<IProps, IState> {
         const userFromFB: IUserFromFirebase = this.props.navigation.state.params.profile
 
         this.setState({
+            userID: userFromFB.id,
             userName: userFromFB.user.userName,
             userLocation: userFromFB.user.userLocation,
             userContact: userFromFB.user.userContact,
@@ -79,10 +83,10 @@ export class ProfileScreen extends Component<IProps, IState> {
 
             this.loadParamsSpecifiedProfile()
         }
-        
+
     }
 
-    addInterestButtonPressed() {
+    private addInterestButtonPressed() {
 
         const currentInterests = this.state.userInterests
         const newInterest = UserInterest.create('', '')
@@ -90,7 +94,7 @@ export class ProfileScreen extends Component<IProps, IState> {
         this.setState({ userInterests: newInterests })
     }
 
-    saveButtonPressed() {
+    private saveButtonPressed() {
 
         this.props.screenProps.firebaseConnection.saveUserDetails(User.create(this.state.userName, this.state.userLocation, this.state.userContact, this.state.userInterests)).then(() => {
 
@@ -101,7 +105,7 @@ export class ProfileScreen extends Component<IProps, IState> {
         })
     }
 
-    logoutButtonPressed() {
+    private logoutButtonPressed() {
         this.props.screenProps.firebaseConnection.logout().then(() => {
 
             this.props.navigation.dispatch(
@@ -112,6 +116,8 @@ export class ProfileScreen extends Component<IProps, IState> {
             )
         })
     }
+
+
 
     private editInterest(interest: IUserInterest) {
 
@@ -157,6 +163,11 @@ export class ProfileScreen extends Component<IProps, IState> {
         return ret
     }
 
+    private inviteButtonPressed() {
+        
+        this.props.navigation.navigate('Invitation', {from: this.props.screenProps.firebaseConnection.getCurrentUserID(), to: this.state.userID, viewMode: 'New'})
+    }
+
     private getRenderButtons(editable: boolean) {
 
         return editable ? <View>
@@ -166,7 +177,10 @@ export class ProfileScreen extends Component<IProps, IState> {
             <LHCButton onSelected={() => this.logoutButtonPressed()}>
                 <Text style={AppStyles.buttonText}>Logout</Text>
             </LHCButton>
-        </View> : null
+        </View> :
+            <LHCButton onSelected={() => this.inviteButtonPressed()}>
+                <Text style={AppStyles.buttonText}>Invite</Text>
+            </LHCButton>
     }
 
     getTitle(editable: boolean): JSX.Element | null {
