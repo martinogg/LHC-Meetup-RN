@@ -85,7 +85,7 @@ class FirebaseConnection {
 
               if (data) {
 
-                const invitation = Invitation.create(data.from, data.to, data.reason, data.mode)
+                const invitation = Invitation.create(data.from, data.to, data.reason, data.status)
                 ret.push({ id: id, invitation: invitation })
               }
 

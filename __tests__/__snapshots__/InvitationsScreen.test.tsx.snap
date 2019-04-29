@@ -21,7 +21,8 @@ exports[`invitationComponentForElement function ownInvitation False 1`] = `
     c
   </Text>
   <Text>
-    .
+    STATUS
+    New
   </Text>
 </LHCButton>
 `;
@@ -47,7 +48,8 @@ exports[`invitationComponentForElement function ownInvitation True 1`] = `
     c
   </Text>
   <Text>
-    .
+    STATUS
+    New
   </Text>
 </LHCButton>
 `;
@@ -95,7 +97,8 @@ exports[`should display HomeScreen with Entries 1`] = `
             c
           </Text>
           <Text>
-            .
+            STATUS
+            New
           </Text>
         </LHCButton>,
         <LHCButton
@@ -118,7 +121,8 @@ exports[`should display HomeScreen with Entries 1`] = `
             f
           </Text>
           <Text>
-            .
+            STATUS
+            New
           </Text>
         </LHCButton>,
         <Text
@@ -152,7 +156,8 @@ exports[`should display HomeScreen with Entries 1`] = `
             c2
           </Text>
           <Text>
-            .
+            STATUS
+            New
           </Text>
         </LHCButton>,
         <LHCButton
@@ -175,7 +180,8 @@ exports[`should display HomeScreen with Entries 1`] = `
             f2
           </Text>
           <Text>
-            .
+            STATUS
+            New
           </Text>
         </LHCButton>,
       ]

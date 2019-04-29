@@ -65,7 +65,7 @@ export class InvitationsScreen extends Component<IProps, IState> {
             <Text>FROM{item.invitation.from}</Text>
             <Text>TO{item.invitation.to}</Text>
             <Text>REASON{item.invitation.reason}</Text>
-            <Text>.</Text>
+            <Text>STATUS{item.invitation.status}</Text>
         </LHCButton>
     }
 
