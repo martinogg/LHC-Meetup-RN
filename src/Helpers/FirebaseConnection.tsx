@@ -10,8 +10,7 @@ import 'firebase/firestore';
 import BuildSettings from './BuildSettings';
 
 import { IUser, User, IUserFromFirebase, IUserInterest } from './UserStruct'
-import { IInvitation, IInvitationFromFirebase, Invitation, IInvitationFromAndTo, InvitationStatus } from './InvitationStruct'
-import { string } from 'prop-types';
+import { IInvitation, IInvitationFromFirebase, Invitation, IInvitationFromAndTo, InvitationStatus, IInvitationFromAndToWithUserObjects, IInvitationFromFirebaseWithUserObject } from './InvitationStruct'
 
 var instance: FirebaseConnection | null = null;
 
@@ -66,42 +65,103 @@ class FirebaseConnection {
     })
   }
 
+  //TODO TEST
+  public buildInvitationsWithUserObjects(invitations: IInvitationFromAndTo): Promise<IInvitationFromAndToWithUserObjects> {
+
+    return new Promise<IInvitationFromAndToWithUserObjects>((resolve, reject) => {
+
+      this.allUsers().then((users) => {
+
+        let fromInvitations: IInvitationFromFirebaseWithUserObject[] = []
+        let toInvitations: IInvitationFromFirebaseWithUserObject[] = []
+
+        const createNewInvitation: (invitation: IInvitationFromFirebase) => IInvitationFromFirebaseWithUserObject = (invitation) => {
+
+          const newInvitation: IInvitationFromFirebaseWithUserObject = {
+
+            ...invitation,
+            fromObject: this.userObjectForID(invitation.invitation.from, users),
+            toObject: this.userObjectForID(invitation.invitation.to, users)
+          }
+
+          return newInvitation
+        }
+
+        invitations.from.forEach((element) => {
+
+          fromInvitations.push(createNewInvitation(element))
+        })
+
+        invitations.to.forEach((element) => {
+
+          toInvitations.push(createNewInvitation(element))
+        })
+
+        resolve({ from: fromInvitations, to: toInvitations })
+
+      }).catch((error) => {
+
+        reject(error)
+      })
+
+    })
+  }
+
+  private userObjectForID(id: string, users: IUserFromFirebase[]): IUserFromFirebase {
+
+    let ret: IUserFromFirebase | null = null
+    users.forEach((element) => {
+
+      if (element.id == id) {
+
+        ret = element
+      }
+    })
+
+    if (ret == null) {
+
+      ret = { id: id, user: User.create('Unknown User', '', '', []) }
+    }
+
+    return ret
+  }
+
   public getInvitations(): Promise<IInvitationFromAndTo> {
     // TODO TEST
     return new Promise<IInvitationFromAndTo>((resolve, reject) => {
 
-      if (firebase.auth().currentUser != null) {
-        const currentUser = firebase.auth().currentUser as firebase.User
-
-        firebase.firestore().collection("LHC-Invitations").get()
-          .then((snap) => {
-
-            let ret: IInvitationFromFirebase[] = []
-
-            snap.forEach(invitationInList => {
-
-              const id = invitationInList.id
-              const data = invitationInList.data()
-
-              if (data) {
-
-                const invitation = Invitation.create(data.from, data.to, data.reason, data.status)
-                ret.push({ id: id, invitation: invitation })
-              }
-
-            });
-
-            resolve({ from: ret.filter((item) => { return item.invitation.from == currentUser.uid }), to: ret.filter((item) => { return item.invitation.to == currentUser.uid }) })
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
+      if (firebase.auth().currentUser == null) {
 
         reject('User Not Logged in')
+        return
       }
+
+      const currentUser = firebase.auth().currentUser as firebase.User
+
+      firebase.firestore().collection("LHC-Invitations").get()
+        .then((snap) => {
+
+          let ret: IInvitationFromFirebase[] = []
+
+          snap.forEach(invitationInList => {
+
+            const id = invitationInList.id
+            const data = invitationInList.data()
+
+            if (data) {
+              
+              const invitation = Invitation.create(data.from, data.to, data.reason, data.status)
+              ret.push({ id: id, invitation: invitation })
+            }
+
+          });
+
+          resolve({ from: ret.filter((item) => { return item.invitation.from == currentUser.uid }), to: ret.filter((item) => { return item.invitation.to == currentUser.uid }) })
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
     })
 
   }
@@ -250,6 +310,43 @@ class FirebaseConnection {
                 const user = User.create(data.name, data.location, data.contact, data.interests)
                 ret.push({ id: id, user: user })
               }
+
+            });
+
+            resolve(ret)
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+
+  }
+
+  public allUsers(): Promise<IUserFromFirebase[]> {
+    // TODO TEST
+    return new Promise<IUserFromFirebase[]>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+        const currentUser = firebase.auth().currentUser as firebase.User
+
+        firebase.firestore().collection("LHC-Users").get()
+          .then((snap) => {
+
+            let ret: IUserFromFirebase[] = []
+
+            snap.forEach(userInList => {
+
+              const id = userInList.id
+              const data = userInList.data()
+
+                const user = User.create(data.name, data.location, data.contact, data.interests)
+                ret.push({ id: id, user: user })
 
             });
 

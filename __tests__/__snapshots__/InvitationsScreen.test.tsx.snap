@@ -14,7 +14,7 @@ exports[`invitationComponentForElement function ownInvitation False 1`] = `
   </Text>
   <Text>
     TO
-    b
+    a
   </Text>
   <Text>
     REASON
@@ -41,7 +41,7 @@ exports[`invitationComponentForElement function ownInvitation True 1`] = `
   </Text>
   <Text>
     TO
-    b
+    a
   </Text>
   <Text>
     REASON
@@ -66,124 +66,9 @@ exports[`should display HomeScreen with Entries 1`] = `
   <FlatList
     data={
       Array [
-        <Text
-          style={
-            Object {
-              "color": "#fff",
-              "fontWeight": "700",
-              "textAlign": "center",
-            }
-          }
-        >
-          Sent
+        <Text>
+          No Invitations. Go to Browse Screen to find a new person to meet
         </Text>,
-        <LHCButton
-          onSelected={[Function]}
-        >
-          <Text>
-            ID
-            1
-          </Text>
-          <Text>
-            FROM
-            a
-          </Text>
-          <Text>
-            TO
-            b
-          </Text>
-          <Text>
-            REASON
-            c
-          </Text>
-          <Text>
-            STATUS
-            New
-          </Text>
-        </LHCButton>,
-        <LHCButton
-          onSelected={[Function]}
-        >
-          <Text>
-            ID
-            2
-          </Text>
-          <Text>
-            FROM
-            d
-          </Text>
-          <Text>
-            TO
-            e
-          </Text>
-          <Text>
-            REASON
-            f
-          </Text>
-          <Text>
-            STATUS
-            New
-          </Text>
-        </LHCButton>,
-        <Text
-          style={
-            Object {
-              "color": "#fff",
-              "fontWeight": "700",
-              "textAlign": "center",
-            }
-          }
-        >
-          Received
-        </Text>,
-        <LHCButton
-          onSelected={[Function]}
-        >
-          <Text>
-            ID
-            12
-          </Text>
-          <Text>
-            FROM
-            a2
-          </Text>
-          <Text>
-            TO
-            b2
-          </Text>
-          <Text>
-            REASON
-            c2
-          </Text>
-          <Text>
-            STATUS
-            New
-          </Text>
-        </LHCButton>,
-        <LHCButton
-          onSelected={[Function]}
-        >
-          <Text>
-            ID
-            22
-          </Text>
-          <Text>
-            FROM
-            d2
-          </Text>
-          <Text>
-            TO
-            e2
-          </Text>
-          <Text>
-            REASON
-            f2
-          </Text>
-          <Text>
-            STATUS
-            New
-          </Text>
-        </LHCButton>,
       ]
     }
     disableVirtualization={false}

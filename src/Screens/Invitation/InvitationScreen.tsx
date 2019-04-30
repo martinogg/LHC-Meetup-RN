@@ -6,6 +6,7 @@ import { NavigationScreenProp } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IInvitationFromFirebase, Invitation, InvitationStatus } from '../../Helpers/InvitationStruct'
 import LHCButton from '../../Components/LHCButton/LHCButton'
+import { IUserFromFirebase, User } from '../../Helpers/UserStruct';
 
 interface Props {
     navigation: NavigationScreenProp<any, any>,
@@ -16,8 +17,8 @@ interface Props {
 
 interface State {
     reason: string,
-    from: string,
-    to: string,
+    fromObject: IUserFromFirebase,
+    toObject: IUserFromFirebase,
     uid: string,
     viewMode: string
 }
@@ -29,8 +30,8 @@ export class InvitationScreen extends Component<Props, State> {
 
         this.state = {
             reason: '',
-            from: '',
-            to: '',
+            fromObject: { id: '', user: User.create('', '', '', []) },
+            toObject: { id: '', user: User.create('', '', '', []) },
             uid: '',
             viewMode: ''
         }
@@ -43,11 +44,11 @@ export class InvitationScreen extends Component<Props, State> {
     public componentDidMount() {
 
         this.setState({
-            from: this.props.navigation.state.params.from,
-            to: this.props.navigation.state.params.to,
-            uid: this.props.navigation.state.params.uid,
-            reason: this.props.navigation.state.params.reason,
-            viewMode: this.props.navigation.state.params.viewMode
+            fromObject: this.props.navigation.state.params.fromObject || this.state.fromObject,
+            toObject: this.props.navigation.state.params.toObject || this.state.toObject,
+            uid: this.props.navigation.state.params.uid || this.state.uid,
+            reason: this.props.navigation.state.params.reason || this.state.reason,
+            viewMode: this.props.navigation.state.params.viewMode || this.state.viewMode
         })
     }
 
@@ -58,7 +59,7 @@ export class InvitationScreen extends Component<Props, State> {
 
     private sendButtonPressed() {
 
-        const invitation = Invitation.create(this.state.from, this.state.to, this.state.reason, InvitationStatus.New)
+        const invitation = Invitation.create(this.state.fromObject.id, this.state.toObject.id, this.state.reason, InvitationStatus.New)
         this.props.screenProps.firebaseConnection.createNewInvitation(invitation).then(() => {
 
             Alert.alert('new invite OK')
@@ -140,12 +141,12 @@ export class InvitationScreen extends Component<Props, State> {
             <View style={AppStyles.container}>
                 <LHCButton onSelected={() => { }}>
                     <Text style={AppStyles.buttonText}>From:</Text>
-                    <Text style={AppStyles.buttonText}>{this.state.from}</Text>
+                    <Text style={AppStyles.buttonText}>{this.state.fromObject.user.userName}</Text>
                 </LHCButton>
 
                 <LHCButton onSelected={() => { }}>
                     <Text style={AppStyles.buttonText}>To:</Text>
-                    <Text style={AppStyles.buttonText}>{this.state.to}</Text>
+                    <Text style={AppStyles.buttonText}>{this.state.toObject.user.userName}</Text>
                 </LHCButton>
 
                 <TextInput style={AppStyles.input}

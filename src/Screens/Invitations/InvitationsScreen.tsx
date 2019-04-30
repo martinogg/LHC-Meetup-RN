@@ -3,7 +3,7 @@ import { Button, FlatList, Platform, StyleSheet, Text, View, Alert } from 'react
 import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation'
 import { AppStyles } from '../../AppStyles'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
-import { IInvitationFromFirebase } from '../../Helpers/InvitationStruct';
+import { IInvitationFromFirebase, IInvitationFromAndTo, IInvitationFromFirebaseWithUserObject } from '../../Helpers/InvitationStruct';
 import LHCButton from '../../Components/LHCButton/LHCButton';
 
 interface IProps {
@@ -15,8 +15,8 @@ interface IProps {
 }
 
 interface IState {
-    sentInvitations: IInvitationFromFirebase[]
-    receivedInvitations: IInvitationFromFirebase[]
+    sentInvitations: IInvitationFromFirebaseWithUserObject[]
+    receivedInvitations: IInvitationFromFirebaseWithUserObject[]
 }
 
 export class InvitationsScreen extends Component<IProps, IState> {
@@ -42,34 +42,45 @@ export class InvitationsScreen extends Component<IProps, IState> {
 
     private getInvitations() {
 
-        this.props.screenProps.firebaseConnection.getInvitations().then((_invitations) => {
+        this.props.screenProps.firebaseConnection.getInvitations().then((invitations) => {
 
-            this.setState({ sentInvitations: _invitations.from, receivedInvitations: _invitations.to })
+            this.getInvitationsWithUserObjects(invitations)
         }, (error) => {
 
             Alert.alert('Error:' + error)
         })
     }
 
-    private invitationTapped(item: IInvitationFromFirebase, ownInvititation: boolean) {
+    private getInvitationsWithUserObjects(invitations: IInvitationFromAndTo) {
 
-        const mode = ownInvititation ? 'Edit' : 'Reply'
-        this.props.navigation.navigate('Invitation', {...item.invitation, viewMode: mode, uid: item.id})
+        this.props.screenProps.firebaseConnection.buildInvitationsWithUserObjects(invitations).then((invitationsWithUserObjects) => {
+
+            this.setState({ sentInvitations: invitationsWithUserObjects.from, receivedInvitations: invitationsWithUserObjects.to })
+        }, (error) => {
+
+            Alert.alert('Error:' + error)
+        })
     }
 
-    private invitationComponentForElement(item: IInvitationFromFirebase, ownInvititation: boolean): JSX.Element {
+    private invitationTapped(item: IInvitationFromFirebaseWithUserObject, ownInvititation: boolean) {
+
+        const mode = ownInvititation ? 'Edit' : 'Reply'
+        this.props.navigation.navigate('Invitation', { ...item.invitation, viewMode: mode, uid: item.id, fromObject: item.fromObject, toObject: item.toObject})
+    }
+
+    private invitationComponentForElement(item: IInvitationFromFirebaseWithUserObject, ownInvititation: boolean): JSX.Element {
 
         // TODO - this needs to look better
         return <LHCButton onSelected={() => { this.invitationTapped(item, ownInvititation) }}>
             <Text>ID{item.id}</Text>
-            <Text>FROM{item.invitation.from}</Text>
-            <Text>TO{item.invitation.to}</Text>
+            <Text>FROM{item.fromObject.user.userName}</Text>
+            <Text>TO{item.toObject.user.userName}</Text>
             <Text>REASON{item.invitation.reason}</Text>
             <Text>STATUS{item.invitation.status}</Text>
         </LHCButton>
     }
 
-    private listElements(sentInvitations: IInvitationFromFirebase[], receivedInvitations: IInvitationFromFirebase[]): JSX.Element[] {
+    private listElements(sentInvitations: IInvitationFromFirebaseWithUserObject[], receivedInvitations: IInvitationFromFirebaseWithUserObject[]): JSX.Element[] {
 
         let ret: JSX.Element[] = []
 

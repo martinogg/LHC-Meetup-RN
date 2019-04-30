@@ -1,3 +1,5 @@
+import { IUserFromFirebase } from "./UserStruct";
+
 export interface IInvitation {
     from: string,
     to: string,
@@ -13,6 +15,16 @@ export interface IInvitationFromFirebase {
 export interface IInvitationFromAndTo {
     from: IInvitationFromFirebase[],
     to: IInvitationFromFirebase[]
+}
+
+export interface IInvitationFromAndToWithUserObjects {
+    from: IInvitationFromFirebaseWithUserObject[],
+    to: IInvitationFromFirebaseWithUserObject[],
+}
+
+export interface IInvitationFromFirebaseWithUserObject extends IInvitationFromFirebase {
+    fromObject: IUserFromFirebase,
+    toObject: IUserFromFirebase
 }
 
 export enum InvitationStatus {

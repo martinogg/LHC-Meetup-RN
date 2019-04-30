@@ -164,8 +164,20 @@ export class ProfileScreen extends Component<IProps, IState> {
     }
 
     private inviteButtonPressed() {
-        
-        this.props.navigation.navigate('Invitation', {from: this.props.screenProps.firebaseConnection.getCurrentUserID(), to: this.state.userID, viewMode: 'New'})
+
+        this.props.screenProps.firebaseConnection.loadUserDetails().then((snapshot) => {
+
+            const user: IUser = snapshot
+            const userID: string = this.props.screenProps.firebaseConnection.getCurrentUserID()
+            const fromUserObject: IUserFromFirebase = {id: userID, user: user}
+            const toUserObject: IUserFromFirebase = this.props.navigation.state.params.profile
+
+            this.props.navigation.navigate('Invitation', { fromObject: fromUserObject, toObject: toUserObject, viewMode: 'New' })
+        }, (error) => {
+
+            Alert.alert('error: ' + error)
+        })
+
     }
 
     private getRenderButtons(editable: boolean) {

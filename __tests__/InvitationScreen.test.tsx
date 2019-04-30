@@ -9,6 +9,7 @@ import renderer from 'react-test-renderer';
 
 import LHCButton from '../src/Components/LHCButton/LHCButton'
 
+import { User } from '../src/Helpers/UserStruct'
 import { IInvitationFromAndTo, IInvitation, Invitation, IInvitationFromFirebase, InvitationStatus } from '../src/Helpers/InvitationStruct'
 import { InvitationScreen } from '../src/Screens/Invitation/InvitationScreen';
 
@@ -20,8 +21,8 @@ const createTestProps = (props: Object) => ({
         dispatch: jest.fn(),
         state: {
             params: {
-                from: '',
-                to: ''
+                fromObject: { id: '1', user: User.create('a', 'b', 'c', []) },
+                toObject: { id: '1', user: User.create('a', 'b', 'c', []) }
             }
         }
     },
@@ -42,22 +43,25 @@ it('should display InvitationScreen with no errors', () => {
 
 test('componentDidMount function', () => {
 
-    let props: any = createTestProps({})
-    props.navigation.state.params.from = 'aaa111'
-    props.navigation.state.params.to = 'abb122'
-    props.navigation.state.params.uid = 'abb123'
-    props.navigation.state.params.reason = 'abb124'
+    let props: any = createTestProps({});
+  
+    props.navigation.state.params.fromObject = 'a'
+    props.navigation.state.params.toObject = 'b'
     props.navigation.state.params.viewMode = 'New'
-
+    props.navigation.state.params.uid = 'd'
+    props.navigation.state.params.reason = 'e'
+  
     const sut = new InvitationScreen(props)
-
+  
     sut.setState = jest.fn()
-
+  
     sut.componentDidMount()
-
+  
     expect(sut.setState).toHaveBeenCalledTimes(1)
-    expect(sut.setState).toBeCalledWith({ "from": "aaa111", "reason": "abb124", "to": "abb122", "uid": "abb123", "viewMode": "New" })
-})
+    expect(sut.setState).toBeCalledWith({"fromObject": "a", "reason": "e", "toObject": "b", "uid": "d", "viewMode": "New"})
+  
+  
+  })
 
 test('handleCustomDescriptionChange function', () => {
 
@@ -83,7 +87,7 @@ test('sendButtonPressed function SUCCESS', async () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    const mockInvitation = Invitation.create('a', 'b', 'c', InvitationStatus.New)
+    const mockInvitation = Invitation.create('1', '1', 'c', InvitationStatus.New)
 
     sut.setState(mockInvitation)
     props.screenProps.firebaseConnection = {
@@ -112,7 +116,7 @@ test('sendButtonPressed function FAIL', async () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    const mockInvitation = Invitation.create('a', 'b', 'c', InvitationStatus.New)
+    const mockInvitation = Invitation.create('1', '1', 'c', InvitationStatus.New)
 
     sut.setState(mockInvitation)
     props.screenProps.firebaseConnection = {
