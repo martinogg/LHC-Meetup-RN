@@ -134,22 +134,21 @@ export class InvitationScreen extends Component<Props, State> {
     }
 
     private fromPersonButtonTapped() {
-        // TODO TEST
+
         this.showUserProfile(this.state.fromObject)
     }
 
     private toPersonButtonTapped() {
-        // TODO TEST
+
         this.showUserProfile(this.state.toObject)
     }
 
     private showUserProfile(user: IUserFromFirebase) {
-        // TODO TEST
+
         this.props.navigation.push('Profile', {profile: user, editable: false})
     }
 
     public render() {
-        // TODO TEST 'selected' func presses
 
         const buttonButtons = this.buttonButtons(this.state.viewMode)
 

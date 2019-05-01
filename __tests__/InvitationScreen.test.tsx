@@ -9,7 +9,7 @@ import renderer from 'react-test-renderer';
 
 import LHCButton from '../src/Components/LHCButton/LHCButton'
 
-import { User } from '../src/Helpers/UserStruct'
+import { User, IUserFromFirebase } from '../src/Helpers/UserStruct'
 import { IInvitationFromAndTo, IInvitation, Invitation, IInvitationFromFirebase, InvitationStatus } from '../src/Helpers/InvitationStruct'
 import { InvitationScreen } from '../src/Screens/Invitation/InvitationScreen';
 
@@ -44,24 +44,24 @@ it('should display InvitationScreen with no errors', () => {
 test('componentDidMount function', () => {
 
     let props: any = createTestProps({});
-  
+
     props.navigation.state.params.fromObject = 'a'
     props.navigation.state.params.toObject = 'b'
     props.navigation.state.params.viewMode = 'New'
     props.navigation.state.params.uid = 'd'
     props.navigation.state.params.reason = 'e'
-  
+
     const sut = new InvitationScreen(props)
-  
+
     sut.setState = jest.fn()
-  
+
     sut.componentDidMount()
-  
+
     expect(sut.setState).toHaveBeenCalledTimes(1)
-    expect(sut.setState).toBeCalledWith({"fromObject": "a", "reason": "e", "toObject": "b", "uid": "d", "viewMode": "New"})
-  
-  
-  })
+    expect(sut.setState).toBeCalledWith({ "fromObject": "a", "reason": "e", "toObject": "b", "uid": "d", "viewMode": "New" })
+
+
+})
 
 test('handleCustomDescriptionChange function', () => {
 
@@ -312,3 +312,85 @@ test('buttonButtons function with Reply', () => {
     expect(sut.buttonButtons('Reply')).toMatchSnapshot()
 })
 
+test('render from button press', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    sut.fromPersonButtonTapped = jest.fn()
+
+    wrapper.find(LHCButton).first().simulate('selected')
+
+    expect(sut.fromPersonButtonTapped).toBeCalledTimes(1)
+})
+
+test('render to button press', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    sut.toPersonButtonTapped = jest.fn()
+
+    wrapper.find(LHCButton).at(1).simulate('selected')
+
+    expect(sut.toPersonButtonTapped).toBeCalledTimes(1)
+})
+
+test('fromPersonButtonTapped function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    const mockObj: IUserFromFirebase = {
+        id: '1111',
+        user: User.create('a', 'b', 'c', [])
+    }
+
+    sut.showUserProfile = jest.fn()
+    sut.setState({ fromObject: mockObj })
+
+    sut.fromPersonButtonTapped()
+
+    expect(sut.showUserProfile).toBeCalledTimes(1)
+    expect(sut.showUserProfile).toBeCalledWith(mockObj)
+})
+
+test('toPersonButtonTapped function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    const mockObj: IUserFromFirebase = {
+        id: '1111',
+        user: User.create('a', 'b', 'c', [])
+    }
+
+    sut.showUserProfile = jest.fn()
+    sut.setState({ toObject: mockObj })
+
+    sut.toPersonButtonTapped()
+
+    expect(sut.showUserProfile).toBeCalledTimes(1)
+    expect(sut.showUserProfile).toBeCalledWith(mockObj)
+})
+
+test('toPersonButtonTapped function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    const mockObj: IUserFromFirebase = {
+        id: '1111',
+        user: User.create('a', 'b', 'c', [])
+    }
+
+    sut.showUserProfile(mockObj)
+
+    expect(props.navigation.push).toBeCalledTimes(1)
+    expect(props.navigation.push).toBeCalledWith('Profile', { "editable": false, "profile": { "id": "1111", "user": { "userContact": "c", "userInterests": [], "userLocation": "b", "userName": "a" } } })
+})
