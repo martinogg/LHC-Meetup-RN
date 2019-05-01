@@ -194,5 +194,5 @@ test('onUserSelected function', () => {
   sut.onUserSelected(mockUser)
 
   expect(props.navigation.push).toHaveBeenCalledTimes(1)
-  expect(props.navigation.push).toHaveBeenCalledWith('Profile', { profile: mockUser, editable: false })
+  expect(props.navigation.push).toHaveBeenCalledWith('Profile', { profile: mockUser, editable: false, invitable: true })
 })

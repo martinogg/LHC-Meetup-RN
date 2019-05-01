@@ -248,7 +248,7 @@ it('should display ProfileScreen Editable with no errors', () => {
   expect(renderer.create(<ProfileScreen {...props} />)).toMatchSnapshot();
 });
 
-it('should display ProfileScreen Non-Editable with no errors', () => {
+it('should display ProfileScreen Non-Editable non-invitable with no errors', () => {
 
   let props = createTestProps({
     screenProps: {
@@ -259,6 +259,33 @@ it('should display ProfileScreen Non-Editable with no errors', () => {
       }
     }
   }, false);
+
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+
+  props.navigation.state.params = newParams
+
+  expect(renderer.create(<ProfileScreen {...props} />)).toMatchSnapshot();
+});
+
+it('should display ProfileScreen Non-Editable invitable with no errors', () => {
+
+  let props: any = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        searchOtherUsers: jest.fn(),
+        isLoggedIn: () => { return true },
+        loadUserDetails: () => { return new Promise((resolve, reject) => { }) }
+      }
+    }
+  }, false);
+
+  props.navigation.state.params['invitable'] = true
 
   const newParams = {
     ...props.navigation.state.params,

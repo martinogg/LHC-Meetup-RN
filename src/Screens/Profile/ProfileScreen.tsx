@@ -169,7 +169,7 @@ export class ProfileScreen extends Component<IProps, IState> {
 
             const user: IUser = snapshot
             const userID: string = this.props.screenProps.firebaseConnection.getCurrentUserID()
-            const fromUserObject: IUserFromFirebase = {id: userID, user: user}
+            const fromUserObject: IUserFromFirebase = { id: userID, user: user }
             const toUserObject: IUserFromFirebase = this.props.navigation.state.params.profile
 
             this.props.navigation.push('Invitation', { fromObject: fromUserObject, toObject: toUserObject, viewMode: 'New' })
@@ -180,19 +180,27 @@ export class ProfileScreen extends Component<IProps, IState> {
 
     }
 
-    private getRenderButtons(editable: boolean) {
+    private getRenderButtons(editable: boolean, invitable: boolean): JSX.Element | null {
 
-        return editable ? <View>
-            <LHCButton onSelected={() => this.saveButtonPressed()}>
-                <Text style={AppStyles.buttonText}>Save Changes</Text>
-            </LHCButton>
-            <LHCButton onSelected={() => this.logoutButtonPressed()}>
-                <Text style={AppStyles.buttonText}>Logout</Text>
-            </LHCButton>
-        </View> :
-            <LHCButton onSelected={() => this.inviteButtonPressed()}>
+        if (editable) {
+
+            return <View>
+                <LHCButton onSelected={() => this.saveButtonPressed()}>
+                    <Text style={AppStyles.buttonText}>Save Changes</Text>
+                </LHCButton>
+                <LHCButton onSelected={() => this.logoutButtonPressed()}>
+                    <Text style={AppStyles.buttonText}>Logout</Text>
+                </LHCButton>
+            </View>
+        }
+        else if (invitable) {
+
+            return <LHCButton onSelected={() => this.inviteButtonPressed()}>
                 <Text style={AppStyles.buttonText}>Invite</Text>
             </LHCButton>
+        }
+
+        return null;
     }
 
     getTitle(editable: boolean): JSX.Element | null {
@@ -260,7 +268,8 @@ export class ProfileScreen extends Component<IProps, IState> {
     public render() {
 
         const editable = this.props.navigation.state.params.editable
-        const lowerButtons = this.getRenderButtons(editable)
+        const invitable = this.props.navigation.state.params.invitable
+        const lowerButtons = this.getRenderButtons(editable, invitable)
         const titleText = this.getTitle(editable)
         const editItems = this.getEditItems(editable)
 
