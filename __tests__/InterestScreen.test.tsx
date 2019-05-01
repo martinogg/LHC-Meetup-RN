@@ -11,7 +11,7 @@ import renderer from 'react-test-renderer';
 
 const createTestProps = (props: Object) => ({
     navigation: {
-        navigate: jest.fn(),
+        push: jest.fn(),
         replace: jest.fn(),
         dispatch: jest.fn(),
         getParam: (param: string) => { return {} },

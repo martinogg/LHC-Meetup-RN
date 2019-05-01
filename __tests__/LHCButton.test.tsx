@@ -6,7 +6,7 @@ import renderer from 'react-test-renderer';
 
 test('LHCButton snapshot', () => {
 
-    const navigation = { navigate: jest.fn() };
+    const navigation = { push: jest.fn() };
     expect(renderer.create(<LHCButton onSelected={() => { }} />)).toMatchSnapshot();
 })
 

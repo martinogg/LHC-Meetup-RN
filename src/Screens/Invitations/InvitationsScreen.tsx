@@ -65,7 +65,7 @@ export class InvitationsScreen extends Component<IProps, IState> {
     private invitationTapped(item: IInvitationFromFirebaseWithUserObject, ownInvititation: boolean) {
 
         const mode = ownInvititation ? 'Edit' : 'Reply'
-        this.props.navigation.navigate('Invitation', { ...item.invitation, viewMode: mode, uid: item.id, fromObject: item.fromObject, toObject: item.toObject})
+        this.props.navigation.push('Invitation', { ...item.invitation, viewMode: mode, uid: item.id, fromObject: item.fromObject, toObject: item.toObject})
     }
 
     private invitationComponentForElement(item: IInvitationFromFirebaseWithUserObject, ownInvititation: boolean): JSX.Element {

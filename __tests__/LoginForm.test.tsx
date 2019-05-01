@@ -19,7 +19,7 @@ it('should display LoginForm with no errors', () => {
   let props: any;
   props = createTestProps({});
 
-  const navigation = { navigate: jest.fn() };
+  const navigation = { push: jest.fn() };
   expect(renderer.create(<LoginForm {...props} />)).toMatchSnapshot();
 });
 

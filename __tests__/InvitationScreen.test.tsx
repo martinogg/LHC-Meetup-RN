@@ -16,7 +16,7 @@ import { InvitationScreen } from '../src/Screens/Invitation/InvitationScreen';
 
 const createTestProps = (props: Object) => ({
     navigation: {
-        navigate: jest.fn(),
+        push: jest.fn(),
         replace: jest.fn(),
         dispatch: jest.fn(),
         state: {

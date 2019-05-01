@@ -123,7 +123,7 @@ export class ProfileScreen extends Component<IProps, IState> {
 
         const isEditable = this.props.navigation.state.params.editable
 
-        this.props.navigation.navigate('Interest', {
+        this.props.navigation.push('Interest', {
             editable: isEditable,
             previousUserInterest: interest,
             saveCallback: (newInterest: IUserInterest) => {
@@ -172,7 +172,7 @@ export class ProfileScreen extends Component<IProps, IState> {
             const fromUserObject: IUserFromFirebase = {id: userID, user: user}
             const toUserObject: IUserFromFirebase = this.props.navigation.state.params.profile
 
-            this.props.navigation.navigate('Invitation', { fromObject: fromUserObject, toObject: toUserObject, viewMode: 'New' })
+            this.props.navigation.push('Invitation', { fromObject: fromUserObject, toObject: toUserObject, viewMode: 'New' })
         }, (error) => {
 
             Alert.alert('error: ' + error)

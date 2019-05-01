@@ -11,7 +11,7 @@ import renderer from 'react-test-renderer';
 
 const createTestProps = (props: Object, editable: boolean) => ({
   navigation: {
-    navigate: jest.fn(),
+    push: jest.fn(),
     getParam: (param: string) => { return {} },
     replace: jest.fn(),
     dispatch: jest.fn(),
@@ -379,8 +379,8 @@ test('editInterest Editable function', () => {
   const mockInterest = UserInterest.create('a', 'b')
   sut.editInterest(mockInterest)
 
-  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-  expect(props.navigation.navigate).toBeCalledWith('Interest',
+  expect(props.navigation.push).toHaveBeenCalledTimes(1)
+  expect(props.navigation.push).toBeCalledWith('Interest',
     expect.objectContaining({
       "editable": true,
       "previousUserInterest": {
@@ -419,8 +419,8 @@ test('editInterest Non-Editable function', () => {
   const mockInterest = UserInterest.create('a', 'b')
   sut.editInterest(mockInterest)
 
-  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-  expect(props.navigation.navigate).toBeCalledWith('Interest',
+  expect(props.navigation.push).toHaveBeenCalledTimes(1)
+  expect(props.navigation.push).toBeCalledWith('Interest',
     expect.objectContaining({
       "editable": false,
       "previousUserInterest": {
@@ -447,7 +447,7 @@ test('editInterest saveCallback function', async () => {
   }, true);
 
   const newNavigation = {
-    ...props.navigation, navigate: (screenName: string, params: any) => {
+    ...props.navigation, push: (screenName: string, params: any) => {
 
       sentParams = params
     }
@@ -486,7 +486,7 @@ test('editInterest removeCallback function', async () => {
 
   props.navigation = {
     ...props.navigation,
-    navigate: (screenName: string, params: any) => {
+    push: (screenName: string, params: any) => {
 
       sentParams = params
     }
@@ -634,8 +634,8 @@ test('inviteButtonPressed function SUCCESS', async () => {
   }
   props.navigation.state.params = newParams
 
-  const navigateFunc = jest.fn()
-  props.navigation.navigate = navigateFunc
+  const pushFunc = jest.fn()
+  props.navigation.push = pushFunc
 
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = await wrapper.instance()
@@ -643,8 +643,8 @@ test('inviteButtonPressed function SUCCESS', async () => {
 
   await sut.inviteButtonPressed()
 
-  expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('Invitation', { "fromObject": { "id": "123", "user": { "userContact": "con", "userInterests": [{ "description": "e", "title": "d" }, { "description": "g", "title": "f" }], "userLocation": "loc", "userName": "name" } }, "toObject": { "id": "a", "user": { "userContact": "con", "userInterests": [{ "description": "e", "title": "d" }, { "description": "g", "title": "f" }], "userLocation": "loc", "userName": "name" } }, "viewMode": "New" })
+  expect(pushFunc).toHaveBeenCalledTimes(1)
+  expect(pushFunc).toHaveBeenCalledWith('Invitation', { "fromObject": { "id": "123", "user": { "userContact": "con", "userInterests": [{ "description": "e", "title": "d" }, { "description": "g", "title": "f" }], "userLocation": "loc", "userName": "name" } }, "toObject": { "id": "a", "user": { "userContact": "con", "userInterests": [{ "description": "e", "title": "d" }, { "description": "g", "title": "f" }], "userLocation": "loc", "userName": "name" } }, "viewMode": "New" })
 
 })
 
@@ -680,8 +680,8 @@ test('inviteButtonPressed function FAIL', async () => {
   }
   props.navigation.state.params = newParams
 
-  const navigateFunc = jest.fn()
-  props.navigation.navigate = navigateFunc
+  const pushFunc = jest.fn()
+  props.navigation.push = pushFunc
 
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = await wrapper.instance()

@@ -133,18 +133,34 @@ export class InvitationScreen extends Component<Props, State> {
 
     }
 
+    private fromPersonButtonTapped() {
+        // TODO TEST
+        this.showUserProfile(this.state.fromObject)
+    }
+
+    private toPersonButtonTapped() {
+        // TODO TEST
+        this.showUserProfile(this.state.toObject)
+    }
+
+    private showUserProfile(user: IUserFromFirebase) {
+        // TODO TEST
+        this.props.navigation.push('Profile', {profile: user, editable: false})
+    }
+
     public render() {
+        // TODO TEST 'selected' func presses
 
         const buttonButtons = this.buttonButtons(this.state.viewMode)
 
         return (
             <View style={AppStyles.container}>
-                <LHCButton onSelected={() => { }}>
+                <LHCButton onSelected={() => { this.fromPersonButtonTapped() }}>
                     <Text style={AppStyles.buttonText}>From:</Text>
                     <Text style={AppStyles.buttonText}>{this.state.fromObject.user.userName}</Text>
                 </LHCButton>
 
-                <LHCButton onSelected={() => { }}>
+                <LHCButton onSelected={() => { this.toPersonButtonTapped() }}>
                     <Text style={AppStyles.buttonText}>To:</Text>
                     <Text style={AppStyles.buttonText}>{this.state.toObject.user.userName}</Text>
                 </LHCButton>

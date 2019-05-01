@@ -10,58 +10,58 @@ import renderer from 'react-test-renderer';
 
 it('should display HomeScreen with no errors', () => {
 
-  const navigation = { navigate: jest.fn() };
+  const navigation = { push: jest.fn() };
   expect(renderer.create(<HomeScreen navigation={navigation} />)).toMatchSnapshot();
 });
 
 test('test onPress About functionality', () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  const pushFunc = jest.fn()
+  const navigation = { push: pushFunc };
 
   const wrapper = shallow(<HomeScreen navigation={navigation} />);
 
   wrapper.find(LHCButton).at(3).simulate('selected')
 
-  expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('AboutApp')
+  expect(pushFunc).toHaveBeenCalledTimes(1)
+  expect(pushFunc).toHaveBeenCalledWith('AboutApp')
 });
 
 test('test onPress Profile functionality', () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  const pushFunc = jest.fn()
+  const navigation = { push: pushFunc };
 
   const wrapper = shallow(<HomeScreen navigation={navigation} />);
 
   wrapper.find(LHCButton).first().simulate('selected')
 
-  expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('Profile', {editable: true})
+  expect(pushFunc).toHaveBeenCalledTimes(1)
+  expect(pushFunc).toHaveBeenCalledWith('Profile', {editable: true})
 });
 
 test('test onPress Browse functionality', () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  const pushFunc = jest.fn()
+  const navigation = { push: pushFunc };
 
   const wrapper = shallow(<HomeScreen navigation={navigation} />);
 
   wrapper.find(LHCButton).at(1).simulate('selected')
 
-  expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('Browse')
+  expect(pushFunc).toHaveBeenCalledTimes(1)
+  expect(pushFunc).toHaveBeenCalledWith('Browse')
 });
 
 test('test onPress Invitations functionality', () => {
 
-  const navigateFunc = jest.fn()
-  const navigation = { navigate: navigateFunc };
+  const pushFunc = jest.fn()
+  const navigation = { push: pushFunc };
 
   const wrapper = shallow(<HomeScreen navigation={navigation} />);
 
   wrapper.find(LHCButton).at(2).simulate('selected')
 
-  expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('Invitations')
+  expect(pushFunc).toHaveBeenCalledTimes(1)
+  expect(pushFunc).toHaveBeenCalledWith('Invitations')
 });

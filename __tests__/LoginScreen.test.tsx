@@ -9,7 +9,7 @@ import LHCButton from '../src/Components/LHCButton/LHCButton'
 
 const createTestProps = (props: Object) => ({
   navigation: {
-    navigate: jest.fn(),
+    push: jest.fn(),
     replace: jest.fn(),
     dispatch: jest.fn()
   },
@@ -25,7 +25,7 @@ it('should display LoginScreen with no errors', () => {
   let props: any;
   props = createTestProps({});
 
-  const navigation = { navigate: jest.fn() };
+  const navigation = { push: jest.fn() };
   expect(renderer.create(<LoginScreen {...props} />)).toMatchSnapshot();
 });
 
@@ -38,8 +38,8 @@ test('test onPress Login functionality', () => {
 
   wrapper.find(LHCButton).first().simulate('selected')
 
-  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-  expect(props.navigation.navigate).toHaveBeenCalledWith('Register')
+  expect(props.navigation.push).toHaveBeenCalledTimes(1)
+  expect(props.navigation.push).toHaveBeenCalledWith('Register')
 });
 
 test('test goToHomeScreen function', () => {

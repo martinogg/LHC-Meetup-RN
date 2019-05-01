@@ -13,20 +13,20 @@ export class HomeScreen extends Component<Props> {
 
     public render() {
 
-        const { navigate } = this.props.navigation;
+        const { push } = this.props.navigation;
         return (
             <SafeAreaView style={AppStyles.container}>
                 <Text style={[AppStyles.buttonText, { flex: 1 }]}>Hello! Create your profile to Begin, then Search for other people</Text>
-                <LHCButton onSelected={() => navigate('Profile', {editable: true})}>
+                <LHCButton onSelected={() => push('Profile', {editable: true})}>
                     <Text style={AppStyles.buttonText} >Enter Profile Details</Text>
                 </LHCButton>
-                <LHCButton onSelected={() => navigate('Browse')}>
+                <LHCButton onSelected={() => push('Browse')}>
                     <Text style={AppStyles.buttonText}>Browse by Interest</Text>
                 </LHCButton>
-                <LHCButton onSelected={() => navigate('Invitations')}>
+                <LHCButton onSelected={() => push('Invitations')}>
                     <Text style={AppStyles.buttonText}>Invitations</Text>
                 </LHCButton>
-                <LHCButton onSelected={() => navigate('AboutApp')}>
+                <LHCButton onSelected={() => push('AboutApp')}>
                     <Text style={AppStyles.buttonText}>About this App</Text>
                 </LHCButton>
             </SafeAreaView >

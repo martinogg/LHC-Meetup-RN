@@ -10,7 +10,7 @@ import renderer from 'react-test-renderer';
 
 const createTestProps = (props: Object) => ({
   navigation: {
-    navigate: jest.fn(),
+    push: jest.fn(),
     replace: jest.fn(),
     dispatch: jest.fn()
   },
@@ -22,7 +22,7 @@ it('should display RegisterScreen with no errors', () => {
   let props: any;
   props = createTestProps({});
 
-  const navigation = { navigate: jest.fn() };
+  const navigation = { push: jest.fn() };
   expect(renderer.create(<RegisterScreen {...props} />)).toMatchSnapshot();
 });
 

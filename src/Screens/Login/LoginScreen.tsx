@@ -40,7 +40,7 @@ export class LoginScreen extends Component<IProps> {
                         <Text style={[AppStyles.buttonText, { fontSize: 20 }]}>Make new friends who share the same interests and hobbies. Meet in real life for a chat</Text>
                     </View>
                         <LoginForm onLoginCallback={(username, password) => this.login(username, password)} actionButtonText='LOGIN' />
-                    <LHCButton onSelected={() => { this.props.navigation.navigate('Register') }}>
+                    <LHCButton onSelected={() => { this.props.navigation.push('Register') }}>
                         <Text style={AppStyles.buttonText}>CREATE NEW ACCOUNT</Text>
                     </LHCButton>
 

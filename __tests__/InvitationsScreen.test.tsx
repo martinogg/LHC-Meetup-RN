@@ -11,7 +11,7 @@ import { User } from '../src/Helpers/UserStruct';
 
 const createTestProps = (props: Object) => ({
     navigation: {
-        navigate: jest.fn(),
+        push: jest.fn(),
         replace: jest.fn(),
         dispatch: jest.fn()
     },
@@ -27,7 +27,7 @@ const createTestProps = (props: Object) => ({
 it('should display HomeScreen with no errors', () => {
 
     const props: any = createTestProps({})
-    const navigation = { navigate: jest.fn() };
+    const navigation = { push: jest.fn() };
 
     expect(renderer.create(<InvitationsScreen {...props} />)).toMatchSnapshot();
 });
@@ -205,28 +205,28 @@ it('should display HomeScreen with Entries', async () => {
 test('invitationTapped function ownInvitation True', () => {
 
     let props: any = createTestProps({})
-    props.navigation.navigate = jest.fn()
+    props.navigation.push = jest.fn()
     const sut: any = new InvitationsScreen(props)
 
     const mockInvitation: IInvitationFromFirebase = { id: '1', invitation: Invitation.create('a', 'b', 'c', InvitationStatus.New) }
     sut.invitationTapped(mockInvitation, true)
 
-    expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-    expect(props.navigation.navigate).toHaveBeenCalledWith('Invitation', { "from": "a", "reason": "c", "status": "New", "to": "b", "uid": "1", "viewMode": "Edit" })
+    expect(props.navigation.push).toHaveBeenCalledTimes(1)
+    expect(props.navigation.push).toHaveBeenCalledWith('Invitation', { "from": "a", "reason": "c", "status": "New", "to": "b", "uid": "1", "viewMode": "Edit" })
 
 })
 
 test('invitationTapped function ownInvitation False', () => {
 
     let props: any = createTestProps({})
-    props.navigation.navigate = jest.fn()
+    props.navigation.push = jest.fn()
     const sut: any = new InvitationsScreen(props)
 
     const mockInvitation: IInvitationFromFirebaseWithUserObject = { id: '1', invitation: Invitation.create('a', 'b', 'c', InvitationStatus.New), fromObject: { id: '1', user: User.create('a', 'b', 'c', []) }, toObject: { id: '1', user: User.create('a', 'b', 'c', []) }}
     sut.invitationTapped(mockInvitation, false)
 
-    expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-    expect(props.navigation.navigate).toHaveBeenCalledWith('Invitation', {"from": "a", "fromObject": {"id": "1", "user": {"userContact": "c", "userInterests": [], "userLocation": "b", "userName": "a"}}, "reason": "c", "status": "New", "to": "b", "toObject": {"id": "1", "user": {"userContact": "c", "userInterests": [], "userLocation": "b", "userName": "a"}}, "uid": "1", "viewMode": "Reply"})
+    expect(props.navigation.push).toHaveBeenCalledTimes(1)
+    expect(props.navigation.push).toHaveBeenCalledWith('Invitation', {"from": "a", "fromObject": {"id": "1", "user": {"userContact": "c", "userInterests": [], "userLocation": "b", "userName": "a"}}, "reason": "c", "status": "New", "to": "b", "toObject": {"id": "1", "user": {"userContact": "c", "userInterests": [], "userLocation": "b", "userName": "a"}}, "uid": "1", "viewMode": "Reply"})
 
 })
 
