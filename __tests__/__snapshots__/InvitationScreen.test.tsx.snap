@@ -1,21 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`buttonButtons function with Edit 1`] = `
-<LHCButton
-  onSelected={[Function]}
->
-  <Text
-    style={
-      Object {
-        "color": "#fff",
-        "fontWeight": "700",
-        "textAlign": "center",
-      }
-    }
+<View>
+  <LHCButton
+    onSelected={[Function]}
   >
-    Update Invitation
-  </Text>
-</LHCButton>
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      Update Invitation
+    </Text>
+  </LHCButton>
+  <LHCButton
+    onSelected={[Function]}
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "700",
+          "textAlign": "center",
+        }
+      }
+    >
+      Delete Invitation
+    </Text>
+  </LHCButton>
+</View>
 `;
 
 exports[`buttonButtons function with New 1`] = `

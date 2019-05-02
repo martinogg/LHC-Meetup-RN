@@ -102,6 +102,17 @@ export class InvitationScreen extends Component<Props, State> {
         this.sendResponse(InvitationStatus.Rejected)
     }
 
+    private deleteButtonPressed() {
+
+        this.props.screenProps.firebaseConnection.deleteInvitation(this.state.uid).then(() => {
+
+            Alert.alert('Invitation deleted OK')
+        }, (error) => {
+
+            Alert.alert('Invitation delete Error:' + error)
+        })
+    }
+
     private buttonButtons(viewMode: string): JSX.Element {
 
         let ret: JSX.Element = <View></View>
@@ -113,9 +124,14 @@ export class InvitationScreen extends Component<Props, State> {
                 </LHCButton>
                 break;
             case 'Edit':
-                ret = <LHCButton onSelected={() => { this.updateButtonPressed() }}>
-                    <Text style={AppStyles.buttonText}>Update Invitation</Text>
-                </LHCButton>
+                ret = <View>
+                    <LHCButton onSelected={() => { this.updateButtonPressed() }}>
+                        <Text style={AppStyles.buttonText}>Update Invitation</Text>
+                    </LHCButton>
+                    <LHCButton onSelected={() => { this.deleteButtonPressed() }}>
+                        <Text style={AppStyles.buttonText}>Delete Invitation</Text>
+                    </LHCButton>
+                </View>
                 break;
             case 'Reply':
                 ret = <View>
@@ -145,7 +161,7 @@ export class InvitationScreen extends Component<Props, State> {
 
     private showUserProfile(user: IUserFromFirebase) {
 
-        this.props.navigation.push('Profile', {profile: user, editable: false})
+        this.props.navigation.push('Profile', { profile: user, editable: false })
     }
 
     public render() {

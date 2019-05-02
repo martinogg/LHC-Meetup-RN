@@ -285,13 +285,19 @@ test('rejectButtonPressed function', () => {
 
 
 
-test('buttonButtons function with New', () => {
+test('buttonButtons function with New', async () => {
 
     let props: any = createTestProps({})
-    const wrapper = shallow(<InvitationScreen {...props} />)
+
+    const wrapper = await shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'New'})
 
     expect(sut.buttonButtons('New')).toMatchSnapshot()
+
+    sut.sendButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(2).simulate('selected')
+    expect(sut.sendButtonPressed).toBeCalledTimes(1)
 })
 
 test('buttonButtons function with Edit', () => {
@@ -299,8 +305,17 @@ test('buttonButtons function with Edit', () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'Edit'})
 
     expect(sut.buttonButtons('Edit')).toMatchSnapshot()
+
+    sut.updateButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(2).simulate('selected')
+    expect(sut.updateButtonPressed).toBeCalledTimes(1)
+
+    sut.deleteButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(3).simulate('selected')
+    expect(sut.deleteButtonPressed).toBeCalledTimes(1)
 })
 
 test('buttonButtons function with Reply', () => {
@@ -308,8 +323,17 @@ test('buttonButtons function with Reply', () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'Reply'})
 
     expect(sut.buttonButtons('Reply')).toMatchSnapshot()
+
+    sut.acceptButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(2).simulate('selected')
+    expect(sut.acceptButtonPressed).toBeCalledTimes(1)
+
+    sut.rejectButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(3).simulate('selected')
+    expect(sut.rejectButtonPressed).toBeCalledTimes(1)
 })
 
 test('render from button press', () => {
@@ -393,4 +417,64 @@ test('toPersonButtonTapped function', () => {
 
     expect(props.navigation.push).toBeCalledTimes(1)
     expect(props.navigation.push).toBeCalledWith('Profile', { "editable": false, "profile": { "id": "1111", "user": { "userContact": "c", "userInterests": [], "userLocation": "b", "userName": "a" } } })
+})
+
+test('deleteButtonPressed function SUCCESS', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+    const mockResponse: InvitationStatus = InvitationStatus.Accepted
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        deleteInvitation: (uid: string) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            return new Promise((resolve, reject) => { resolve() })
+        }
+    }
+
+    await sut.deleteButtonPressed()
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('Invitation deleted OK')
+})
+
+test('deleteButtonPressed function FAIL', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+    const mockResponse: InvitationStatus = InvitationStatus.Accepted
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        deleteInvitation: (uid: string) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            return new Promise((resolve, reject) => { reject('anError') })
+        }
+    }
+
+    await sut.deleteButtonPressed()
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('Invitation delete Error:anError')
 })

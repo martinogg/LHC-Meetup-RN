@@ -166,6 +166,30 @@ class FirebaseConnection {
 
   }
 
+  public deleteInvitation(uid: string): Promise<string> {
+    // TODO TEST
+    return new Promise<string>((resolve, reject) => {
+
+      if (firebase.auth().currentUser != null) {
+
+        firebase.firestore().collection("LHC-Invitations").doc(uid).delete()
+          .then(() => {
+
+            resolve()
+          })
+          .catch(function (error) {
+
+            reject(error)
+          });
+
+      } else {
+
+        reject('User Not Logged in')
+      }
+    })
+  }
+
+
   public updateInvitationResponse(uid: string, response: InvitationStatus): Promise<string> {
     // TODO TEST
     return new Promise<string>((resolve, reject) => {
@@ -345,8 +369,8 @@ class FirebaseConnection {
               const id = userInList.id
               const data = userInList.data()
 
-                const user = User.create(data.name, data.location, data.contact, data.interests)
-                ret.push({ id: id, user: user })
+              const user = User.create(data.name, data.location, data.contact, data.interests)
+              ret.push({ id: id, user: user })
 
             });
 
