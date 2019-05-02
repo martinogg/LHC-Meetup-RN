@@ -151,6 +151,7 @@ export class InvitationScreen extends Component<Props, State> {
     public render() {
 
         const buttonButtons = this.buttonButtons(this.state.viewMode)
+        const reasonEditable = this.state.viewMode != 'Reply'
 
         return (
             <View style={AppStyles.container}>
@@ -168,7 +169,7 @@ export class InvitationScreen extends Component<Props, State> {
                     autoCapitalize="none"
                     keyboardType='default'
                     returnKeyType="done"
-                    editable={true}
+                    editable={reasonEditable}
                     value={this.state.reason}
                     placeholder='Reason'
                     placeholderTextColor='rgba(225,225,225,0.7)'

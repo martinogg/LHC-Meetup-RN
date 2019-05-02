@@ -5,23 +5,19 @@ exports[`invitationComponentForElement function ownInvitation False 1`] = `
   onSelected={[Function]}
 >
   <Text>
-    ID
-    1
-  </Text>
-  <Text>
-    FROM
+    FROM 
     a
   </Text>
   <Text>
-    TO
+    TO 
     a
   </Text>
   <Text>
-    REASON
+    REASON 
     c
   </Text>
   <Text>
-    STATUS
+    STATUS 
     New
   </Text>
 </LHCButton>
@@ -32,23 +28,19 @@ exports[`invitationComponentForElement function ownInvitation True 1`] = `
   onSelected={[Function]}
 >
   <Text>
-    ID
-    1
-  </Text>
-  <Text>
-    FROM
+    FROM 
     a
   </Text>
   <Text>
-    TO
+    TO 
     a
   </Text>
   <Text>
-    REASON
+    REASON 
     c
   </Text>
   <Text>
-    STATUS
+    STATUS 
     New
   </Text>
 </LHCButton>

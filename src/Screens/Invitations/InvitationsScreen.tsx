@@ -72,11 +72,10 @@ export class InvitationsScreen extends Component<IProps, IState> {
 
         // TODO - this needs to look better
         return <LHCButton onSelected={() => { this.invitationTapped(item, ownInvititation) }}>
-            <Text>ID{item.id}</Text>
-            <Text>FROM{item.fromObject.user.userName}</Text>
-            <Text>TO{item.toObject.user.userName}</Text>
-            <Text>REASON{item.invitation.reason}</Text>
-            <Text>STATUS{item.invitation.status}</Text>
+            <Text>FROM {item.fromObject.user.userName}</Text>
+            <Text>TO {item.toObject.user.userName}</Text>
+            <Text>REASON {item.invitation.reason}</Text>
+            <Text>STATUS {item.invitation.status}</Text>
         </LHCButton>
     }
 
