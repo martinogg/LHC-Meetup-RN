@@ -478,3 +478,33 @@ test('deleteButtonPressed function FAIL', async () => {
     expect(Alert.alert).toHaveBeenCalledTimes(1)
     expect(Alert.alert).toHaveBeenCalledWith('Invitation delete Error:anError')
 })
+
+test('display InvitationScreen render with viewMode = New', async () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'New', status: 'Accepted'})
+
+    expect(sut.render()).toMatchSnapshot()
+});
+
+test('display InvitationScreen render with viewMode = Reply', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'Reply', status: 'Accepted'})
+
+    expect(sut.render()).toMatchSnapshot()
+});
+
+test('display InvitationScreen render with viewMode = Edit', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'Edit', status: 'Accepted'})
+
+    expect(sut.render()).toMatchSnapshot()
+});

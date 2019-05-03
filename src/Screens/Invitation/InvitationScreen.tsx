@@ -173,6 +173,13 @@ export class InvitationScreen extends Component<Props, State> {
         const reasonEditable = this.state.viewMode != 'Reply'
         const canShowStatus = this.state.viewMode != 'New'
         const status = canShowStatus ? <Text style={AppStyles.buttonText}>Status: {this.state.status}</Text> : null
+        const canShowContactDetails = this.state.status == InvitationStatus.Accepted
+        const contactDetails = canShowContactDetails ? <View>
+            <Text style={AppStyles.buttonText}>
+                {this.state.fromObject.user.userName} {this.state.fromObject.user.userContact}</Text>
+            <Text style={AppStyles.buttonText}>
+                {this.state.toObject.user.userName} {this.state.toObject.user.userContact}</Text>
+        </View> : null
 
         return (
             <View style={AppStyles.container}>
@@ -198,6 +205,7 @@ export class InvitationScreen extends Component<Props, State> {
                 />
 
                 {status}
+                {contactDetails}
 
                 <View style={{ flex: 1 }} />
 
