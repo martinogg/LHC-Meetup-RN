@@ -211,6 +211,19 @@ export class ProfileScreen extends Component<IProps, IState> {
 
     private getEditItems(editable: boolean): JSX.Element[] {
 
+        const contactInput = editable ? <TextInput style={AppStyles.input}
+            ref={(contact) => this.contactInput = contact}
+            autoCapitalize="none"
+            editable={editable}
+            autoCorrect={false}
+            keyboardType='default'
+            returnKeyType="next"
+            value={this.state.userContact}
+            placeholder='Contact: Skype or phone number'
+            placeholderTextColor='rgba(225,225,225,0.7)'
+            onChangeText={(text) => this.handleContactChange(text)}
+        /> : null
+
         let ret =
             [<TextInput style={AppStyles.input}
                 autoCapitalize="none"
@@ -239,18 +252,7 @@ export class ProfileScreen extends Component<IProps, IState> {
                 onChangeText={(text) => this.handleLocationChange(text)}
             />,
 
-            <TextInput style={AppStyles.input}
-                ref={(contact) => this.contactInput = contact}
-                autoCapitalize="none"
-                editable={editable}
-                autoCorrect={false}
-                keyboardType='default'
-                returnKeyType="next"
-                value={this.state.userContact}
-                placeholder='Contact: Skype or phone number'
-                placeholderTextColor='rgba(225,225,225,0.7)'
-                onChangeText={(text) => this.handleContactChange(text)}
-            />, ...this.interestButtons(this.state.userInterests)
+                contactInput, ...this.interestButtons(this.state.userInterests)
             ]
 
         if (editable == true) {

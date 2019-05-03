@@ -58,7 +58,7 @@ test('componentDidMount function', () => {
     sut.componentDidMount()
 
     expect(sut.setState).toHaveBeenCalledTimes(1)
-    expect(sut.setState).toBeCalledWith({ "fromObject": "a", "reason": "e", "toObject": "b", "uid": "d", "viewMode": "New" })
+    expect(sut.setState).toBeCalledWith({ "fromObject": "a", "reason": "e", "status": "", "toObject": "b", "uid": "d", "viewMode": "New" })
 
 
 })
@@ -291,7 +291,7 @@ test('buttonButtons function with New', async () => {
 
     const wrapper = await shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    sut.setState({viewMode: 'New'})
+    sut.setState({ viewMode: 'New' })
 
     expect(sut.buttonButtons('New')).toMatchSnapshot()
 
@@ -305,7 +305,7 @@ test('buttonButtons function with Edit', () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    sut.setState({viewMode: 'Edit'})
+    sut.setState({ viewMode: 'Edit' })
 
     expect(sut.buttonButtons('Edit')).toMatchSnapshot()
 
@@ -323,7 +323,7 @@ test('buttonButtons function with Reply', () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    sut.setState({viewMode: 'Reply'})
+    sut.setState({ viewMode: 'Reply' })
 
     expect(sut.buttonButtons('Reply')).toMatchSnapshot()
 

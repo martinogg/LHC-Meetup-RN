@@ -19,6 +19,7 @@ interface State {
     reason: string,
     fromObject: IUserFromFirebase,
     toObject: IUserFromFirebase,
+    status: string,
     uid: string,
     viewMode: string
 }
@@ -33,7 +34,8 @@ export class InvitationScreen extends Component<Props, State> {
             fromObject: { id: '', user: User.create('', '', '', []) },
             toObject: { id: '', user: User.create('', '', '', []) },
             uid: '',
-            viewMode: ''
+            viewMode: '',
+            status: ''
         }
     }
 
@@ -48,7 +50,8 @@ export class InvitationScreen extends Component<Props, State> {
             toObject: this.props.navigation.state.params.toObject || this.state.toObject,
             uid: this.props.navigation.state.params.uid || this.state.uid,
             reason: this.props.navigation.state.params.reason || this.state.reason,
-            viewMode: this.props.navigation.state.params.viewMode || this.state.viewMode
+            viewMode: this.props.navigation.state.params.viewMode || this.state.viewMode,
+            status: this.props.navigation.state.params.status || this.state.status
         })
     }
 
@@ -168,6 +171,8 @@ export class InvitationScreen extends Component<Props, State> {
 
         const buttonButtons = this.buttonButtons(this.state.viewMode)
         const reasonEditable = this.state.viewMode != 'Reply'
+        const canShowStatus = this.state.viewMode != 'New'
+        const status = canShowStatus ? <Text style={AppStyles.buttonText}>Status: {this.state.status}</Text> : null
 
         return (
             <View style={AppStyles.container}>
@@ -191,6 +196,8 @@ export class InvitationScreen extends Component<Props, State> {
                     placeholderTextColor='rgba(225,225,225,0.7)'
                     onChangeText={(text) => this.handleCustomDescriptionChange(text)}
                 />
+
+                {status}
 
                 <View style={{ flex: 1 }} />
 
