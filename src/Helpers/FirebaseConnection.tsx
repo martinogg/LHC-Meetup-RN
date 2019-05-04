@@ -65,70 +65,9 @@ class FirebaseConnection {
     })
   }
 
-  //TODO TEST
-  public buildInvitationsWithUserObjects(invitations: IInvitationFromAndTo): Promise<IInvitationFromAndToWithUserObjects> {
-
-    return new Promise<IInvitationFromAndToWithUserObjects>((resolve, reject) => {
-
-      this.allUsers().then((users) => {
-
-        let fromInvitations: IInvitationFromFirebaseWithUserObject[] = []
-        let toInvitations: IInvitationFromFirebaseWithUserObject[] = []
-
-        const createNewInvitation: (invitation: IInvitationFromFirebase) => IInvitationFromFirebaseWithUserObject = (invitation) => {
-
-          const newInvitation: IInvitationFromFirebaseWithUserObject = {
-
-            ...invitation,
-            fromObject: this.userObjectForID(invitation.invitation.from, users),
-            toObject: this.userObjectForID(invitation.invitation.to, users)
-          }
-
-          return newInvitation
-        }
-
-        invitations.from.forEach((element) => {
-
-          fromInvitations.push(createNewInvitation(element))
-        })
-
-        invitations.to.forEach((element) => {
-
-          toInvitations.push(createNewInvitation(element))
-        })
-
-        resolve({ from: fromInvitations, to: toInvitations })
-
-      }).catch((error) => {
-
-        reject(error)
-      })
-
-    })
-  }
-
-  private userObjectForID(id: string, users: IUserFromFirebase[]): IUserFromFirebase {
-
-    let ret: IUserFromFirebase | null = null
-    users.forEach((element) => {
-
-      if (element.id == id) {
-
-        ret = element
-      }
-    })
-
-    if (ret == null) {
-
-      ret = { id: id, user: User.create('Unknown User', '', '', []) }
-    }
-
-    return ret
-  }
-
-  public getInvitations(): Promise<IInvitationFromAndTo> {
-    // TODO TEST
-    return new Promise<IInvitationFromAndTo>((resolve, reject) => {
+  // TODO TEST
+  public checkFBVersion(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
 
       if (firebase.auth().currentUser == null) {
 
@@ -136,493 +75,592 @@ class FirebaseConnection {
         return
       }
 
+      const localVersion: number = BuildSettings.get("FIREBASEVersion")
+
       const currentUser = firebase.auth().currentUser as firebase.User
 
-      firebase.firestore().collection("LHC-Invitations").get()
+      firebase.firestore().collection("LHC-settings").get()
         .then((snap) => {
 
-          let ret: IInvitationFromFirebase[] = []
+          let fbVersion: number = 99999999
+          snap.forEach(setting => {
 
-          snap.forEach(invitationInList => {
+            if (setting.id == 'version') {
 
-            const id = invitationInList.id
-            const data = invitationInList.data()
-
-            if (data) {
-              
-              const invitation = Invitation.create(data.from, data.to, data.reason, data.status)
-              ret.push({ id: id, invitation: invitation })
+              const data = setting.data()
+              fbVersion = +data.version
             }
 
           });
 
-          resolve({ from: ret.filter((item) => { return item.invitation.from == currentUser.uid }), to: ret.filter((item) => { return item.invitation.to == currentUser.uid }) })
+          resolve(localVersion >= fbVersion)
         })
         .catch(function (error) {
 
           reject(error)
         });
     })
+}
 
-  }
 
-  public deleteInvitation(uid: string): Promise<string> {
-    // TODO TEST
-    return new Promise<string>((resolve, reject) => {
+  //TODO TEST
+  public buildInvitationsWithUserObjects(invitations: IInvitationFromAndTo): Promise < IInvitationFromAndToWithUserObjects > {
 
-      if (firebase.auth().currentUser != null) {
+  return new Promise<IInvitationFromAndToWithUserObjects>((resolve, reject) => {
 
-        firebase.firestore().collection("LHC-Invitations").doc(uid).delete()
-          .then(() => {
+    this.allUsers().then((users) => {
 
-            resolve()
-          })
-          .catch(function (error) {
+      let fromInvitations: IInvitationFromFirebaseWithUserObject[] = []
+      let toInvitations: IInvitationFromFirebaseWithUserObject[] = []
 
-            reject(error)
-          });
+      const createNewInvitation: (invitation: IInvitationFromFirebase) => IInvitationFromFirebaseWithUserObject = (invitation) => {
 
-      } else {
+        const newInvitation: IInvitationFromFirebaseWithUserObject = {
 
-        reject('User Not Logged in')
-      }
-    })
-  }
-
-
-  public updateInvitationResponse(uid: string, response: InvitationStatus): Promise<string> {
-    // TODO TEST
-    return new Promise<string>((resolve, reject) => {
-
-      if (firebase.auth().currentUser != null) {
-
-        firebase.firestore().collection("LHC-Invitations").doc(uid).update({ status: response })
-          .then(() => {
-
-            resolve()
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
-
-        reject('User Not Logged in')
-      }
-    })
-  }
-
-  public updateInvitation(uid: string, reason: string): Promise<string> {
-    // TODO TEST
-    return new Promise<string>((resolve, reject) => {
-
-      if (firebase.auth().currentUser != null) {
-
-        firebase.firestore().collection("LHC-Invitations").doc(uid).update({ reason })
-          .then(() => {
-
-            resolve()
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
-
-        reject('User Not Logged in')
-      }
-    })
-  }
-
-
-  public createNewInvitation(invitation: IInvitation): Promise<string> {
-    // TODO TEST
-    return new Promise<string>((resolve, reject) => {
-
-      if (firebase.auth().currentUser != null) {
-
-        const newInvitationId = this.dateEpochPlusUID()
-        const currentUser = firebase.auth().currentUser as firebase.User
-
-        firebase.firestore().collection("LHC-Invitations").doc(newInvitationId).set(invitation)
-          .then(() => {
-
-            resolve()
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
-
-        reject('User Not Logged in')
-      }
-    })
-  }
-
-  public saveUserDetails(user: IUser): Promise<string> {
-    // TODO TEST
-    return new Promise<string>((resolve, reject) => {
-
-      if (firebase.auth().currentUser != null) {
-        const currentUser = firebase.auth().currentUser as firebase.User
-
-        firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
-          name: user.userName,
-          location: user.userLocation,
-          contact: user.userContact,
-          interests: user.userInterests,
-        })
-          .then(() => {
-
-            resolve()
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
-
-        reject('User Not Logged in')
-      }
-    })
-  }
-
-  private queryMatchesInterest(query: string, interestList: IUserInterest[]): boolean {
-
-    let found = false
-    const queryLower = query.toLowerCase()
-    interestList.forEach((interest) => {
-
-      if (interest.title.toLowerCase().includes(queryLower)) {
-
-        found = true
-      }
-      if (interest.description.toLowerCase().includes(queryLower)) {
-
-        found = true
-      }
-    })
-
-    return found
-  }
-
-  public searchOtherUsers(query: string): Promise<IUserFromFirebase[]> {
-    // TODO TEST
-    return new Promise<IUserFromFirebase[]>((resolve, reject) => {
-
-      if (firebase.auth().currentUser != null) {
-        const currentUser = firebase.auth().currentUser as firebase.User
-
-        firebase.firestore().collection("LHC-Users").get()
-          .then((snap) => {
-
-            let ret: IUserFromFirebase[] = []
-
-            snap.forEach(userInList => {
-
-              const id = userInList.id
-              const data = userInList.data()
-              const matchesInterest = this.queryMatchesInterest(query, data.interests)
-
-              if (data != null && id != currentUser.uid && matchesInterest) {
-
-                const user = User.create(data.name, data.location, data.contact, data.interests)
-                ret.push({ id: id, user: user })
-              }
-
-            });
-
-            resolve(ret)
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
-
-        reject('User Not Logged in')
-      }
-    })
-
-  }
-
-  public allUsers(): Promise<IUserFromFirebase[]> {
-    // TODO TEST
-    return new Promise<IUserFromFirebase[]>((resolve, reject) => {
-
-      if (firebase.auth().currentUser != null) {
-        const currentUser = firebase.auth().currentUser as firebase.User
-
-        firebase.firestore().collection("LHC-Users").get()
-          .then((snap) => {
-
-            let ret: IUserFromFirebase[] = []
-
-            snap.forEach(userInList => {
-
-              const id = userInList.id
-              const data = userInList.data()
-
-              const user = User.create(data.name, data.location, data.contact, data.interests)
-              ret.push({ id: id, user: user })
-
-            });
-
-            resolve(ret)
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
-
-        reject('User Not Logged in')
-      }
-    })
-
-  }
-
-  public loadUserDetails(): Promise<IUser> {
-    // TODO TEST
-    return new Promise<IUser>((resolve, reject) => {
-
-      if (firebase.auth().currentUser != null) {
-        const currentUser = firebase.auth().currentUser as firebase.User
-
-        firebase.firestore().collection("LHC-Users").doc(currentUser.uid).get()
-          .then((snap) => {
-
-            const data = snap.data()
-
-            if (data != null) {
-              const user = User.create(data.name, data.location, data.contact, data.interests)
-
-              resolve(user)
-            } else {
-              reject('An Error Occurred')
-            }
-          })
-          .catch(function (error) {
-
-            reject(error)
-          });
-
-      } else {
-
-        reject('User Not Logged in')
-      }
-    })
-  }
-
-  public login(username: string, password: string): Promise<string> {
-    // TODO TEST
-
-    return new Promise((resolve, reject) => {
-
-      firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
-
-        resolve()
-      }, (reason) => {
-
-        reject(reason)
-      })
-    })
-  }
-
-  public register(username: string, password: string): Promise<string> {
-    // TODO TEST
-
-    return new Promise((resolve, reject) => {
-
-      firebase.auth().createUserWithEmailAndPassword(username, password).then(() => {
-
-
-        // TODO - Shift this out in to separate email verification
-        /*
-        if (this.isLoggedIn()) {
-  
-          firebase.auth().currentUser.sendEmailVerification()
+          ...invitation,
+          fromObject: this.userObjectForID(invitation.invitation.from, users),
+          toObject: this.userObjectForID(invitation.invitation.to, users)
         }
-        */
 
-        resolve()
-      }, (reason) => {
-        reject(reason)
+        return newInvitation
+      }
+
+      invitations.from.forEach((element) => {
+
+        fromInvitations.push(createNewInvitation(element))
       })
+
+      invitations.to.forEach((element) => {
+
+        toInvitations.push(createNewInvitation(element))
+      })
+
+      resolve({ from: fromInvitations, to: toInvitations })
+
+    }).catch((error) => {
+
+      reject(error)
     })
+
+  })
+}
+
+  private userObjectForID(id: string, users: IUserFromFirebase[]): IUserFromFirebase {
+
+  let ret: IUserFromFirebase | null = null
+  users.forEach((element) => {
+
+    if (element.id == id) {
+
+      ret = element
+    }
+  })
+
+  if (ret == null) {
+
+    ret = { id: id, user: User.create('Unknown User', '', '', []) }
   }
 
-  public isLoggedIn(): boolean {
-    // TODO TEST
+  return ret
+}
 
-    return firebase.auth().currentUser != null
-  }
+  public getInvitations(): Promise < IInvitationFromAndTo > {
+  // TODO TEST
+  return new Promise<IInvitationFromAndTo>((resolve, reject) => {
 
-  public getCurrentUserID(): string {
-    // TODO TEST
     if (firebase.auth().currentUser == null) {
-      return 'Error: Not logged In'
+
+      reject('User Not Logged in')
+      return
     }
 
     const currentUser = firebase.auth().currentUser as firebase.User
-    return currentUser.uid
+
+    firebase.firestore().collection("LHC-Invitations").get()
+      .then((snap) => {
+
+        let ret: IInvitationFromFirebase[] = []
+
+        snap.forEach(invitationInList => {
+
+          const id = invitationInList.id
+          const data = invitationInList.data()
+
+          if (data) {
+            
+            const invitation = Invitation.create(data.from, data.to, data.reason, data.status)
+            ret.push({ id: id, invitation: invitation })
+          }
+
+        });
+
+        resolve({ from: ret.filter((item) => { return item.invitation.from == currentUser.uid }), to: ret.filter((item) => { return item.invitation.to == currentUser.uid }) })
+      })
+      .catch(function (error) {
+
+        reject(error)
+      });
+  })
+
+}
+
+  public deleteInvitation(uid: string): Promise < string > {
+  // TODO TEST
+  return new Promise<string>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+
+      firebase.firestore().collection("LHC-Invitations").doc(uid).delete()
+        .then(() => {
+
+          resolve()
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+}
+
+
+  public updateInvitationResponse(uid: string, response: InvitationStatus): Promise < string > {
+  // TODO TEST
+  return new Promise<string>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+
+      firebase.firestore().collection("LHC-Invitations").doc(uid).update({ status: response })
+        .then(() => {
+
+          resolve()
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+}
+
+  public updateInvitation(uid: string, reason: string): Promise < string > {
+  // TODO TEST
+  return new Promise<string>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+
+      firebase.firestore().collection("LHC-Invitations").doc(uid).update({ reason })
+        .then(() => {
+
+          resolve()
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+}
+
+
+  public createNewInvitation(invitation: IInvitation): Promise < string > {
+  // TODO TEST
+  return new Promise<string>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+
+      const newInvitationId = this.dateEpochPlusUID()
+      const currentUser = firebase.auth().currentUser as firebase.User
+
+      firebase.firestore().collection("LHC-Invitations").doc(newInvitationId).set(invitation)
+        .then(() => {
+
+          resolve()
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+}
+
+  public saveUserDetails(user: IUser): Promise < string > {
+  // TODO TEST
+  return new Promise<string>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+      const currentUser = firebase.auth().currentUser as firebase.User
+
+      firebase.firestore().collection("LHC-Users").doc(currentUser.uid).set({
+        name: user.userName,
+        location: user.userLocation,
+        contact: user.userContact,
+        interests: user.userInterests,
+      })
+        .then(() => {
+
+          resolve()
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+}
+
+  private queryMatchesInterest(query: string, interestList: IUserInterest[]): boolean {
+
+  let found = false
+  const queryLower = query.toLowerCase()
+  interestList.forEach((interest) => {
+
+    if (interest.title.toLowerCase().includes(queryLower)) {
+
+      found = true
+    }
+    if (interest.description.toLowerCase().includes(queryLower)) {
+
+      found = true
+    }
+  })
+
+  return found
+}
+
+  public searchOtherUsers(query: string): Promise < IUserFromFirebase[] > {
+  // TODO TEST
+  return new Promise<IUserFromFirebase[]>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+      const currentUser = firebase.auth().currentUser as firebase.User
+
+      firebase.firestore().collection("LHC-Users").get()
+        .then((snap) => {
+
+          let ret: IUserFromFirebase[] = []
+
+          snap.forEach(userInList => {
+
+            const id = userInList.id
+            const data = userInList.data()
+            const matchesInterest = this.queryMatchesInterest(query, data.interests)
+
+            if (data != null && id != currentUser.uid && matchesInterest) {
+
+              const user = User.create(data.name, data.location, data.contact, data.interests)
+              ret.push({ id: id, user: user })
+            }
+
+          });
+
+          resolve(ret)
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+
+}
+
+  public allUsers(): Promise < IUserFromFirebase[] > {
+  // TODO TEST
+  return new Promise<IUserFromFirebase[]>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+      const currentUser = firebase.auth().currentUser as firebase.User
+
+      firebase.firestore().collection("LHC-Users").get()
+        .then((snap) => {
+
+          let ret: IUserFromFirebase[] = []
+
+          snap.forEach(userInList => {
+
+            const id = userInList.id
+            const data = userInList.data()
+
+            const user = User.create(data.name, data.location, data.contact, data.interests)
+            ret.push({ id: id, user: user })
+
+          });
+
+          resolve(ret)
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+
+}
+
+  public loadUserDetails(): Promise < IUser > {
+  // TODO TEST
+  return new Promise<IUser>((resolve, reject) => {
+
+    if (firebase.auth().currentUser != null) {
+      const currentUser = firebase.auth().currentUser as firebase.User
+
+      firebase.firestore().collection("LHC-Users").doc(currentUser.uid).get()
+        .then((snap) => {
+
+          const data = snap.data()
+
+          if (data != null) {
+            const user = User.create(data.name, data.location, data.contact, data.interests)
+
+            resolve(user)
+          } else {
+            reject('An Error Occurred')
+          }
+        })
+        .catch(function (error) {
+
+          reject(error)
+        });
+
+    } else {
+
+      reject('User Not Logged in')
+    }
+  })
+}
+
+  public login(username: string, password: string): Promise < string > {
+  // TODO TEST
+
+  return new Promise((resolve, reject) => {
+
+    firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
+
+      resolve()
+    }, (reason) => {
+
+      reject(reason)
+    })
+  })
+}
+
+  public register(username: string, password: string): Promise < string > {
+  // TODO TEST
+
+  return new Promise((resolve, reject) => {
+
+    firebase.auth().createUserWithEmailAndPassword(username, password).then(() => {
+
+
+      // TODO - Shift this out in to separate email verification
+      /*
+      if (this.isLoggedIn()) {
+ 
+        firebase.auth().currentUser.sendEmailVerification()
+      }
+      */
+
+      resolve()
+    }, (reason) => {
+      reject(reason)
+    })
+  })
+}
+
+  public isLoggedIn(): boolean {
+  // TODO TEST
+
+  return firebase.auth().currentUser != null
+}
+
+  public getCurrentUserID(): string {
+  // TODO TEST
+  if (firebase.auth().currentUser == null) {
+    return 'Error: Not logged In'
   }
+
+  const currentUser = firebase.auth().currentUser as firebase.User
+  return currentUser.uid
+}
 
   private dateEpochPlusUID(): string {
-    // TODO TEST
-    return (new Date).getTime().toString() + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
-  }
+  // TODO TEST
+  return (new Date).getTime().toString() + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+}
 
-  sendComment(comment: string) {
-    // TODO TEST
+sendComment(comment: string) {
+  // TODO TEST
 
-    if (comment !== '') {
+  if (comment !== '') {
 
-      const date = this.dateEpochPlusUID()
-      if (firebase.auth().currentUser != null) {
+    const date = this.dateEpochPlusUID()
+    if (firebase.auth().currentUser != null) {
 
-        const currentUser = firebase.auth().currentUser as firebase.User
-        firebase.firestore().collection("LHC-Comments").doc(date).set({
-          'comment': comment
-        })
-      }
+      const currentUser = firebase.auth().currentUser as firebase.User
+      firebase.firestore().collection("LHC-Comments").doc(date).set({
+        'comment': comment
+      })
     }
   }
+}
 
-  loginAnon() {
-    let strongThis = this;
-    if (this.firebaseApp != null) {
-      firebase.auth().signInAnonymously().catch((error) => { });
+loginAnon() {
+  let strongThis = this;
+  if (this.firebaseApp != null) {
+    firebase.auth().signInAnonymously().catch((error) => { });
+  }
+}
+
+// only allows callback if user is actually logged in
+_getCurrentUser(onGetCurrentUserFunc) {
+
+  if (this.firebaseApp != null) {
+
+    var currentUser = firebase.auth().currentUser;
+    if (currentUser) {
+
+      onGetCurrentUserFunc(currentUser);
+    } else {
+
+      // try again just in case user is back online
+      this.loginAnon();
     }
   }
+}
 
-  // only allows callback if user is actually logged in
-  _getCurrentUser(onGetCurrentUserFunc) {
+getLikeWithId(idStr, callback) {
+  this._getCurrentUser((currentUser) => {
+    var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("likes").child(idStr);
+    ref.once('value', (snap) => {
+      var isSet = snap.val() === true;
+      callback(isSet);
+    });
+  });
+}
 
-    if (this.firebaseApp != null) {
+toggleLikeWithId(idStr, callback) {
+  this._getCurrentUser((currentUser) => {
+    var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("likes").child(idStr);
 
-      var currentUser = firebase.auth().currentUser;
-      if (currentUser) {
-
-        onGetCurrentUserFunc(currentUser);
-      } else {
-
-        // try again just in case user is back online
-        this.loginAnon();
-      }
-    }
-  }
-
-  getLikeWithId(idStr, callback) {
-    this._getCurrentUser((currentUser) => {
-      var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("likes").child(idStr);
-      ref.once('value', (snap) => {
-        var isSet = snap.val() === true;
-        callback(isSet);
+    ref.once('value', (snap) => {
+      var alreadySet = snap.val() === true;
+      var newSet = alreadySet ? null : true;
+      ref.set(newSet).then(() => {
+        callback(newSet);
       });
     });
-  }
+  });
+}
 
-  toggleLikeWithId(idStr, callback) {
-    this._getCurrentUser((currentUser) => {
-      var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("likes").child(idStr);
+setViewedWithId(idStr, onCompleteFunc) {
+  this._getCurrentUser((currentUser) => {
+    var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("views").child(idStr);
 
-      ref.once('value', (snap) => {
-        var alreadySet = snap.val() === true;
-        var newSet = alreadySet ? null : true;
-        ref.set(newSet).then(() => {
-          callback(newSet);
-        });
+    ref.set(true).then(() => {
+      onCompleteFunc();
+    });
+  });
+}
+
+setLikeWithId(idStr, liked, onCompleteFunc) {
+  this._getCurrentUser((currentUser) => {
+    var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("likes").child(idStr);
+
+    ref.set(liked ? true : null).then(() => {
+      onCompleteFunc();
+    });
+  });
+}
+
+setDownloadedWithId(idStr) {
+  this._getCurrentUser((currentUser) => {
+    this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("downloads").child(idStr).set(true);
+  });
+}
+
+getDbDecks(onCompleteFunc) {
+
+  if (this.firebaseApp != null) {
+
+    const strongThis = this;
+
+    var itemsRef = this.firebaseApp.database().ref().child("data");
+
+    itemsRef.once('value', (snap) => {
+
+      // get children as an array
+      var items = [];
+      snap.forEach((child) => {
+        items.push(child);
       });
+      onCompleteFunc(items);
     });
   }
+}
 
-  setViewedWithId(idStr, onCompleteFunc) {
-    this._getCurrentUser((currentUser) => {
-      var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("views").child(idStr);
+getDbDictLikes(onCompleteFunc) {
 
-      ref.set(true).then(() => {
-        onCompleteFunc();
+  if (this.firebaseApp != null) {
+    const strongThis = this;
+
+    var itemsRef = this.firebaseApp.database().ref().child("data");
+
+    itemsRef.once('value', (snap) => {
+
+      // get children as an array
+      var items = {};
+      snap.forEach((child) => {
+        var likesCount = 0 + child.val().likes;
+        var viewsCount = 0 + child.val().views;
+        items["" + child.key] = { likes: likesCount, views: viewsCount };
       });
+      onCompleteFunc(items);
     });
   }
-
-  setLikeWithId(idStr, liked, onCompleteFunc) {
-    this._getCurrentUser((currentUser) => {
-      var ref = this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("likes").child(idStr);
-
-      ref.set(liked ? true : null).then(() => {
-        onCompleteFunc();
-      });
-    });
-  }
-
-  setDownloadedWithId(idStr) {
-    this._getCurrentUser((currentUser) => {
-      this.firebaseApp.database().ref().child("users").child("" + currentUser.uid).child("actions").child("downloads").child(idStr).set(true);
-    });
-  }
-
-  getDbDecks(onCompleteFunc) {
-
-    if (this.firebaseApp != null) {
-
-      const strongThis = this;
-
-      var itemsRef = this.firebaseApp.database().ref().child("data");
-
-      itemsRef.once('value', (snap) => {
-
-        // get children as an array
-        var items = [];
-        snap.forEach((child) => {
-          items.push(child);
-        });
-        onCompleteFunc(items);
-      });
-    }
-  }
-
-  getDbDictLikes(onCompleteFunc) {
-
-    if (this.firebaseApp != null) {
-      const strongThis = this;
-
-      var itemsRef = this.firebaseApp.database().ref().child("data");
-
-      itemsRef.once('value', (snap) => {
-
-        // get children as an array
-        var items = {};
-        snap.forEach((child) => {
-          var likesCount = 0 + child.val().likes;
-          var viewsCount = 0 + child.val().views;
-          items["" + child.key] = { likes: likesCount, views: viewsCount };
-        });
-        onCompleteFunc(items);
-      });
-    }
-  }
+}
 
 
 
-  alert(message) {
-    Alert.alert(
-      'Error',
-      'Error:' + message,
-      [
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ],
-      { cancelable: false }
-    );
-  }
+alert(message) {
+  Alert.alert(
+    'Error',
+    'Error:' + message,
+    [
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ],
+    { cancelable: false }
+  );
+}
 
 }
 

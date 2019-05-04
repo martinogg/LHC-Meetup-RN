@@ -96,7 +96,7 @@ test('test login function success', async () => {
 
   const wrapper = shallow(<LoginScreen {...props} />);
   const sut: any = wrapper.instance()
-  sut.goToHomeScreen = jest.fn()
+  sut.proceedToLoginIfLoggedIn = jest.fn()
   //let returnedAlertText = ''
 
   /*sut.showAlert = (alertText: string) => {
@@ -104,8 +104,9 @@ test('test login function success', async () => {
     returnedAlertText = alertText
   }*/
 
+
   await sut.login(username, password)
-  expect(sut.goToHomeScreen).toHaveBeenCalledTimes(1)
+  expect(sut.proceedToLoginIfLoggedIn).toHaveBeenCalledTimes(1)
 });
 
 test('test login function fail', async () => {
@@ -168,13 +169,14 @@ test('test showAlert', () => {
   expect(Alert.alert).toBeCalledWith(showMessage)
 })
 
-test('proceedToLoginIfLoggedIn function', () => {
+test('proceedToLoginIfLoggedIn function PASS', async () => {
 
   let props: any;
   props = createTestProps({
     screenProps: {
       firebaseConnection: {
-        isLoggedIn: () => { return true }
+        isLoggedIn: () => { return true },
+        checkFBVersion: () => { return new Promise<boolean>((resolve, reject) => { resolve(true) }) }
       }
     },
     navigation: {
@@ -186,10 +188,73 @@ test('proceedToLoginIfLoggedIn function', () => {
   const sut: any = wrapper.instance()
 
   sut.goToHomeScreen = jest.fn()
-  sut.proceedToLoginIfLoggedIn()
+  await sut.proceedToLoginIfLoggedIn()
 
   expect(sut.goToHomeScreen).toHaveBeenCalledTimes(1)
+})
 
+test('proceedToLoginIfLoggedIn function FAIL', async () => {
 
+  jest.clearAllMocks()
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
 
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        isLoggedIn: () => { return true },
+        checkFBVersion: () => { return new Promise<boolean>((resolve, reject) => { reject('anError') }) }
+      }
+    },
+    navigation: {
+      dispatch: () => { }
+    }
+  });
+
+  const wrapper = shallow(<LoginScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  sut.goToHomeScreen = jest.fn()
+  await sut.proceedToLoginIfLoggedIn()
+
+  expect(sut.goToHomeScreen).toHaveBeenCalledTimes(0)
+  expect(Alert.alert).toHaveBeenCalledTimes(1)
+  expect(Alert.alert).toHaveBeenCalledWith('error:anError')
+})
+
+test('proceedToLoginIfLoggedIn function OUT-OF-DATE', async () => {
+
+  jest.clearAllMocks()
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
+
+  let props: any;
+  props = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        isLoggedIn: () => { return true },
+        checkFBVersion: () => { return new Promise<boolean>((resolve, reject) => { resolve(false) }) }
+      }
+    },
+    navigation: {
+      dispatch: () => { }
+    }
+  });
+
+  const wrapper = shallow(<LoginScreen {...props} />);
+  const sut: any = wrapper.instance()
+
+  sut.goToHomeScreen = jest.fn()
+  await sut.proceedToLoginIfLoggedIn()
+
+  expect(sut.goToHomeScreen).toHaveBeenCalledTimes(0)
+  expect(Alert.alert).toHaveBeenCalledTimes(1)
+  expect(Alert.alert).toHaveBeenCalledWith('App is out of date. Please update before logging in')
 })

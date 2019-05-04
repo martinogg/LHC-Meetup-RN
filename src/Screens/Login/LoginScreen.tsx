@@ -53,7 +53,23 @@ export class LoginScreen extends Component<IProps> {
 
         if (this.props.screenProps.firebaseConnection.isLoggedIn()) {
 
-            this.goToHomeScreen()
+            this.props.screenProps.firebaseConnection.checkFBVersion().then( (succeeded) => {
+
+                if (succeeded) {
+
+                    this.goToHomeScreen()
+                }
+                else 
+                {
+
+                    Alert.alert('App is out of date. Please update before logging in')
+                }
+            }, (error) => {
+
+                Alert.alert('error:'+error)
+            })
+
+            
         }
     }
 
