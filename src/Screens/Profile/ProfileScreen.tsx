@@ -123,7 +123,7 @@ export class ProfileScreen extends Component<IProps, IState> {
 
         const isEditable = this.props.navigation.state.params.editable
 
-        this.props.navigation.navigate('Interest', {
+        this.props.navigation.push('Interest', {
             editable: isEditable,
             previousUserInterest: interest,
             saveCallback: (newInterest: IUserInterest) => {
@@ -164,23 +164,43 @@ export class ProfileScreen extends Component<IProps, IState> {
     }
 
     private inviteButtonPressed() {
-        
-        this.props.navigation.navigate('Invitation', {from: this.props.screenProps.firebaseConnection.getCurrentUserID(), to: this.state.userID, viewMode: 'New'})
+
+        this.props.screenProps.firebaseConnection.loadUserDetails().then((snapshot) => {
+
+            const user: IUser = snapshot
+            const userID: string = this.props.screenProps.firebaseConnection.getCurrentUserID()
+            const fromUserObject: IUserFromFirebase = { id: userID, user: user }
+            const toUserObject: IUserFromFirebase = this.props.navigation.state.params.profile
+
+            this.props.navigation.push('Invitation', { fromObject: fromUserObject, toObject: toUserObject, viewMode: 'New' })
+        }, (error) => {
+
+            Alert.alert('error: ' + error)
+        })
+
     }
 
-    private getRenderButtons(editable: boolean) {
+    private getRenderButtons(editable: boolean, invitable: boolean): JSX.Element | null {
 
-        return editable ? <View>
-            <LHCButton onSelected={() => this.saveButtonPressed()}>
-                <Text style={AppStyles.buttonText}>Save Changes</Text>
-            </LHCButton>
-            <LHCButton onSelected={() => this.logoutButtonPressed()}>
-                <Text style={AppStyles.buttonText}>Logout</Text>
-            </LHCButton>
-        </View> :
-            <LHCButton onSelected={() => this.inviteButtonPressed()}>
+        if (editable) {
+
+            return <View>
+                <LHCButton onSelected={() => this.saveButtonPressed()}>
+                    <Text style={AppStyles.buttonText}>Save Changes</Text>
+                </LHCButton>
+                <LHCButton onSelected={() => this.logoutButtonPressed()}>
+                    <Text style={AppStyles.buttonText}>Logout</Text>
+                </LHCButton>
+            </View>
+        }
+        else if (invitable) {
+
+            return <LHCButton onSelected={() => this.inviteButtonPressed()}>
                 <Text style={AppStyles.buttonText}>Invite</Text>
             </LHCButton>
+        }
+
+        return null;
     }
 
     getTitle(editable: boolean): JSX.Element | null {
@@ -190,6 +210,19 @@ export class ProfileScreen extends Component<IProps, IState> {
     }
 
     private getEditItems(editable: boolean): JSX.Element[] {
+
+        const contactInput = editable ? <TextInput style={AppStyles.input}
+            ref={(contact) => this.contactInput = contact}
+            autoCapitalize="none"
+            editable={editable}
+            autoCorrect={false}
+            keyboardType='default'
+            returnKeyType="next"
+            value={this.state.userContact}
+            placeholder='Contact: Skype or phone number'
+            placeholderTextColor='rgba(225,225,225,0.7)'
+            onChangeText={(text) => this.handleContactChange(text)}
+        /> : null
 
         let ret =
             [<TextInput style={AppStyles.input}
@@ -219,18 +252,7 @@ export class ProfileScreen extends Component<IProps, IState> {
                 onChangeText={(text) => this.handleLocationChange(text)}
             />,
 
-            <TextInput style={AppStyles.input}
-                ref={(contact) => this.contactInput = contact}
-                autoCapitalize="none"
-                editable={editable}
-                autoCorrect={false}
-                keyboardType='default'
-                returnKeyType="next"
-                value={this.state.userContact}
-                placeholder='Contact: Skype or phone number'
-                placeholderTextColor='rgba(225,225,225,0.7)'
-                onChangeText={(text) => this.handleContactChange(text)}
-            />, ...this.interestButtons(this.state.userInterests)
+                contactInput, ...this.interestButtons(this.state.userInterests)
             ]
 
         if (editable == true) {
@@ -248,7 +270,8 @@ export class ProfileScreen extends Component<IProps, IState> {
     public render() {
 
         const editable = this.props.navigation.state.params.editable
-        const lowerButtons = this.getRenderButtons(editable)
+        const invitable = this.props.navigation.state.params.invitable
+        const lowerButtons = this.getRenderButtons(editable, invitable)
         const titleText = this.getTitle(editable)
         const editItems = this.getEditItems(editable)
 

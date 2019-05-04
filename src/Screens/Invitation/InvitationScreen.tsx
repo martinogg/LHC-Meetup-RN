@@ -6,6 +6,7 @@ import { NavigationScreenProp } from 'react-navigation'
 import FirebaseConnection from '../../Helpers/FirebaseConnection'
 import { IInvitationFromFirebase, Invitation, InvitationStatus } from '../../Helpers/InvitationStruct'
 import LHCButton from '../../Components/LHCButton/LHCButton'
+import { IUserFromFirebase, User } from '../../Helpers/UserStruct';
 
 interface Props {
     navigation: NavigationScreenProp<any, any>,
@@ -16,8 +17,9 @@ interface Props {
 
 interface State {
     reason: string,
-    from: string,
-    to: string,
+    fromObject: IUserFromFirebase,
+    toObject: IUserFromFirebase,
+    status: string,
     uid: string,
     viewMode: string
 }
@@ -29,10 +31,11 @@ export class InvitationScreen extends Component<Props, State> {
 
         this.state = {
             reason: '',
-            from: '',
-            to: '',
+            fromObject: { id: '', user: User.create('', '', '', []) },
+            toObject: { id: '', user: User.create('', '', '', []) },
             uid: '',
-            viewMode: ''
+            viewMode: '',
+            status: ''
         }
     }
 
@@ -43,11 +46,12 @@ export class InvitationScreen extends Component<Props, State> {
     public componentDidMount() {
 
         this.setState({
-            from: this.props.navigation.state.params.from,
-            to: this.props.navigation.state.params.to,
-            uid: this.props.navigation.state.params.uid,
-            reason: this.props.navigation.state.params.reason,
-            viewMode: this.props.navigation.state.params.viewMode
+            fromObject: this.props.navigation.state.params.fromObject || this.state.fromObject,
+            toObject: this.props.navigation.state.params.toObject || this.state.toObject,
+            uid: this.props.navigation.state.params.uid || this.state.uid,
+            reason: this.props.navigation.state.params.reason || this.state.reason,
+            viewMode: this.props.navigation.state.params.viewMode || this.state.viewMode,
+            status: this.props.navigation.state.params.status || this.state.status
         })
     }
 
@@ -58,7 +62,7 @@ export class InvitationScreen extends Component<Props, State> {
 
     private sendButtonPressed() {
 
-        const invitation = Invitation.create(this.state.from, this.state.to, this.state.reason, InvitationStatus.New)
+        const invitation = Invitation.create(this.state.fromObject.id, this.state.toObject.id, this.state.reason, InvitationStatus.New)
         this.props.screenProps.firebaseConnection.createNewInvitation(invitation).then(() => {
 
             Alert.alert('new invite OK')
@@ -101,6 +105,17 @@ export class InvitationScreen extends Component<Props, State> {
         this.sendResponse(InvitationStatus.Rejected)
     }
 
+    private deleteButtonPressed() {
+
+        this.props.screenProps.firebaseConnection.deleteInvitation(this.state.uid).then(() => {
+
+            Alert.alert('Invitation deleted OK')
+        }, (error) => {
+
+            Alert.alert('Invitation delete Error:' + error)
+        })
+    }
+
     private buttonButtons(viewMode: string): JSX.Element {
 
         let ret: JSX.Element = <View></View>
@@ -112,9 +127,14 @@ export class InvitationScreen extends Component<Props, State> {
                 </LHCButton>
                 break;
             case 'Edit':
-                ret = <LHCButton onSelected={() => { this.updateButtonPressed() }}>
-                    <Text style={AppStyles.buttonText}>Update Invitation</Text>
-                </LHCButton>
+                ret = <View>
+                    <LHCButton onSelected={() => { this.updateButtonPressed() }}>
+                        <Text style={AppStyles.buttonText}>Update Invitation</Text>
+                    </LHCButton>
+                    <LHCButton onSelected={() => { this.deleteButtonPressed() }}>
+                        <Text style={AppStyles.buttonText}>Delete Invitation</Text>
+                    </LHCButton>
+                </View>
                 break;
             case 'Reply':
                 ret = <View>
@@ -132,32 +152,60 @@ export class InvitationScreen extends Component<Props, State> {
 
     }
 
+    private fromPersonButtonTapped() {
+
+        this.showUserProfile(this.state.fromObject)
+    }
+
+    private toPersonButtonTapped() {
+
+        this.showUserProfile(this.state.toObject)
+    }
+
+    private showUserProfile(user: IUserFromFirebase) {
+
+        this.props.navigation.push('Profile', { profile: user, editable: false })
+    }
+
     public render() {
 
         const buttonButtons = this.buttonButtons(this.state.viewMode)
+        const reasonEditable = this.state.viewMode != 'Reply'
+        const canShowStatus = this.state.viewMode != 'New'
+        const status = canShowStatus ? <Text style={AppStyles.buttonText}>Status: {this.state.status}</Text> : null
+        const canShowContactDetails = this.state.status == InvitationStatus.Accepted
+        const contactDetails = canShowContactDetails ? <View>
+            <Text style={AppStyles.buttonText}>
+                {this.state.fromObject.user.userName} {this.state.fromObject.user.userContact}</Text>
+            <Text style={AppStyles.buttonText}>
+                {this.state.toObject.user.userName} {this.state.toObject.user.userContact}</Text>
+        </View> : null
 
         return (
             <View style={AppStyles.container}>
-                <LHCButton onSelected={() => { }}>
+                <LHCButton onSelected={() => { this.fromPersonButtonTapped() }}>
                     <Text style={AppStyles.buttonText}>From:</Text>
-                    <Text style={AppStyles.buttonText}>{this.state.from}</Text>
+                    <Text style={AppStyles.buttonText}>{this.state.fromObject.user.userName}</Text>
                 </LHCButton>
 
-                <LHCButton onSelected={() => { }}>
+                <LHCButton onSelected={() => { this.toPersonButtonTapped() }}>
                     <Text style={AppStyles.buttonText}>To:</Text>
-                    <Text style={AppStyles.buttonText}>{this.state.to}</Text>
+                    <Text style={AppStyles.buttonText}>{this.state.toObject.user.userName}</Text>
                 </LHCButton>
 
                 <TextInput style={AppStyles.input}
                     autoCapitalize="none"
                     keyboardType='default'
                     returnKeyType="done"
-                    editable={true}
+                    editable={reasonEditable}
                     value={this.state.reason}
                     placeholder='Reason'
                     placeholderTextColor='rgba(225,225,225,0.7)'
                     onChangeText={(text) => this.handleCustomDescriptionChange(text)}
                 />
+
+                {status}
+                {contactDetails}
 
                 <View style={{ flex: 1 }} />
 

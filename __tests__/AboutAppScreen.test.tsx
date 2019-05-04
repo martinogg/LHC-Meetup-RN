@@ -8,7 +8,7 @@ import { AboutAppScreen, CommentMode } from '../src/Screens/AboutApp/AboutAppScr
 
 const createTestProps = (props: Object) => ({
   navigation: {
-    navigate: jest.fn(),
+    push: jest.fn(),
     replace: jest.fn(),
     dispatch: jest.fn()
   },

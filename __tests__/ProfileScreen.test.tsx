@@ -11,7 +11,7 @@ import renderer from 'react-test-renderer';
 
 const createTestProps = (props: Object, editable: boolean) => ({
   navigation: {
-    navigate: jest.fn(),
+    push: jest.fn(),
     getParam: (param: string) => { return {} },
     replace: jest.fn(),
     dispatch: jest.fn(),
@@ -248,7 +248,7 @@ it('should display ProfileScreen Editable with no errors', () => {
   expect(renderer.create(<ProfileScreen {...props} />)).toMatchSnapshot();
 });
 
-it('should display ProfileScreen Non-Editable with no errors', () => {
+it('should display ProfileScreen Non-Editable non-invitable with no errors', () => {
 
   let props = createTestProps({
     screenProps: {
@@ -259,6 +259,33 @@ it('should display ProfileScreen Non-Editable with no errors', () => {
       }
     }
   }, false);
+
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+
+  props.navigation.state.params = newParams
+
+  expect(renderer.create(<ProfileScreen {...props} />)).toMatchSnapshot();
+});
+
+it('should display ProfileScreen Non-Editable invitable with no errors', () => {
+
+  let props: any = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        searchOtherUsers: jest.fn(),
+        isLoggedIn: () => { return true },
+        loadUserDetails: () => { return new Promise((resolve, reject) => { }) }
+      }
+    }
+  }, false);
+
+  props.navigation.state.params['invitable'] = true
 
   const newParams = {
     ...props.navigation.state.params,
@@ -379,8 +406,8 @@ test('editInterest Editable function', () => {
   const mockInterest = UserInterest.create('a', 'b')
   sut.editInterest(mockInterest)
 
-  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-  expect(props.navigation.navigate).toBeCalledWith('Interest',
+  expect(props.navigation.push).toHaveBeenCalledTimes(1)
+  expect(props.navigation.push).toBeCalledWith('Interest',
     expect.objectContaining({
       "editable": true,
       "previousUserInterest": {
@@ -419,8 +446,8 @@ test('editInterest Non-Editable function', () => {
   const mockInterest = UserInterest.create('a', 'b')
   sut.editInterest(mockInterest)
 
-  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-  expect(props.navigation.navigate).toBeCalledWith('Interest',
+  expect(props.navigation.push).toHaveBeenCalledTimes(1)
+  expect(props.navigation.push).toBeCalledWith('Interest',
     expect.objectContaining({
       "editable": false,
       "previousUserInterest": {
@@ -447,7 +474,7 @@ test('editInterest saveCallback function', async () => {
   }, true);
 
   const newNavigation = {
-    ...props.navigation, navigate: (screenName: string, params: any) => {
+    ...props.navigation, push: (screenName: string, params: any) => {
 
       sentParams = params
     }
@@ -486,7 +513,7 @@ test('editInterest removeCallback function', async () => {
 
   props.navigation = {
     ...props.navigation,
-    navigate: (screenName: string, params: any) => {
+    push: (screenName: string, params: any) => {
 
       sentParams = params
     }
@@ -609,11 +636,19 @@ test('interestButtons Non-Editable function with interests', () => {
   expect(result).toMatchSnapshot()
 })
 
-test('inviteButtonPressed function', async () => {
+test('inviteButtonPressed function SUCCESS', async () => {
 
   let props: any = createTestProps({
     screenProps: {
-      firebaseConnection: { getCurrentUserID: () => { return '123' } }
+      firebaseConnection: {
+        getCurrentUserID: () => { return '123' },
+        loadUserDetails: () => {
+          return new Promise((resolve, reject) => {
+            const ret: IUser = User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+            resolve(ret)
+          })
+        }
+      }
     }
   }, false)
 
@@ -626,8 +661,8 @@ test('inviteButtonPressed function', async () => {
   }
   props.navigation.state.params = newParams
 
-  const navigateFunc = jest.fn()
-  props.navigation.navigate = navigateFunc
+  const pushFunc = jest.fn()
+  props.navigation.push = pushFunc
 
   const wrapper = shallow(<ProfileScreen {...props} />);
   const sut: any = await wrapper.instance()
@@ -635,7 +670,53 @@ test('inviteButtonPressed function', async () => {
 
   await sut.inviteButtonPressed()
 
-  expect(navigateFunc).toHaveBeenCalledTimes(1)
-  expect(navigateFunc).toHaveBeenCalledWith('Invitation', { from: '123', to: 'a', viewMode: 'New' })
+  expect(pushFunc).toHaveBeenCalledTimes(1)
+  expect(pushFunc).toHaveBeenCalledWith('Invitation', { "fromObject": { "id": "123", "user": { "userContact": "con", "userInterests": [{ "description": "e", "title": "d" }, { "description": "g", "title": "f" }], "userLocation": "loc", "userName": "name" } }, "toObject": { "id": "a", "user": { "userContact": "con", "userInterests": [{ "description": "e", "title": "d" }, { "description": "g", "title": "f" }], "userLocation": "loc", "userName": "name" } }, "viewMode": "New" })
+
+})
+
+test('inviteButtonPressed function FAIL', async () => {
+
+  jest.clearAllMocks()
+
+  jest.mock('Alert', () => {
+    return {
+      alert: jest.fn()
+    }
+  });
+
+  let props: any = createTestProps({
+    screenProps: {
+      firebaseConnection: {
+        getCurrentUserID: () => { return '123' },
+        loadUserDetails: () => {
+          return new Promise((resolve, reject) => {
+            reject('anError')
+          })
+        }
+      }
+    }
+  }, false)
+
+  const newParams = {
+    ...props.navigation.state.params,
+    profile: {
+      id: 'a',
+      user: User.create('name', 'loc', 'con', [UserInterest.create('d', 'e'), UserInterest.create('f', 'g')])
+    }
+  }
+  props.navigation.state.params = newParams
+
+  const pushFunc = jest.fn()
+  props.navigation.push = pushFunc
+
+  const wrapper = shallow(<ProfileScreen {...props} />);
+  const sut: any = await wrapper.instance()
+
+
+  await sut.inviteButtonPressed()
+
+  expect(Alert.alert).toHaveBeenCalledTimes(1)
+  expect(Alert.alert).toHaveBeenCalledWith('error: anError')
 
 })

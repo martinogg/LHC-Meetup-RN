@@ -9,19 +9,20 @@ import renderer from 'react-test-renderer';
 
 import LHCButton from '../src/Components/LHCButton/LHCButton'
 
+import { User, IUserFromFirebase } from '../src/Helpers/UserStruct'
 import { IInvitationFromAndTo, IInvitation, Invitation, IInvitationFromFirebase, InvitationStatus } from '../src/Helpers/InvitationStruct'
 import { InvitationScreen } from '../src/Screens/Invitation/InvitationScreen';
 
 
 const createTestProps = (props: Object) => ({
     navigation: {
-        navigate: jest.fn(),
+        push: jest.fn(),
         replace: jest.fn(),
         dispatch: jest.fn(),
         state: {
             params: {
-                from: '',
-                to: ''
+                fromObject: { id: '1', user: User.create('a', 'b', 'c', []) },
+                toObject: { id: '1', user: User.create('a', 'b', 'c', []) }
             }
         }
     },
@@ -42,12 +43,13 @@ it('should display InvitationScreen with no errors', () => {
 
 test('componentDidMount function', () => {
 
-    let props: any = createTestProps({})
-    props.navigation.state.params.from = 'aaa111'
-    props.navigation.state.params.to = 'abb122'
-    props.navigation.state.params.uid = 'abb123'
-    props.navigation.state.params.reason = 'abb124'
+    let props: any = createTestProps({});
+
+    props.navigation.state.params.fromObject = 'a'
+    props.navigation.state.params.toObject = 'b'
     props.navigation.state.params.viewMode = 'New'
+    props.navigation.state.params.uid = 'd'
+    props.navigation.state.params.reason = 'e'
 
     const sut = new InvitationScreen(props)
 
@@ -56,7 +58,9 @@ test('componentDidMount function', () => {
     sut.componentDidMount()
 
     expect(sut.setState).toHaveBeenCalledTimes(1)
-    expect(sut.setState).toBeCalledWith({ "from": "aaa111", "reason": "abb124", "to": "abb122", "uid": "abb123", "viewMode": "New" })
+    expect(sut.setState).toBeCalledWith({ "fromObject": "a", "reason": "e", "status": "", "toObject": "b", "uid": "d", "viewMode": "New" })
+
+
 })
 
 test('handleCustomDescriptionChange function', () => {
@@ -83,7 +87,7 @@ test('sendButtonPressed function SUCCESS', async () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    const mockInvitation = Invitation.create('a', 'b', 'c', InvitationStatus.New)
+    const mockInvitation = Invitation.create('1', '1', 'c', InvitationStatus.New)
 
     sut.setState(mockInvitation)
     props.screenProps.firebaseConnection = {
@@ -112,7 +116,7 @@ test('sendButtonPressed function FAIL', async () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
-    const mockInvitation = Invitation.create('a', 'b', 'c', InvitationStatus.New)
+    const mockInvitation = Invitation.create('1', '1', 'c', InvitationStatus.New)
 
     sut.setState(mockInvitation)
     props.screenProps.firebaseConnection = {
@@ -281,13 +285,19 @@ test('rejectButtonPressed function', () => {
 
 
 
-test('buttonButtons function with New', () => {
+test('buttonButtons function with New', async () => {
 
     let props: any = createTestProps({})
-    const wrapper = shallow(<InvitationScreen {...props} />)
+
+    const wrapper = await shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
+    sut.setState({ viewMode: 'New' })
 
     expect(sut.buttonButtons('New')).toMatchSnapshot()
+
+    sut.sendButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(2).simulate('selected')
+    expect(sut.sendButtonPressed).toBeCalledTimes(1)
 })
 
 test('buttonButtons function with Edit', () => {
@@ -295,8 +305,17 @@ test('buttonButtons function with Edit', () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
+    sut.setState({ viewMode: 'Edit' })
 
     expect(sut.buttonButtons('Edit')).toMatchSnapshot()
+
+    sut.updateButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(2).simulate('selected')
+    expect(sut.updateButtonPressed).toBeCalledTimes(1)
+
+    sut.deleteButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(3).simulate('selected')
+    expect(sut.deleteButtonPressed).toBeCalledTimes(1)
 })
 
 test('buttonButtons function with Reply', () => {
@@ -304,7 +323,188 @@ test('buttonButtons function with Reply', () => {
     let props: any = createTestProps({})
     const wrapper = shallow(<InvitationScreen {...props} />)
     const sut: any = wrapper.instance()
+    sut.setState({ viewMode: 'Reply' })
 
     expect(sut.buttonButtons('Reply')).toMatchSnapshot()
+
+    sut.acceptButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(2).simulate('selected')
+    expect(sut.acceptButtonPressed).toBeCalledTimes(1)
+
+    sut.rejectButtonPressed = jest.fn()
+    wrapper.find(LHCButton).at(3).simulate('selected')
+    expect(sut.rejectButtonPressed).toBeCalledTimes(1)
 })
 
+test('render from button press', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    sut.fromPersonButtonTapped = jest.fn()
+
+    wrapper.find(LHCButton).first().simulate('selected')
+
+    expect(sut.fromPersonButtonTapped).toBeCalledTimes(1)
+})
+
+test('render to button press', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    sut.toPersonButtonTapped = jest.fn()
+
+    wrapper.find(LHCButton).at(1).simulate('selected')
+
+    expect(sut.toPersonButtonTapped).toBeCalledTimes(1)
+})
+
+test('fromPersonButtonTapped function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    const mockObj: IUserFromFirebase = {
+        id: '1111',
+        user: User.create('a', 'b', 'c', [])
+    }
+
+    sut.showUserProfile = jest.fn()
+    sut.setState({ fromObject: mockObj })
+
+    sut.fromPersonButtonTapped()
+
+    expect(sut.showUserProfile).toBeCalledTimes(1)
+    expect(sut.showUserProfile).toBeCalledWith(mockObj)
+})
+
+test('toPersonButtonTapped function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    const mockObj: IUserFromFirebase = {
+        id: '1111',
+        user: User.create('a', 'b', 'c', [])
+    }
+
+    sut.showUserProfile = jest.fn()
+    sut.setState({ toObject: mockObj })
+
+    sut.toPersonButtonTapped()
+
+    expect(sut.showUserProfile).toBeCalledTimes(1)
+    expect(sut.showUserProfile).toBeCalledWith(mockObj)
+})
+
+test('toPersonButtonTapped function', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+
+    const mockObj: IUserFromFirebase = {
+        id: '1111',
+        user: User.create('a', 'b', 'c', [])
+    }
+
+    sut.showUserProfile(mockObj)
+
+    expect(props.navigation.push).toBeCalledTimes(1)
+    expect(props.navigation.push).toBeCalledWith('Profile', { "editable": false, "profile": { "id": "1111", "user": { "userContact": "c", "userInterests": [], "userLocation": "b", "userName": "a" } } })
+})
+
+test('deleteButtonPressed function SUCCESS', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+    const mockResponse: InvitationStatus = InvitationStatus.Accepted
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        deleteInvitation: (uid: string) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            return new Promise((resolve, reject) => { resolve() })
+        }
+    }
+
+    await sut.deleteButtonPressed()
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('Invitation deleted OK')
+})
+
+test('deleteButtonPressed function FAIL', async () => {
+
+    jest.resetAllMocks()
+    jest.mock('Alert', () => {
+        return {
+            alert: jest.fn()
+        }
+    });
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    const mockInvitation = { uid: '1234', ...Invitation.create('a', 'b', 'c', InvitationStatus.New) }
+    const mockResponse: InvitationStatus = InvitationStatus.Accepted
+
+    sut.setState(mockInvitation)
+    props.screenProps.firebaseConnection = {
+        deleteInvitation: (uid: string) => {
+
+            expect(uid).toEqual(mockInvitation.uid)
+            return new Promise((resolve, reject) => { reject('anError') })
+        }
+    }
+
+    await sut.deleteButtonPressed()
+
+    expect(Alert.alert).toHaveBeenCalledTimes(1)
+    expect(Alert.alert).toHaveBeenCalledWith('Invitation delete Error:anError')
+})
+
+test('display InvitationScreen render with viewMode = New', async () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'New', status: 'Accepted'})
+
+    expect(sut.render()).toMatchSnapshot()
+});
+
+test('display InvitationScreen render with viewMode = Reply', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'Reply', status: 'Accepted'})
+
+    expect(sut.render()).toMatchSnapshot()
+});
+
+test('display InvitationScreen render with viewMode = Edit', () => {
+
+    let props: any = createTestProps({})
+    const wrapper = shallow(<InvitationScreen {...props} />)
+    const sut: any = wrapper.instance()
+    sut.setState({viewMode: 'Edit', status: 'Accepted'})
+
+    expect(sut.render()).toMatchSnapshot()
+});

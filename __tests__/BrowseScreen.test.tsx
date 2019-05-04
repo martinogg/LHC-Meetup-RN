@@ -11,7 +11,7 @@ import { shallow } from 'enzyme';
 
 const createTestProps = (props: Object) => ({
   navigation: {
-    navigate: jest.fn(),
+    push: jest.fn(),
     replace: jest.fn(),
     dispatch: jest.fn()
   },
@@ -180,7 +180,7 @@ test('onUserSelected function', () => {
       }
     },
     navigation: {
-      navigate: jest.fn()
+      push: jest.fn()
     }
   });
 
@@ -193,6 +193,6 @@ test('onUserSelected function', () => {
   }
   sut.onUserSelected(mockUser)
 
-  expect(props.navigation.navigate).toHaveBeenCalledTimes(1)
-  expect(props.navigation.navigate).toHaveBeenCalledWith('Profile', { profile: mockUser, editable: false })
+  expect(props.navigation.push).toHaveBeenCalledTimes(1)
+  expect(props.navigation.push).toHaveBeenCalledWith('Profile', { profile: mockUser, editable: false, invitable: true })
 })
