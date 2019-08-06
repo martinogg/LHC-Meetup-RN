@@ -13,6 +13,7 @@ import React, { Component } from 'react';
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import logger from 'redux-logger'
+import thunk from 'redux-thunk'
 
 import { AboutAppScreen } from './Screens/AboutApp/AboutAppScreen'
 import { ProfileScreen } from './Screens/Profile/ProfileScreen'
@@ -23,6 +24,7 @@ import { BrowseScreen } from './Screens/Browse/BrowseScreen'
 import { InterestScreen } from './Screens/Interest/InterestScreen'
 import { InvitationsScreen } from './Screens/Invitations/InvitationsScreen'
 import { InvitationScreen } from './Screens/Invitation/InvitationScreen'
+import SplashScreen from './Screens/Splash'
 
 import FirebaseConnection from './Helpers/FirebaseConnection'
 
@@ -37,14 +39,17 @@ const MainNavigator = createStackNavigator({
   Browse: { screen: BrowseScreen },
   Interest: { screen: InterestScreen },
   Invitation: { screen: InvitationScreen },
-  Invitations: { screen: InvitationsScreen }
+  Invitations: { screen: InvitationsScreen },
+  Splash: { screen: SplashScreen }
 },
   { initialRouteName: 'Login' });
 
 const Nav = createAppContainer(MainNavigator);
 
 const reducer = combineReducers({ AReducer })
-const store = createStore(reducer, applyMiddleware(logger))
+
+const middleware = [thunk, logger]
+const store = createStore(reducer, applyMiddleware(...middleware))
 
 const scrProps = { firebaseConnection: FirebaseConnection.getInstance() }
 

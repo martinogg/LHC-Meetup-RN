@@ -664,4 +664,6 @@ alert(message) {
 
 }
 
-export default FirebaseConnection;
+export default FirebaseConnection // TODO FirebaseConnection is old style, remove this in favor of REDUX Version in the future
+
+export const firebaseService = FirebaseConnection.getInstance().firebaseApp as firebase.app.App
