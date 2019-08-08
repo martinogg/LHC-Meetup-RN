@@ -5,7 +5,7 @@ const jsonkey = {
         FIREBASEdatabaseURL: "FIREBASEKEY",
         FIREBASEstorageBucket: "FIREBASEKEY",
         FIREBASEprojectId: "FIREBASEKEY",
-        FIREBASEVersion: 0
+        FIREBASEVersion: 1
     }
 };
 
